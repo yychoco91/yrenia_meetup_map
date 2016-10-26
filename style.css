@@ -1,0 +1,58 @@
+.row {
+    margin: 0;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.intro-wrapper {
+    height: 100vh;
+    z-index: 2;
+}
+
+.intro-top {
+    background-color: lightblue;
+    height: 90vh;
+}
+
+.intro-contain {
+    background-color: lightcoral;
+    height: 50vh;
+}
+
+.intro-credits {
+    height: 10vh;
+}
+
+.intro-inner {
+    height: 50vh;
+}
+
+.logo {
+    background-color: lightsalmon;
+    width: 100%;
+    height: 20vh;
+    margin: 2%;
+}
+
+.search-input {
+    background-color: lightyellow;
+    height: 10vh;
+    margin: 2%;
+}
+
+.zip-input {
+    background-color: lightgoldenrodyellow;
+    height: 10vh;
+    margin: 2% 0 2% 1%;
+}
+
+.go-button {
+    background-color: lightcyan;
+    width: 100%;
+    height: 10vh;
+    margin: 2% 0;
+}
