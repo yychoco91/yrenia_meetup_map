@@ -6,7 +6,6 @@ $(document).ready(click);
 function click(){
     console.log('in click handlers');
     $('button').click(function () {
-        console.log('Clicked!');
         var userSearch = $('#search').val();
         var userZip = 92626; //$('#zip').val();
         console.log(userSearch, userZip);
