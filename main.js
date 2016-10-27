@@ -116,6 +116,7 @@
                         //ADDING TITLE AND VIDEO LINK TO THE DOM
                        // $('div.video-list').append(titleText);
                         $('div.video-list').append(iframeDiv);
+                        console.log('This is the new div and class ' , iframeDiv);
                     }
                 } else {
                     //CONSOLE LOG FOR TESTING PURPOSES
