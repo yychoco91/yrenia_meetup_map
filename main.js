@@ -130,3 +130,10 @@ function youTubeApi(usersChoice) {
             } else {
                 //CONSOLE LOG FOR TESTING PURPOSES
                 console.log('failure -- Unable to connect to YouTube api');
+
+
+                }
+
+            }
+        });
+    }
