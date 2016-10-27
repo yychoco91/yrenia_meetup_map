@@ -4,6 +4,12 @@
 $(document).ready(click_handlers);
 
 // Danh's Section
+var global_zip = null;
+/**
+ * function geoCoding converts zip code to longitude and latitude
+ *
+ * @param {string} query - user zip code
+ */
 function geoCoding(query) {
     $.ajax({
         dataType: 'JSON',
@@ -11,19 +17,33 @@ function geoCoding(query) {
         url: "https://maps.googleapis.com/maps/api/geocode/json?address=" + query + "&key=AIzaSyDa6lkpC-bOxXWEbrWaPlw_FneCpQhlgNE",
         success: function (response) {
             var output = response.results[0].geometry.location;
-            console.log("response", output);
-            initMap(output);
-            //$(".map-wrapper").slideDown(500);
-            $(".intro-wrapper").slideDown(750);
-            $(".intro-wrapper").animate({top: '-100vh'},750,function(){
-
-                $('#top_search').addClass('search-top');
-
-                $('#map_left').addClass('map-left'); // added this wed. night - taylor
-
-            });
+            global_zip = output;
+            //console.log("response", output);
         }
     })
+}
+/**
+ *
+ * @param {object} eventObj - event object passed from Meetup Open Events API
+ */
+function parseEventsForMaps(eventObj) {
+    console.log("Event Object is", eventObj);
+    var geocodeArray = [];
+    for(var i = 0;i<eventObj.length;i++) {
+
+        if(eventObj[i].hasOwnProperty("venue")) {
+            console.log("YES");
+            var eventLat = eventObj[i].venue.lat;
+            var eventLon = eventObj[i].venue.lon;
+
+            geocodeArray.push({
+                lat: eventLat,
+                lng: eventLon
+            });
+        }
+    }
+
+    return geocodeArray;
 }
 // Danh's Section End
 function click_handlers() {
@@ -84,41 +104,56 @@ function getEvents(keyword, zip) {
         url: 'https://api.meetup.com/2/open_events?key=702403fb782d606165f7638a242a&zip=' + userZip + '&topic=' + userKeyword + '&page=20',
         method: 'get',
         success: function (response) {
-            var eventList = response.results; //limit to display only 20 events. Create divs and style later
-            console.log('Event list', eventList);
-
-            createEventCard(eventList);
+            var eventList = response.results;
+            //console.log('Event list', eventList);
+            console.log('global zip', global_zip);
+            var newEventList = parseEventsForMaps(eventList);
+            console.log("new event list ",newEventList);
+            initMap(global_zip,newEventList);
+            $(".intro-wrapper").slideDown(750);
+            $(".intro-wrapper").animate({top: '-100vh'},750,function(){
+                $('#top_search').addClass('search-top');
+                $('#map_left').addClass('map-left'); // added this wed. night - taylor
+            });
+            createEventCard(eventList)
         }
     });
 }
 function createEventCard(eventList) {
+    $('#map_left').html('');
+    console.log('creating event cards', eventList);
     $('#map-left').html('');
-    for ( var i = 0; i < eventList.length; i++) {
-        var eventName=eventList[i]['name'];
-        var groupName=eventList[i].group.name;
-        var date=new Date(eventList[i]['time']);
-        var venueName=eventList[i].venue.name;
-        var address=eventList[i].venue.address_1;
-        var city=eventList[i].venue.city;
-        var state=eventList[i].venue.state;
+    for ( var i = 0; i < eventList.length; i++){
+        if(eventList[i].hasOwnProperty("venue")){
+            var eventName = eventList[i]['name'];
+            var groupName = eventList[i].group.name;
+            var date = new Date(eventList[i]['time']);
+            var venueName = eventList[i].venue.name;
+            var address = eventList[i].venue.address_1;
+            var city = eventList[i].venue.city;
+            var state = eventList[i].venue.state;
 
-        var $title= $('<span>', {
-            class: 'card-title',
-            text: eventName+groupName
-        });
-        var $date = $('<p>', {
-            text: date
-        });
-        var $venue = $('<p>', {
-            text: venueName
-        });
-        var $address = $('<p>', {
-            text: address + city + state
-        });
-        var $card = $('<div>',{
-            class: 'card-content white-text'
-        }).append($title, $date, $venue, $address);
-        $('#map_left').append($card);
+            var $title = $('<span>', {
+                class: 'card-title',
+                text: eventName + groupName
+            });
+            var $date = $('<p>', {
+                text: date
+            });
+            var $venue = $('<p>', {
+                text: venueName
+            });
+            var $address = $('<p>', {
+                text: address + city + state
+            });
+            var $cardContent = $('<div>', {
+                class: 'card-content white-text'
+            }).append($title, $date, $venue, $address);
+            var $card = $('<div>',{
+                class: 'card red lighten-1'
+            }).append($cardContent);
+            $('#map_left').append($card);
+        }
     }
 }
 //YOUTUBE SECTION -- DANs
