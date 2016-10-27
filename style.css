@@ -20,6 +20,11 @@
     z-index: 2;
 }
 
+.map-wrapper, .intro-wrapper, .details-wrapper {
+    height: 100vh;
+    /*display: none;*/
+}
+
 .intro-top {
     background-color: lightblue;
     height: 90vh;
@@ -69,7 +74,9 @@
 }
 
 .map-right {
+    position: absolute;
     background-color: lightyellow;
+    width: 70vw;
     height: 100vh;
 }
 
