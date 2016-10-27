@@ -1,16 +1,17 @@
 /**
  * Created by kevin on 10/26/16.
  */
-$(document).ready(click_handlers);
+$(document).ready(click);
 
-console.log('in click handlers');
-$('button').click(function () {
-    console.log('Clicked!');
-    var userSearch = $('#search').val();
-    var userZip = $('#zip').val();
-    console.log(userSearch, userZip);
-    getTopics(userSearch, userZip);
-});
+function click(){
+    console.log('in click handlers');
+    $('button').click(function () {
+        console.log('Clicked!');
+        var userSearch = $('#search').val();
+        var userZip = 92626; //$('#zip').val();
+        console.log(userSearch, userZip);
+        getTopics(userSearch, userZip);
+    });
 }
 /**
  * getTopics - using user-entered interest, generate topics and use first 2 urlkeys
@@ -43,7 +44,8 @@ function getEvents(keyword, zip) {
         url: 'https://api.meetup.com/2/open_events?key=702403fb782d606165f7638a242a&zip=' + userZip + '&topic=' + userKeyword + '&page =20',
         method: 'get',
         success: function (response) {
-            console.log(response);
+            var eventList = response.results;
+            console.log('Event list', eventList);
         }
     });
 }
