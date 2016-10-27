@@ -6,15 +6,9 @@
     padding: 0;
 }
 
-.map-wrapper {
+.map-wrapper, .intro-wrapper, .details-wrapper {
     height: 100vh;
-    z-index: 1;
     /*display: none;*/
-}
-
-.intro-wrapper {
-    height: 100vh;
-    z-index: 2;
 }
 
 .intro-top {
@@ -66,8 +60,11 @@
 }
 
 .map-right {
+    position: absolute;
     background-color: lightyellow;
+    width: 70vw;
     height: 100vh;
+    right: -
 }
 
 .go-btn {
