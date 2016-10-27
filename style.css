@@ -27,6 +27,12 @@
     /*display: none;*/
 }
 
+#bgvid {
+    position: absolute;
+    top: -12vh;
+    opacity: .5;
+}
+
 .intro-top {
     background-color: lightblue;
     height: 88vh;
