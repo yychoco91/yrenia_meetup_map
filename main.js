@@ -205,8 +205,8 @@ function getEvents(keyword,zip) {
 
                         //CREATION OF YOUTUBE VIDEO LINK
                         var iframe = $("<iframe>", {
-                            width: 360, //originally 360, 260
-                            height: 216, //originally 215, 155
+                            /*width: 360, //originally 360, 260
+                            height: 216, //originally 215, 155*/
                             src: "https://www.youtube.com/embed/" + response.video[i].id,
                             frameborder: 0,
                             allowfullscreen: true
