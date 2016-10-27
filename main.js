@@ -1,25 +1,36 @@
 /**
  * Created by LFZ C11 Hackathon TEAM 2 - Yrenia, Danh, Kevin, Dan, and Taylor on 10/26/2016.
  */
+$(document).ready(function() {
+    $(".go-btn").click(function () {
+        var usersChoice = $('.interests input').val();
+        console.log('in the click function');
+        youTubeApi(usersChoice);
+    });
+});
 
 // Danh's Section
 
-function geoCoding(query) {
-    $.ajax({
-        dataType:'JSON',
-        method: 'GET',
-        url: "https://maps.googleapis.com/maps/api/geocode/json?address="+query+"&key=AIzaSyDa6lkpC-bOxXWEbrWaPlw_FneCpQhlgNE",
-        success: function(response){
+    function geoCoding(query) {
+        $.ajax({
+            dataType: 'JSON',
+            method: 'GET',
+            url: "https://maps.googleapis.com/maps/api/geocode/json?address=" + query + "&key=AIzaSyDa6lkpC-bOxXWEbrWaPlw_FneCpQhlgNE",
+            success: function (response) {
                 var output = response.results[0].geometry.location;
                 console.log("response", output);
                 initMap(output);
                 //$(".map-wrapper").slideDown(500);
-                $(".intro-wrapper").animate({top: '-90vh'},500);
+                $(".intro-wrapper").slideDown(750);
+                $(".intro-wrapper").animate({top: '-100vh'},750,function(){
+
+                });
 
         }
     })
 }
 // Danh's Section End
+
 
 $(document).ready(click_handlers);
 
@@ -119,8 +130,3 @@ function youTubeApi(usersChoice) {
             } else {
                 //CONSOLE LOG FOR TESTING PURPOSES
                 console.log('failure -- Unable to connect to YouTube api');
-            }
-
-        }
-    });
-}
