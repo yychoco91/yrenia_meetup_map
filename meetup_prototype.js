@@ -56,15 +56,42 @@ function getEvents(keyword, zip) {
             var eventList = response.results; //limit to display only 20 events. Create divs and style later
             console.log('Event list', eventList);
 
-            for (i=0; i<response.results; i++){
-            var eventCard=$('<div>', {
-                class:'card-title',
-                text:eventList[0]['name']
+           createEventCard(eventList);
 
-                });
-            }
-           /* var eventName=eventList[0]['name'];
-            console.log(eventName);*/
+
         }
     });
 }
+
+function createEventCard(eventList) {
+    var eventName=eventList[i]['name'];
+    var groupName=eventList[i].group.name;
+    var date=new Date(eventList[i]['time']);
+    var venueName=eventList[i].venue.name;
+    var address=eventList[i].venue.address_1;
+    var city=eventList[i].venue.city;
+    var state=eventList[i].venue.state;
+
+    for ( var i = 0; i < eventList.length; i++) {
+        $('<span>', {
+            class: card-title,
+            text: eventName+groupName
+        });
+
+        $('<p>', {
+            text: date
+        });
+
+        $('<p>', {
+            text: venueName
+        });
+
+        $('<p>', {
+            text: address + city + state
+        });
+
+        $('<div>',{
+            class: 'card-content white-text'
+        }).append(eventName,groupName,date,venueName,address,city,state)
+    }}
+
