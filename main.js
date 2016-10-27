@@ -39,7 +39,9 @@ function getEvents(keyword,zip){
         method:'get',
         success: function(response){
             console.log(response);
-
+        }
+    });
+}
 //YOUTUBE SECTION
 $("button").click(function(){
     var usersChoice = $('input').val();
