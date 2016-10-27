@@ -7,6 +7,11 @@ $(document).ready(function() {
         console.log('in the click function');
         youTubeApi(usersChoice);
     });
+
+    $(".map-left").click(function () {
+        console.log("HI");
+        $(".intro-wrapper").animate({top: '-200vh'},750);
+    });
 });
 
 // Danh's Section
