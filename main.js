@@ -28,7 +28,7 @@
 
     function click_handlers() {
 
-        $(".map-left").click(function () {
+        $(".card-content").click(function () {
             console.log("HI");
             $(".intro-wrapper").animate({top: '-200vh'},750);
         });
