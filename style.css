@@ -7,7 +7,7 @@
 }
 
 .entire-wrapper {
-    overflow: hidden;
+    /*overflow: hidden;*/
     height: 100vh;
 }
 
@@ -135,3 +135,33 @@
     font-weight: 600;
     font-size: 20px;
 }
+
+/********************
+DETAILS PAGE
+********************/
+
+
+
+.details-wrapper {
+    padding: 5% 0;
+}
+
+
+/*.details-wrapper iframe{*/
+
+    /*!*margin-bottom: 10px;*!*/
+    /*!*border-radius: 10px;*!*/
+
+/*}*/
+
+.details-wrapper iframe {
+    /*margin: 25px;*/
+    width: 100%;
+    /*!*padding: 5px;*!*/
+}
+
+/*.video-container {*/
+
+    /*width: 100%;*/
+    /*height: auto;*/
+/*}*/

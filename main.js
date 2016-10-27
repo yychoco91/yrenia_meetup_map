@@ -101,20 +101,20 @@
 
                     //LOOP FOR VIDEO ID AND TITLE
                     for (var i = 0; i < response.video.length; i++) {
-                        //var titleText = $('<p>').text(response.video[i].title);
+                         var iframeDiv = $('<div>').addClass('video-container');
 
                         //CREATION OF YOUTUBE VIDEO LINK
                         var iframe = $("<iframe>", {
-                            width: 360,
-                            height: 215,
+                            width: 360, //originally 360, 260
+                            height: 216, //originally 215, 155
                             src: "https://www.youtube.com/embed/" + response.video[i].id,
                             frameborder: 0,
                             allowfullscreen: true
                         });
-
+                         iframe.appendTo(iframeDiv);
                         //ADDING TITLE AND VIDEO LINK TO THE DOM
                        // $('div.video-list').append(titleText);
-                        $('div.video-list').append(iframe);
+                        $('div.video-list').append(iframeDiv);
                     }
                 } else {
                     //CONSOLE LOG FOR TESTING PURPOSES
