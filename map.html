@@ -30,7 +30,7 @@
     function initMap() {
 
         var map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 3,
+            zoom: 12,
             center: {lat: -28.024, lng: 140.887}
         });
 
@@ -48,9 +48,12 @@
             });
         });
 
+        var options = {
+            imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
+        };
         // Add a marker clusterer to manage the markers.
-        var markerCluster = new MarkerClusterer(map, markers,
-                {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+        var markerCluster = new MarkerClusterer(map, markers,options);
+
     }
     var locations = [
         {lat: -31.563910, lng: 147.154312},

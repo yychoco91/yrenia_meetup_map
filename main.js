@@ -4,67 +4,114 @@
 
 // Danh's Section
 
-    function geoCoding(query) {
+var global_zip = null;
+/**
+ * function geoCoding converts zip code to longitude and latitude
+ *
+ * @param {string} query - user zip code
+ */
+function geoCoding(query) {
         $.ajax({
             dataType: 'JSON',
             method: 'GET',
             url: "https://maps.googleapis.com/maps/api/geocode/json?address=" + query + "&key=AIzaSyDa6lkpC-bOxXWEbrWaPlw_FneCpQhlgNE",
             success: function (response) {
                 var output = response.results[0].geometry.location;
-                console.log("response", output);
-                initMap(output);
-                //$(".map-wrapper").slideDown(500);
-                $(".intro-wrapper").slideDown(750);
-                $(".intro-wrapper").animate({top: '-100vh'},750,function(){
-                    $('#top_search').addClass('search-top');
-                    $('#map_left').addClass('map-left'); // added this wed. night - taylor
-                });
+                global_zip = output;
+                //console.log("response", output);
         }
     })
 }
+/**
+ *
+ * @param {object} eventObj - event object passed from Meetup Open Events API
+ */
+function parseEventsForMaps(eventObj) {
+    console.log("Event Object is", eventObj);
+    var geocodeArray = [];
+    for(var i = 0;i<eventObj.length;i++) {
+
+        if(eventObj[i].hasOwnProperty("venue")) {
+            console.log("YES");
+            var eventLat = eventObj[i].venue.lat;
+            var eventLon = eventObj[i].venue.lon;
+
+            geocodeArray.push({
+                lat: eventLat,
+                lng: eventLon
+            });
+        }
+    }
+
+    return geocodeArray;
+}
+
 // Danh's Section End
 
     $(document).ready(click_handlers);
 
-    function click_handlers() {
+/**
+ *
+ */
+function click_handlers() {
 
         $(".card-content").click(function () {
-            console.log("HI");
+            //console.log("HI");
             $(".intro-wrapper").animate({top: '-200vh'},750);
         });
 
-        $("button#front-go").click(function () {
+        $("button#front-go").click(function () { // merging this function with Kevin prototype
             var q = $("#zip").val();
-            console.log("front q is "+ q);
+            //console.log("front q is "+ q);
+
+            var userSearch = $('#search').val();
+            var userZip = $('#zip').val();
+            console.log(userSearch, userZip);
             geoCoding(q);
+            getTopics(userSearch, userZip);
         });
 
         $("button#nav-go").click(function () {
            var q = $("#nav_zip").val();
             console.log("nav q is "+ q);
+
+            var userSearch = $('#nav_search').val();
+            var userZip = $('#nav_zip').val();
+            console.log(userSearch, userZip);
             geoCoding(q);
+            getTopics(userSearch, userZip);
         });
 
-        console.log('in click handlers');
-        $('button').click(function () {
-            console.log('Clicked!');
-            var userSearch = $('#search').val();
-            var zipSearch = $('#zip').val();
-            console.log(userSearch, zipSearch);
-            getCategories(userSearch);
-            getEvents(userSearch, zipSearch);
-        });
+        // console.log('in click handlers');
+        // $('button').click(function () {
+        //     console.log('Clicked!');
+        //     var userSearch = $('#search').val();
+        //     var zipSearch = $('#zip').val();
+        //     console.log(userSearch, zipSearch);
+        //     getCategories(userSearch);
+        //     getEvents(userSearch, zipSearch);
+        // });
     }
 
-    function getCategories(keyword) {
-        console.log('get stuff');
+    /**
+     * getTopics - using user-entered interest, generate topics and use first 2 urlkeys
+     * @param {string} keyword - user-entered interest
+     * @param {number} zipcode - user-entered zipcode
+     */
+    function getTopics(keyword, zipcode) {
+        //console.log('get stuff');
         var userKeyword = keyword;
         $.ajax({
             dataType: 'jsonp',
             url: 'https://api.meetup.com/topics?search=' + userKeyword + '&page=20&key=702403fb782d606165f7638a242a&sign=true',
             method: 'get',
             success: function (response) {
-                console.log(response);
+                console.log('UrlKeys:', response);
+                var topic1 = response.results[0]['urlkey'];
+                var topic2 = response.results[1]['urlkey'];
+                var sumTopics = topic1 + ',' + topic2;
+                console.log('Topics', sumTopics);
+                getEvents(sumTopics, zipcode);
             }
         });
     }
@@ -74,10 +121,21 @@
         var userZip = zip;
         $.ajax({
             dataType: 'jsonp',
-            url: 'https://api.meetup.com/2/open_events?key=702403fb782d606165f7638a242a&zip=' + userZip + '&topic=' + userKeyword + '&page =20',
+            url: 'https://api.meetup.com/2/open_events?key=702403fb782d606165f7638a242a&zip=' + userZip + '&topic=' + userKeyword + '&page=20',
             method: 'get',
             success: function (response) {
-                console.log(response);
+                var eventList = response.results;
+                //console.log('Event list', eventList);
+                console.log('global zip', global_zip);
+                var newEventList = parseEventsForMaps(eventList);
+                console.log("new event list ",newEventList);
+                initMap(global_zip,newEventList);
+
+                $(".intro-wrapper").slideDown(750);
+                $(".intro-wrapper").animate({top: '-100vh'},750,function(){
+                    $('#top_search').addClass('search-top');
+                    $('#map_left').addClass('map-left'); // added this wed. night - taylor
+                });
             }
         });
     }
