@@ -1,13 +1,21 @@
 /**
  * Created by LFZ C11 Hackathon TEAM 2 - Yrenia, Danh, Kevin, Dan, and Taylor on 10/26/2016.
  */
+$(document).ready(function(){
+
+    $(".go-btn").click(function(){
+        var usersChoice = $('.interests input').val();
+        console.log('in the click function');
+        youTubeApi($('.interests input').val());
+    });
+});
 
 //YOUTUBE SECTION
-$("button").click(function(){
-    var usersChoice = $('input').val();
-    console.log('in the click function');
-    youTubeApi($('input').val());
-});
+// $(".go-btn").click(function(){
+//     var usersChoice = $('input.interests').val();
+//     console.log('in the click function');
+//     youTubeApi($('input.interests').val());
+// });
 
 function youTubeApi(usersChoice) {
     console.log('In the youTubeApi function');
@@ -25,10 +33,8 @@ function youTubeApi(usersChoice) {
             if (response) {
                 //CONSOLE LOGS FOR TESTING PURPOSES
                 console.log('successful connection to YouTube API');
-                console.log(response.video[1].title);
-                console.log(response.video[1].id);
 
-                //LOOF FOR VIDEO ID AND TITLE
+                //LOOP FOR VIDEO ID AND TITLE
                 for (var i = 0; i < response.video.length; i++) {
                     var titleText = $('<p>').text(response.video[i].title);
 
@@ -36,14 +42,14 @@ function youTubeApi(usersChoice) {
                     var iframe = $("<iframe>",{
                         width: 360,
                         height: 215,
-                        src: "https://www.youtube.com/embed/"+response.video[i].id,
+                        src: "http://www.youtube.com/embed/"+response.video[i].id,
                         frameborder:0,
                         allowfullscreen: true
                     });
 
                     //ADDING TITLE AND VIDEO LINK TO THE DOM
-                    $('div').append(titleText);
-                    $('div').append(iframe);
+                    $('div.video-list').append(titleText);
+                    $('div.video-list').append(iframe);
                 }
             } else {
                 //CONSOLE LOG FOR TESTING PURPOSES
