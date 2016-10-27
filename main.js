@@ -19,6 +19,8 @@
 
                     $('#top_search').addClass('search-top');
 
+                    $('#map_left').addClass('map-left'); // added this wed. night - taylor
+
                 });
         }
     })
@@ -28,8 +30,6 @@
 
 
 $(document).ready(click_handlers);
-
-
 
     function click_handlers() {
 

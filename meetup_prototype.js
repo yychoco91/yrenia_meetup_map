@@ -44,7 +44,7 @@ function getEvents(keyword, zip) {
         url: 'https://api.meetup.com/2/open_events?key=702403fb782d606165f7638a242a&zip=' + userZip + '&topic=' + userKeyword + '&page =20',
         method: 'get',
         success: function (response) {
-            var eventList = response.results;
+            var eventList = response.results; //limit to display only 20 events. Create divs and style later
             console.log('Event list', eventList);
         }
     });
