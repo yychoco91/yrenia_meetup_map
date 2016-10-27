@@ -69,6 +69,7 @@ function click_handlers() {
             console.log(userSearch, userZip);
             geoCoding(q);
             getTopics(userSearch, userZip);
+            youTubeApi(userSearch);
         });
 
         $("button#nav-go").click(function () {
