@@ -28,12 +28,22 @@
 }
 
 .intro-top {
-    background-color: lightblue;
+    background-image: url('assets/images/friends.webm');
+    background-size: cover;
+    /*background-color: lightblue;*/
     height: 90vh;
 }
 
 .intro-bottom {
     height: 10vh;
+}
+
+.search-top {
+    top: 0;
+    position: fixed;
+    height: 10vh;
+    z-index: 3;
+    background-color: white;
 }
 
 .intro-inner {
@@ -68,7 +78,6 @@
 
 .map-left {
     position: absolute;
-    background-color: white;
     height: 100vh;
     z-index: 2;
 }
