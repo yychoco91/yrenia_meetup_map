@@ -121,42 +121,35 @@ function getEvents(keyword, zip) {
         }
     });
 }
-function createEventCard(eventList) {
-    $('#map_left').html('');
-    console.log('creating event cards', eventList);
-    $('#map-left').html('');
-    for (var i = 0; i < eventList.length; i++) {
-        if (eventList[i].hasOwnProperty("venue")) {
-            var eventName = eventList[i]['name'];
-            var groupName = eventList[i].group.name;
-            var date = new Date(eventList[i]['time']);
-            var venueName = eventList[i].venue.name;
-            var address = eventList[i].venue.address_1;
-            var city = eventList[i].venue.city;
-            var state = eventList[i].venue.state;
+function createEventCard(event) {
+    var eventName = event['name'];
+    var groupName = event.group.name;
+    var date = new Date(event['time']);
+    var venueName = event.venue.name;
+    var address = event.venue.address_1;
+    var city = event.venue.city;
+    var state = event.venue.state;
 
-            var $title = $('<span>', {
-                class: 'card-title',
-                text: eventName + groupName
-            });
-            var $date = $('<p>', {
-                text: date
-            });
-            var $venue = $('<p>', {
-                text: venueName
-            });
-            var $address = $('<p>', {
-                text: address + city + state
-            });
-            var $cardContent = $('<div>', {
-                class: 'card-content white-text'
-            }).append($title, $date, $venue, $address);
-            var $card = $('<div>', {
-                class: 'card red lighten-1'
-            }).append($cardContent);
-            $('#map_left').append($card);
-        }
-    }
+    var $title = $('<span>', {
+        class: 'card-title',
+        text: eventName + groupName
+    });
+    var $date = $('<p>', {
+        text: date
+    });
+    var $venue = $('<p>', {
+        text: venueName
+    });
+    var $address = $('<p>', {
+        text: address + city + state
+    });
+    var $cardContent = $('<div>', {
+        class: 'card-content white-text'
+    }).append($title, $date, $venue, $address);
+    var $card = $('<div>', {
+        class: 'card red lighten-1'
+    }).append($cardContent);
+    $('#map_left').append($card);
 }
 //YOUTUBE SECTION -- DANs
 function youTubeApi(usersChoice) {
