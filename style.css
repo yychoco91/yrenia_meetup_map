@@ -10,6 +10,7 @@
     overflow: hidden;
     height: 100vh;
 }
+
 .map-wrapper {
     z-index: 1;
     /*display: none;*/
@@ -22,6 +23,7 @@
 
     height: 100%;
     z-index: 2;
+>>>>>>> 07d64c5d93c6ff9604b9de7576e6d1777c237d4f
 }
 
 .map-wrapper, .intro-wrapper, .details-wrapper {
@@ -69,6 +71,7 @@
 }
 
 .map-left {
+    position: absolute;
     background-color: white;
     height: 100vh;
 }
@@ -99,4 +102,11 @@
 /*
 .input-field .zip-input-text, .input-field .search-input-text {
     height: 8vh;
+
 }*/
+
+
+/*********************
+DETAILS PAGE
+**********************/
+
