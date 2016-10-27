@@ -134,8 +134,10 @@
 </div>
 <script>
 
-    function initMap(myLatLng) {
+    var locations = [];
 
+    function initMap(myLatLng,eventObj) {
+        console.log("Zip ", myLatLng);
         if (myLatLng === undefined) {
             //console.log("undefined");
             myLatLng = { // defaults to Orange, CA
@@ -144,13 +146,30 @@
             }
         }
 
+        if (eventObj === undefined) {
+            locations = [
+                {lat: 33.81, lng: -117.845692},
+                {lat: 33.92, lng: -117.853218},
+                {lat: 33.73, lng: -117.845694},
+                {lat: 33.94, lng: -117.849506},
+                {lat: 33.75, lng: -117.851315},
+                {lat: 33.86, lng: -117.848000},
+                {lat: 33.87, lng: -117.853352}
+            ]
+        } else {
+           locations = eventObj;
+        }
+
+        console.log('param locations is ',eventObj);
+        var locations2 = eventObj;
+
         // In the following example, markers appear when the user clicks on the map.
         // Each marker is labeled with a single alphabetical character.
         var labels = ['You Are Here', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'LMNOPQRSTUVWXYZ'];
         var labelIndex = 0;
 
         var map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 12,
+            zoom: 10,
             center: myLatLng,
             styles: [{
                 "featureType": "administrative",
@@ -193,9 +212,16 @@
             });
         });
 
+        var options = {
+            imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m',
+            textColor: 'white',
+            url: 'assets/images/steak.png',
+            height: 50,
+            width: 50
+        }
+
         // Add a marker clusterer to manage the markers.
-        var markerCluster = new MarkerClusterer(map, markers,
-                {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+        var markerCluster = new MarkerClusterer(map, markers,options);
 
         var contentString = '<div id="content">' +
                 '<div id="siteNotice">' +
@@ -227,15 +253,6 @@
         });
     }
 
-    var locations = [
-        {lat: 33.81, lng: -117.845692},
-        {lat: 33.92, lng: -117.853218},
-        {lat: 33.73, lng: -117.845694},
-        {lat: 33.94, lng: -117.849506},
-        {lat: 33.75, lng: -117.851315},
-        {lat: 33.86, lng: -117.848000},
-        {lat: 33.87, lng: -117.853352}
-    ]
 </script>
 <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
 </script>
