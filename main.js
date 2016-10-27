@@ -33,8 +33,15 @@
             $(".intro-wrapper").animate({top: '-200vh'},750);
         });
 
-        $("button.go-btn").click(function () {
+        $("button#front-go").click(function () {
             var q = $("#zip").val();
+            console.log("front q is "+ q);
+            geoCoding(q);
+        });
+
+        $("button#nav-go").click(function () {
+           var q = $("#nav_zip").val();
+            console.log("nav q is "+ q);
             geoCoding(q);
         });
 
