@@ -16,15 +16,20 @@
                 //$(".map-wrapper").slideDown(500);
                 $(".intro-wrapper").slideDown(750);
                 $(".intro-wrapper").animate({top: '-100vh'},750,function(){
+
                     $('#top_search').addClass('search-top');
+
                     $('#map_left').addClass('map-left'); // added this wed. night - taylor
+
                 });
         }
     })
 }
 // Danh's Section End
 
-    $(document).ready(click_handlers);
+
+
+$(document).ready(click_handlers);
 
     function click_handlers() {
 
@@ -32,6 +37,7 @@
             console.log("HI");
             $(".intro-wrapper").animate({top: '-200vh'},750);
         });
+
 
         $("button#front-go").click(function () {
             var q = $("#zip").val();
@@ -45,42 +51,44 @@
             geoCoding(q);
         });
 
-        console.log('in click handlers');
-        $('button').click(function () {
-            console.log('Clicked!');
-            var userSearch = $('#search').val();
-            var zipSearch = $('#zip').val();
-            console.log(userSearch, zipSearch);
-            getCategories(userSearch);
-            getEvents(userSearch, zipSearch);
-        });
-    }
 
-    function getCategories(keyword) {
-        console.log('get stuff');
-        var userKeyword = keyword;
-        $.ajax({
-            dataType: 'jsonp',
-            url: 'https://api.meetup.com/topics?search=' + userKeyword + '&page=20&key=702403fb782d606165f7638a242a&sign=true',
-            method: 'get',
-            success: function (response) {
-                console.log(response);
-            }
-        });
-    }
+    console.log('in click handlers');
+    $('button').click(function(){
+        console.log('Clicked!');
+        var userSearch = $('#search').val();
+        var zipSearch = $('#zip').val();
+        console.log(userSearch,zipSearch);
+        getCategories(userSearch);
+        getEvents(userSearch,zipSearch);
+    });
+}
 
-    function getEvents(keyword, zip) {
-        var userKeyword = keyword;
-        var userZip = zip;
-        $.ajax({
-            dataType: 'jsonp',
-            url: 'https://api.meetup.com/2/open_events?key=702403fb782d606165f7638a242a&zip=' + userZip + '&topic=' + userKeyword + '&page =20',
-            method: 'get',
-            success: function (response) {
-                console.log(response);
-            }
-        });
-    }
+function getCategories(keyword){
+    console.log('get stuff');
+    var userKeyword = keyword;
+    $.ajax({
+        dataType: 'jsonp',
+        url: 'https://api.meetup.com/topics?search='+ userKeyword +'&page=20&key=702403fb782d606165f7638a242a&sign=true',
+        method: 'get',
+        success: function(response){
+            console.log(response);
+        }
+    });
+}
+
+function getEvents(keyword,zip) {
+    var userKeyword = keyword;
+    var userZip = zip;
+    $.ajax({
+        dataType: 'jsonp',
+        url: 'https://api.meetup.com/2/open_events?key=702403fb782d606165f7638a242a&zip=' + userZip + '&topic=' + userKeyword + '&page =20',
+        method: 'get',
+        success: function (response) {
+            console.log(response);
+        }
+    });
+}
+
 
 //YOUTUBE SECTION -- DANs
     function youTubeApi(usersChoice) {
@@ -121,6 +129,7 @@
                 } else {
                     //CONSOLE LOG FOR TESTING PURPOSES
                     console.log('failure -- Unable to connect to YouTube api');
+
                 }
             }
         });
