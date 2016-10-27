@@ -22,7 +22,7 @@ $(document).ready(function() {
                 initMap(output);
                 //$(".map-wrapper").slideDown(500);
                 $(".intro-wrapper").slideDown(750);
-                $(".intro-wrapper").animate({top: '-90vh'},750,function(){
+                $(".intro-wrapper").animate({top: '-100vh'},750,function(){
 
                 });
 
