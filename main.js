@@ -28,19 +28,20 @@
 
     function click_handlers() {
 
-        $(".map-left").click(function () {
+        $(".card-content").click(function () {
             console.log("HI");
             $(".intro-wrapper").animate({top: '-200vh'},750);
         });
 
-        $("button").click(function () {
-            var usersChoice = $('input').val();
-            console.log('in the click function');
-            youTubeApi($('input').val());
+        $("button#front-go").click(function () {
+            var q = $("#zip").val();
+            console.log("front q is "+ q);
+            geoCoding(q);
         });
 
-        $("button.go-btn").click(function () {
-            var q = $("#zip").val();
+        $("button#nav-go").click(function () {
+           var q = $("#nav_zip").val();
+            console.log("nav q is "+ q);
             geoCoding(q);
         });
 
