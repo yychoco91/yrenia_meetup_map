@@ -3,9 +3,7 @@
  */
 $(document).ready(click_handlers);
 
-
 // Danh's Section
-
 function geoCoding(query) {
     $.ajax({
         dataType: 'JSON',
@@ -28,29 +26,24 @@ function geoCoding(query) {
     })
 }
 // Danh's Section End
-
 function click_handlers() {
 
     $(".card-content").click(function () {
         console.log("HI");
         $(".intro-wrapper").animate({top: '-200vh'},750);
     });
-
-
     $("button#front-go").click(function () {
         var userSearch = $('#search').val();
         var userZip = $("#zip").val();
         geoCoding(userZip);
         getTopics(userSearch, userZip);
     });
-
     $("button#nav-go").click(function () {
         var userSearch = $('#search').val();
         var userZip = $("#nav_zip").val();
         geoCoding(userZip);
         getTopics(userSearch, userZip);
     });
-
 }
 /**
  * getTopics - using user-entered interest, generate topics and use first 2 urlkeys
@@ -83,7 +76,6 @@ function getTopics(keyword, zipcode) {
         }
     });
 }
-
 function getEvents(keyword, zip) {
     var userKeyword = keyword;
     var userZip = zip;
@@ -95,10 +87,10 @@ function getEvents(keyword, zip) {
             var eventList = response.results; //limit to display only 20 events. Create divs and style later
             console.log('Event list', eventList);
 
+            createEventCard(eventList);
         }
     });
 }
-
 function createEventCard(eventList) {
     $('#map-left').html('');
     for ( var i = 0; i < eventList.length; i++) {
@@ -114,30 +106,21 @@ function createEventCard(eventList) {
             class: 'card-title',
             text: eventName+groupName
         });
-
         var $date = $('<p>', {
             text: date
         });
-
         var $venue = $('<p>', {
             text: venueName
         });
-
         var $address = $('<p>', {
             text: address + city + state
         });
-
         var $card = $('<div>',{
             class: 'card-content white-text'
         }).append($title, $date, $venue, $address);
         $('#map_left').append($card);
     }
 }
-
-
-
-
-
 //YOUTUBE SECTION -- DANs
 function youTubeApi(usersChoice) {
     console.log('In the youTubeApi function');
@@ -155,7 +138,6 @@ function youTubeApi(usersChoice) {
             if (response) {
                 //CONSOLE LOGS FOR TESTING PURPOSES
                 console.log('successful connection to YouTube API');
-
                 //LOOP FOR VIDEO ID AND TITLE
                 for (var i = 0; i < response.video.length; i++) {
                     var iframeDiv = $('<div>').addClass('video-container');
@@ -177,7 +159,6 @@ function youTubeApi(usersChoice) {
             } else {
                 //CONSOLE LOG FOR TESTING PURPOSES
                 console.log('failure -- Unable to connect to YouTube api');
-
             }
         }
     });
