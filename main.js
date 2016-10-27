@@ -1,18 +1,7 @@
 /**
  * Created by LFZ C11 Hackathon TEAM 2 - Yrenia, Danh, Kevin, Dan, and Taylor on 10/26/2016.
  */
-$(document).ready(function() {
-    $(".go-btn").click(function () {
-        var usersChoice = $('.interests input').val();
-        console.log('in the click function');
-        youTubeApi(usersChoice);
-    });
 
-    $(".map-left").click(function () {
-        console.log("HI");
-        $(".intro-wrapper").animate({top: '-200vh'},750);
-    });
-});
 
 // Danh's Section
 
@@ -40,6 +29,17 @@ $(document).ready(function() {
 
 
     function click_handlers() {
+
+        $(".go-btn").click(function () {
+            var usersChoice = $('.interests input').val();
+            console.log('in the click function');
+            youTubeApi(usersChoice);
+        });
+
+        $(".map-left").click(function () {
+            console.log("HI");
+            $(".intro-wrapper").animate({top: '-200vh'},750);
+        });
 
         $("button").click(function () {
             var usersChoice = $('input').val();
