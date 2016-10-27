@@ -50,11 +50,48 @@ function getEvents(keyword, zip) {
     var userZip = zip;
     $.ajax({
         dataType: 'jsonp',
-        url: 'https://api.meetup.com/2/open_events?key=702403fb782d606165f7638a242a&zip=' + userZip + '&topic=' + userKeyword + '&page =20',
+        url: 'https://api.meetup.com/2/open_events?key=702403fb782d606165f7638a242a&zip=' + userZip + '&topic=' + userKeyword + '&page=20',
         method: 'get',
         success: function (response) {
-            var eventList = response.results;
+            var eventList = response.results; //limit to display only 20 events. Create divs and style later
             console.log('Event list', eventList);
+
+           createEventCard(eventList);
+
+
         }
     });
 }
+
+function createEventCard(eventList) {
+    var eventName=eventList[i]['name'];
+    var groupName=eventList[i].group.name;
+    var date=new Date(eventList[i]['time']);
+    var venueName=eventList[i].venue.name;
+    var address=eventList[i].venue.address_1;
+    var city=eventList[i].venue.city;
+    var state=eventList[i].venue.state;
+
+    for ( var i = 0; i < eventList.length; i++) {
+        $('<span>', {
+            class: card-title,
+            text: eventName+groupName
+        });
+
+        $('<p>', {
+            text: date
+        });
+
+        $('<p>', {
+            text: venueName
+        });
+
+        $('<p>', {
+            text: address + city + state
+        });
+
+        $('<div>',{
+            class: 'card-content white-text'
+        }).append(eventName,groupName,date,venueName,address,city,state)
+    }}
+
