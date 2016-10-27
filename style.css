@@ -29,17 +29,17 @@
 
 .intro-top {
     background-color: lightblue;
-    height: 90vh;
+    height: 88vh;
 }
 
 .intro-bottom {
-    height: 10vh;
+    height: 12vh;
 }
 
 .search-top {
     top: 0;
     position: fixed;
-    height: 10vh;
+    height: 12vh;
     z-index: 3;
     background-color: white;
 }
@@ -67,7 +67,6 @@
 }
 
 .go-button {
-    background-color: lightcyan;
     width: 100%;
     height: 8vh;
     margin: 2% 0 4%;
@@ -75,9 +74,12 @@
 }
 
 .map-left {
-    position: absolute;
+    position: fixed;
     height: 100vh;
     z-index: 2;
+    top: 14vh;
+    left: 3vh !important;
+    overflow: scroll;
 }
 
 .map-center {
@@ -87,6 +89,24 @@
 #map {
     height: 100%;
 }
+
+.input-field label, .input-field input, .input-field input[type=text]:focus + label {
+    color: white;
+}
+
+.input-field input[type=text] {
+    border-bottom: 1px solid white !important;
+}
+
+.input-field input::-webkit-input-placeholder {
+    color: white;
+}
+
+.row .input-field input:focus, input[type=text].valid {
+    box-shadow: 0 1px 0 0 white !important;
+    border-bottom: 1px solid white !important;
+}
+
 .go-btn {
     border: none;
     width: 100%;
@@ -95,4 +115,3 @@
     font-weight: 600;
     font-size: 20px;
 }
-
