@@ -16,10 +16,7 @@
                 //$(".map-wrapper").slideDown(500);
                 $(".intro-wrapper").slideDown(750);
                 $(".intro-wrapper").animate({top: '-100vh'},750,function(){
-<<<<<<< HEAD
                     $('#top_search').addClass('search-top');
-=======
->>>>>>> 224aa25768a6dc33acfd494e0127b8d2c375c194
                 });
         }
     })
