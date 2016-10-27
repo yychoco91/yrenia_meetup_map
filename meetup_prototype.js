@@ -23,15 +23,24 @@ function getTopics(keyword, zipcode) {
     var userKeyword = keyword;
     $.ajax({
         dataType: 'jsonp',
-        url: 'https://api.meetup.com/topics?search=' + userKeyword + '&page=20&key=702403fb782d606165f7638a242a&sign=true',
+        url: 'https://api.meetup.com/topics?search=' + userKeyword + '&page=5&key=702403fb782d606165f7638a242a&sign=true',
         method: 'get',
         success: function (response) {
-            console.log('UrlKeys:', response);
-            var topic1 = response.results[0]['urlkey'];
-            var topic2 = response.results[1]['urlkey'];
-            var sumTopics = topic1 + ',' + topic2;
-            console.log('Topics', sumTopics);
-            getEvents(sumTopics, zipcode);
+            console.log('UrlKeys:', response.results);
+            var topics = '';
+            if(response.results.length > 0){
+                console.log('Result is true');
+                for(var i = 0; i < response.results.length; i++){
+                    console.log('in for loop');
+                    if(i !== response.results.length-1){
+                        topics += response.results[i]['urlkey'] + ',';
+                    }else{
+                        topics += response.results[i]['urlkey'];
+                    }
+                }
+            }
+            console.log('Topics', topics);
+            getEvents(topics, zipcode);
         }
     });
 }
@@ -41,7 +50,7 @@ function getEvents(keyword, zip) {
     var userZip = zip;
     $.ajax({
         dataType: 'jsonp',
-        url: 'https://api.meetup.com/2/open_events?key=702403fb782d606165f7638a242a&zip=' + userZip + '&topic=' + userKeyword + '&page =20',
+        url: 'https://api.meetup.com/2/open_events?key=702403fb782d606165f7638a242a&zip=' + userZip + '&topic=' + userKeyword + '&page=20',
         method: 'get',
         success: function (response) {
             var eventList = response.results;

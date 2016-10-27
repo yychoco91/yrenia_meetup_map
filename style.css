@@ -7,7 +7,7 @@
 }
 
 .entire-wrapper {
-    overflow: hidden;
+    /*overflow: hidden;*/
     height: 100vh;
 }
 
@@ -27,19 +27,42 @@
     /*display: none;*/
 }
 
+#bgvid {
+    /* Make video to at least 100% wide and tall */
+    min-width: 100%;
+    min-height: 100%;
+    /* Setting width & height to auto prevents the browser from stretching or squishing the video */
+    width: auto;
+    height: auto;
+    /* Center the video */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    z-index: -1;
+}
+
+#bgvid video {
+
+}
+
 .intro-top {
-    background-color: lightblue;
-    height: 90vh;
+    height: 88vh;
+    background-color: rgba(0,0,0,.7);
 }
 
 .intro-bottom {
-    height: 10vh;
+    height: 12vh;
+}
+
+.intro-bottom-text {
+    text-align: center;
 }
 
 .search-top {
     top: 0;
     position: fixed;
-    height: 10vh;
+    height: 12vh;
     z-index: 3;
     background-color: white;
 }
@@ -48,10 +71,26 @@
     height: 50vh;
 }
 
+.logo-nav {
+    background: url(assets/images/meetupmap-logo-white.png) no-repeat left center;
+    background-size: contain;
+    height: 8vh;
+    margin-left: 0 !important;
+}
+
 .logo {
+    background: url(assets/images/meetupmap-logo-red-white.png) no-repeat center;
+    background-size: 100%;
     width: 100%;
-    height: 20vh;
-    margin: 2% 0 4%;
+    height: 15vh;
+    margin: 2% 0 0;
+}
+
+.slogan {
+    color: white;
+    text-align: center;
+    font-style: italic;
+    margin: 0 0 2%;
 }
 
 .search-input {
@@ -67,7 +106,6 @@
 }
 
 .go-button {
-    background-color: lightcyan;
     width: 100%;
     height: 8vh;
     margin: 2% 0 4%;
@@ -75,9 +113,12 @@
 }
 
 .map-left {
-    position: absolute;
+    position: fixed;
     height: 100vh;
     z-index: 2;
+    top: 14vh;
+    left: 3vh !important;
+    overflow: scroll;
 }
 
 .map-center {
@@ -87,12 +128,64 @@
 #map {
     height: 100%;
 }
+
+.input-field label, .input-field input, .input-field input[type=text]:focus + label {
+    color: white;
+}
+
+.input-field input[type=text] {
+    border-bottom: 1px solid white !important;
+}
+
+.input-field input::-webkit-input-placeholder {
+    color: white;
+}
+
+.row .input-field input:focus, input[type=text].valid {
+    box-shadow: 0 1px 0 0 white !important;
+    border-bottom: 1px solid white !important;
+}
+
 .go-btn {
-    border: none;
     width: 100%;
     height: 100%;
-    font-family: 'Roboto black', sans-serif;
-    font-weight: 600;
-    font-size: 20px;
+}
+
+/********************
+DETAILS PAGE
+********************/
+
+
+
+.details-wrapper {
+    padding: 5% 0;
+}
+
+
+/*.details-wrapper iframe{*/
+
+    /*!*margin-bottom: 10px;*!*/
+    /*!*border-radius: 10px;*!*/
+
+/*}*/
+
+.details-wrapper iframe {
+    /*margin: 25px;*/
+    width: 100%;
+    /*!*padding: 5px;*!*/
+}
+
+/*.video-container {*/
+
+    /*width: 100%;*/
+    /*height: auto;*/
+/*}*/
+
+.go-btn2 {
+    width: 100%;
+}
+
+.card {
+    cursor: pointer;
 }
 
