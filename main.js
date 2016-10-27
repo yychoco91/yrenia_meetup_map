@@ -5,8 +5,9 @@
 // Danh's Section
 $(document).ready(function(){
 
-    $("button").click(function(){
-        var q = $("#input").val();
+    //$(".map-wrapper").slideUp();
+    $("button.go-btn").click(function(){
+        var q = $("#zip").val();
         geoCoding(q);
     });
 
@@ -18,12 +19,12 @@ function geoCoding(query) {
         method: 'GET',
         url: "https://maps.googleapis.com/maps/api/geocode/json?address="+query+"&key=AIzaSyDa6lkpC-bOxXWEbrWaPlw_FneCpQhlgNE",
         success: function(response){
-            if (response) {
                 var output = response.results[0].geometry.location;
                 console.log("response", output);
                 initMap(output);
-                $(".intro-top").toggle();
-            }
+                //$(".map-wrapper").slideDown(500);
+                $(".intro-wrapper").animate({left: '300px'});
+
         }
     })
 }
