@@ -29,12 +29,15 @@ function geoCoding(query) {
 function parseEventsForMaps(eventObj) {
     console.log("Event Object is", eventObj);
     var geocodeArray = [];
+    $("#map_left").html("");
     for (var i = 0; i < eventObj.length; i++) {
 
         if (eventObj[i].hasOwnProperty("venue")) {
             console.log("YES");
             var eventLat = eventObj[i].venue.lat;
             var eventLon = eventObj[i].venue.lon;
+
+            createEventCard(eventObj[i]);
 
             geocodeArray.push({
                 lat: eventLat,
@@ -48,10 +51,11 @@ function parseEventsForMaps(eventObj) {
 // Danh's Section End
 function click_handlers() {
 
-    $(".card-content").click(function () {
+    $("#map_left").on("click",".card-content",function () {
         console.log("HI");
         $(".intro-wrapper").animate({top: '-200vh'}, 750);
     });
+
     $("button#front-go").click(function () {
         var userSearch = $('#search').val();
         var userZip = $("#zip").val();
