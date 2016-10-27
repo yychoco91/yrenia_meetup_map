@@ -23,7 +23,7 @@ function geoCoding(query) {
                 console.log("response", output);
                 initMap(output);
                 //$(".map-wrapper").slideDown(500);
-                $(".intro-wrapper").animate({left: '300px'});
+                $(".intro-wrapper").animate({top: '-90vh'},500);
 
         }
     })
