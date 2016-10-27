@@ -1,18 +1,6 @@
 /**
  * Created by LFZ C11 Hackathon TEAM 2 - Yrenia, Danh, Kevin, Dan, and Taylor on 10/26/2016.
  */
-$(document).ready(function() {
-    $(".go-btn").click(function () {
-        var usersChoice = $('.interests input').val();
-        console.log('in the click function');
-        youTubeApi(usersChoice);
-    });
-
-    $(".map-left").click(function () {
-        console.log("HI");
-        $(".intro-wrapper").animate({top: '-200vh'},750);
-    });
-});
 
 // Danh's Section
 
@@ -28,9 +16,7 @@ $(document).ready(function() {
                 //$(".map-wrapper").slideDown(500);
                 $(".intro-wrapper").slideDown(750);
                 $(".intro-wrapper").animate({top: '-100vh'},750,function(){
-
                 });
-
         }
     })
 }
@@ -38,8 +24,12 @@ $(document).ready(function() {
 
     $(document).ready(click_handlers);
 
-
     function click_handlers() {
+
+        $(".map-left").click(function () {
+            console.log("HI");
+            $(".intro-wrapper").animate({top: '-200vh'},750);
+        });
 
         $("button").click(function () {
             var usersChoice = $('input').val();
@@ -97,7 +87,7 @@ $(document).ready(function() {
             dataType: 'json',
             data: {
                 q: usersChoice,
-                maxResults: 10,
+                maxResults: 4,
             },
             method: 'POST',
             url: "https://s-apis.learningfuze.com/hackathon/youtube/search.php",
@@ -109,7 +99,7 @@ $(document).ready(function() {
 
                     //LOOP FOR VIDEO ID AND TITLE
                     for (var i = 0; i < response.video.length; i++) {
-                        var titleText = $('<p>').text(response.video[i].title);
+                        //var titleText = $('<p>').text(response.video[i].title);
 
                         //CREATION OF YOUTUBE VIDEO LINK
                         var iframe = $("<iframe>", {
@@ -121,14 +111,13 @@ $(document).ready(function() {
                         });
 
                         //ADDING TITLE AND VIDEO LINK TO THE DOM
-                        $('div.video-list').append(titleText);
+                       // $('div.video-list').append(titleText);
                         $('div.video-list').append(iframe);
                     }
                 } else {
                     //CONSOLE LOG FOR TESTING PURPOSES
                     console.log('failure -- Unable to connect to YouTube api');
                 }
-
             }
         });
     }
