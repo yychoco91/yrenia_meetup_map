@@ -21,12 +21,14 @@ $(document).ready(function() {
                 console.log("response", output);
                 initMap(output);
                 //$(".map-wrapper").slideDown(500);
-                $(".intro-wrapper").animate({top: '-90vh'}, 500);
+                $(".intro-wrapper").slideDown(750);
+                $(".intro-wrapper").animate({top: '-90vh'},750,function(){
 
-            }
-        })
-    }
+                });
 
+        }
+    })
+}
 // Danh's Section End
 
     $(document).ready(click_handlers);
