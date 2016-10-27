@@ -28,7 +28,7 @@ $(document).ready(function() {
                 //$(".map-wrapper").slideDown(500);
                 $(".intro-wrapper").slideDown(750);
                 $(".intro-wrapper").animate({top: '-100vh'},750,function(){
-
+                    $('#top_search').addClass('search-top');
                 });
 
         }

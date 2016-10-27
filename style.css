@@ -36,6 +36,14 @@
     height: 10vh;
 }
 
+.search-top {
+    top: 0;
+    position: fixed;
+    height: 10vh;
+    z-index: 3;
+    background-color: white;
+}
+
 .intro-inner {
     height: 50vh;
 }
@@ -68,7 +76,6 @@
 
 .map-left {
     position: absolute;
-    background-color: white;
     height: 100vh;
     z-index: 2;
 }
