@@ -17,6 +17,7 @@
                 $(".intro-wrapper").slideDown(750);
                 $(".intro-wrapper").animate({top: '-100vh'},750,function(){
                     $('#top_search').addClass('search-top');
+                    $('#map_left').addClass('map-left'); // added this wed. night - taylor
                 });
         }
     })

@@ -15,26 +15,32 @@
 <div class="entire-wrapper">
     <div class="intro-wrapper">
         <div class="row">
-            <div class="col s12 valign-wrapper grey lighten-2 intro-top">
+            <video id="bgvid" playsinline autoplay muted loop>
+                <!-- WCAG general accessibility recommendation is that media such as background video play through only once. Loop turned on for the purposes of illustration; if removed, the end of the video will fade in the same way created by pressing the "Pause" button  -->
+                <source src="assets/images/friends.m4v" type="video/m4v">
+                <source src="assets/images/friends.webm" type="video/webm">
+            </video>
+            <div class="col s12 valign-wrapper grey darken-4 intro-top">
                 <div class="col s10 offset-s1 l6 offset-l3 valign valign-wrapper intro-contain">
                     <div class="row">
                         <div class="col s6 offset-s3 logo"></div>
                     </div>
                     <div class="row">
                         <div class="col s12 input-container">
-                            <div class="input-field col s6 offset-s1 interests">
-                                <input class="validate" type="text" id="search">
-                                <label for="search">Your interests</label>
+                            <div class="input-field col s6 offset-s1">
+                                <input class="validate" type="text" id="search"> <!--- TODO: FIX THIS - DUPLICATE IDS -->
+                                <label for="search">What are your interests?</label> <!--- TODO: FIX THIS - DUPLICATE IDS -->
                             </div>
                             <div class="input-field col s3 offset-s1">
-                                <input class="validate" type="text" id="zip">
-                                <label for="zip">Your zip code</label>
+                                <input class="validate" type="text" id="zip"> <!--- TODO: FIX THIS - DUPLICATE IDS -->
+                                <label for="zip">Your zip code</label> <!--- TODO: FIX THIS - DUPLICATE IDS -->
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col s4 offset-s4 go-button">
-                            <button class="go-btn z-depth-2 red lighten-1 white-text" type="submit" value="submit">GO!
+                            <button class="waves-effect waves-light btn go-btn z-depth-2 red lighten-1 white-text"
+                                    type="submit" value="submit">GO!
                             </button>
                         </div>
                     </div>
@@ -46,11 +52,72 @@
         </div>
         <div class="map-wrapper">
             <div class="row">
-                <div id="top_search" class="col s12 red lighten-1 z-depth-1"></div>
+                <div id="top_search" class="col s12 red lighten-1 z-depth-4">
+                    <div class="col s6 offset-s3 input-nav valign-wrapper">
+                        <div class="input-field col s5">
+                            <input placeholder="What are your interests?" class="validate" type="text" id="search">
+                        </div>
+                        <div class="input-field col s3 offset-s1">
+                            <input placeholder="Your zip code" class="validate" type="text" id="zip">
+                        </div>
+                        <button class="col s2 offset-s1 valign waves-effect waves-light btn go-btn z-depth-2 grey lighten-3 red-text"
+                                type="submit" value="submit">GO!
+                        </button>
+                    </div>
+                </div>
             </div>
             <div class="row">
-                <div class="col s2 map-left grey lighten-2 z-depth-3">
-
+                <div id="map_left" class="col s3">
+                    <div class="card red lighten-1">
+                        <div class="card-content white-text">
+                            <span class="card-title">Card Title</span>
+                            <p>I am a very simple card. I am good at containing small bits of information.
+                                I am convenient because I require little markup to use effectively.</p>
+                        </div>
+                        <div class="card-action white-text">
+                            <a href="#">This is a link</a>
+                        </div>
+                    </div>
+                    <div class="card red lighten-1">
+                        <div class="card-content white-text">
+                            <span class="card-title">Card Title</span>
+                            <p>I am a very simple card. I am good at containing small bits of information.
+                                I am convenient because I require little markup to use effectively.</p>
+                        </div>
+                        <div class="card-action white-text">
+                            <a href="#">This is a link</a>
+                        </div>
+                    </div>
+                    <div class="card red lighten-1">
+                        <div class="card-content white-text">
+                            <span class="card-title">Card Title</span>
+                            <p>I am a very simple card. I am good at containing small bits of information.
+                                I am convenient because I require little markup to use effectively.</p>
+                        </div>
+                        <div class="card-action white-text">
+                            <a href="#">This is a link</a>
+                        </div>
+                    </div>
+                    <div class="card red lighten-1">
+                        <div class="card-content white-text">
+                            <span class="card-title">Card Title</span>
+                            <p>I am a very simple card. I am good at containing small bits of information.
+                                I am convenient because I require little markup to use effectively.</p>
+                        </div>
+                        <div class="card-action white-text">
+                            <a href="#">This is a link</a>
+                        </div>
+                    </div>
+                    <div class="card red lighten-1">
+                        <div class="card-content white-text">
+                            <span class="card-title">Card Title</span>
+                            <p>I am a very simple card. I am good at containing small bits of information.
+                                I am convenient because I require little markup to use effectively.</p>
+                        </div>
+                        <div class="card-action white-text">
+                            <a href="#">This is a link</a>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="row">
@@ -61,12 +128,7 @@
         </div>
         <div class="details-wrapper white">
             <div class="row">
-                <div class="col s2 map-left grey lighten-2 z-depth-3">
-
-                </div>
-            </div>
-            <div class="row">
-                <div class="col s8 offset-s3">
+                <div class="col s7 offset-s3">
                     <div class="col s4"></div>
                     <div class="col s4 video-list"></div>
                     <div class="col s4"></div>
