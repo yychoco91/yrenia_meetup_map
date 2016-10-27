@@ -46,6 +46,16 @@ function getEvents(keyword, zip) {
         success: function (response) {
             var eventList = response.results; //limit to display only 20 events. Create divs and style later
             console.log('Event list', eventList);
+
+            for (i=0; i<response.results; i++){
+            var eventCard=$('<div>', {
+                class:'card-title',
+                text:eventList[0]['name']
+
+                });
+            }
+           /* var eventName=eventList[0]['name'];
+            console.log(eventName);*/
         }
     });
 }
