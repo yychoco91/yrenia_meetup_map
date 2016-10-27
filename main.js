@@ -19,6 +19,17 @@ function geoCoding(query) {
                 var output = response.results[0].geometry.location;
                 global_zip = output;
                 //console.log("response", output);
+                console.log("response", output);
+                initMap(output);
+                //$(".map-wrapper").slideDown(500);
+                $(".intro-wrapper").slideDown(750);
+                $(".intro-wrapper").animate({top: '-100vh'},750,function(){
+
+                    $('#top_search').addClass('search-top');
+
+                    $('#map_left').addClass('map-left'); // added this wed. night - taylor
+
+                });
         }
     })
 }
@@ -48,7 +59,9 @@ function parseEventsForMaps(eventObj) {
 
 // Danh's Section End
 
-    $(document).ready(click_handlers);
+
+
+$(document).ready(click_handlers);
 
 /**
  *
@@ -59,6 +72,7 @@ function click_handlers() {
             //console.log("HI");
             $(".intro-wrapper").animate({top: '-200vh'},750);
         });
+
 
         $("button#front-go").click(function () { // merging this function with Kevin prototype
             var q = $("#zip").val();
@@ -82,17 +96,6 @@ function click_handlers() {
             geoCoding(q);
             getTopics(userSearch, userZip);
         });
-
-        // console.log('in click handlers');
-        // $('button').click(function () {
-        //     console.log('Clicked!');
-        //     var userSearch = $('#search').val();
-        //     var zipSearch = $('#zip').val();
-        //     console.log(userSearch, zipSearch);
-        //     getCategories(userSearch);
-        //     getEvents(userSearch, zipSearch);
-        // });
-    }
 
     /**
      * getTopics - using user-entered interest, generate topics and use first 2 urlkeys
@@ -141,6 +144,43 @@ function click_handlers() {
         });
     }
 
+    console.log('in click handlers');
+    $('button').click(function(){
+        console.log('Clicked!');
+        var userSearch = $('#search').val();
+        var zipSearch = $('#zip').val();
+        console.log(userSearch,zipSearch);
+        getCategories(userSearch);
+        getEvents(userSearch,zipSearch);
+    });
+}
+
+function getCategories(keyword){
+    console.log('get stuff');
+    var userKeyword = keyword;
+    $.ajax({
+        dataType: 'jsonp',
+        url: 'https://api.meetup.com/topics?search='+ userKeyword +'&page=20&key=702403fb782d606165f7638a242a&sign=true',
+        method: 'get',
+        success: function(response){
+            console.log(response);
+        }
+    });
+}
+
+function getEvents(keyword,zip) {
+    var userKeyword = keyword;
+    var userZip = zip;
+    $.ajax({
+        dataType: 'jsonp',
+        url: 'https://api.meetup.com/2/open_events?key=702403fb782d606165f7638a242a&zip=' + userZip + '&topic=' + userKeyword + '&page =20',
+        method: 'get',
+        success: function (response) {
+            console.log(response);
+        }
+    });
+}
+
 //YOUTUBE SECTION -- DANs
     function youTubeApi(usersChoice) {
         console.log('In the youTubeApi function');
@@ -180,6 +220,7 @@ function click_handlers() {
                 } else {
                     //CONSOLE LOG FOR TESTING PURPOSES
                     console.log('failure -- Unable to connect to YouTube api');
+
                 }
             }
         });
