@@ -2,10 +2,41 @@
  * Created by LFZ C11 Hackathon TEAM 2 - Yrenia, Danh, Kevin, Dan, and Taylor on 10/26/2016.
  */
 
+// Danh's Section
+
+function geoCoding(query) {
+    $.ajax({
+        dataType:'JSON',
+        method: 'GET',
+        url: "https://maps.googleapis.com/maps/api/geocode/json?address="+query+"&key=AIzaSyDa6lkpC-bOxXWEbrWaPlw_FneCpQhlgNE",
+        success: function(response){
+                var output = response.results[0].geometry.location;
+                console.log("response", output);
+                initMap(output);
+                //$(".map-wrapper").slideDown(500);
+                $(".intro-wrapper").animate({top: '-90vh'},500);
+
+        }
+    })
+}
+// Danh's Section End
+
 $(document).ready(click_handlers);
 
 
 function click_handlers(){
+
+    $("button").click(function(){
+        var usersChoice = $('input').val();
+        console.log('in the click function');
+        youTubeApi($('input').val());
+    });
+
+    $("button.go-btn").click(function(){
+        var q = $("#zip").val();
+        geoCoding(q);
+    });
+
     console.log('in click handlers');
     $('button').click(function(){
         console.log('Clicked!');
@@ -30,14 +61,14 @@ function getCategories(keyword){
     });
 }
 
-function getEvents(keyword,zip){
+function getEvents(keyword,zip) {
     var userKeyword = keyword;
     var userZip = zip;
     $.ajax({
         dataType: 'jsonp',
-        url: 'https://api.meetup.com/2/open_events?key=702403fb782d606165f7638a242a&zip='+userZip+'&topic='+userKeyword +'&page =20',
-        method:'get',
-        success: function(response){
+        url: 'https://api.meetup.com/2/open_events?key=702403fb782d606165f7638a242a&zip=' + userZip + '&topic=' + userKeyword + '&page =20',
+        method: 'get',
+        success: function (response) {
             console.log(response);
         }
     });
