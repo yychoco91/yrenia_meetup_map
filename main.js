@@ -188,7 +188,7 @@ function getEvents(apiKey, keyword, zip) {
                     $('#map_left').addClass('map-left'); // added this wed. night - taylor
                 });
             }else{ //if event is 1 or less, generic topic search urlkey for generic open events
-                getTopics(meetUpKey);
+                getTopics(meetUpKey, undefined, zip);
             }
         }
     });
