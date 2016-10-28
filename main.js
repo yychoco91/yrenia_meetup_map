@@ -181,17 +181,20 @@ function getEvents(keyword, zip) {
         }
     });
 }
+/**
+ * createEventCard - dynamically create and append event info cards
+ * @param {object} event - event containing necessary info
+ */
 function createEventCard(event){
     console.log('Event card', event);
-    global_event.push(event);
+    global_event.push(event); //push events used for cards to array for use on event description page
     var eventName = event['name'];
-    var groupName = event.group.name;
     var date = new Date(event['time']);
     date = parseTime(date);
     var venueName = event.venue.name;
     var address = event.venue.address_1;
     var city = event.venue.city;
-
+    //create html elements with classes
     var $title = $('<span>', {
         class: 'card-title',
         text: eventName
@@ -208,6 +211,7 @@ function createEventCard(event){
     var $address = $('<p>', {
         text: address + ' ' + ' ' + city
     });
+    //append elements to the dom
     var $cardContent = $('<div>', {
         class: 'card-content white-text'
     }).append($title,$group, $date, $venue, $address);
@@ -216,6 +220,11 @@ function createEventCard(event){
     }).append($cardContent);
     $('#map_left').append($card);
 }
+/**
+ * parseTime - change date into more readable format
+ * @param {object} date - event's date object
+ * @returns {string|*} - contains event's date and time
+ */
 function parseTime(date){
     var day = date.toDateString();
     var hour = date.getHours();
@@ -223,6 +232,7 @@ function parseTime(date){
     var newDate;
     var amOrPm;
     //console.log('day ', day);
+    //24hr format to 12hr format
     if(hour > 12){
         hour -= 12;
         amOrPm = 'pm';
@@ -232,6 +242,7 @@ function parseTime(date){
     if(minutes === 0){
         minutes = '00';
     }
+    //creates date string
     newDate = day + ' ' + hour + ':' + minutes + ' ' + amOrPm;
     //console.log(newDate);
     return newDate;
