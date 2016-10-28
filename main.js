@@ -6,6 +6,8 @@ var global_event = [];
 // Danh's Section
 var global_zip = null;
 var global_venue = [];
+var meetUpKey1 = '702403fb782d606165f7638a242a';
+var meetUpKey2 = '163736143b31146c5361736d41103459';
 /**
  * function geoCoding converts zip code to longitude and latitude
  *
@@ -69,7 +71,7 @@ function click_handlers() {
             var userSearch = $('#search').val();
             var userZip = $("#zip").val();
             geoCoding(userZip);
-            getTopics(userSearch, userZip);
+            getTopics(meetUpKey1,userSearch, userZip);
         }
     });
 
@@ -80,7 +82,7 @@ function click_handlers() {
             var userSearch = $('#search').val();
             var userZip = $("#nav_zip").val();
             geoCoding(userZip);
-            getTopics(userSearch, userZip);
+            getTopics(meetUpKey1, userSearch, userZip);
             youTubeApi(userSearch);
         }
     });
@@ -94,24 +96,26 @@ function click_handlers() {
 
         });
     });
-
+    //Event delegation for card events. On click, dynamically adds specific event info to event description page
     $("#map_left").on("click",".card-content",function () {
         console.log("HI");
         $(".intro-wrapper").animate({top: '-200vh'}, 750);
+        console.log(this);
+        createEventDescription(this);
     });
 
     $("button#front-go").click(function () {
         var userSearch = $('#search').val();
         var userZip = $("#zip").val();
         geoCoding(userZip);
-        getTopics(userSearch, userZip);
+        getTopics(meetUpKey1,userSearch, userZip);
         //youTubeApi(userSearch);
     });
     $("button#nav-go").click(function () {
         var userSearch = $('#search').val();
         var userZip = $("#nav_zip").val();
         geoCoding(userZip);
-        getTopics(userSearch, userZip);
+        getTopics(meetUpKey1, userSearch, userZip);
         youTubeApi(userSearch);
     });
 }
@@ -120,13 +124,15 @@ function click_handlers() {
  * @param {string} keyword - user-entered interest
  * @param {number} zipcode - user-entered zipcode
  */
-function getTopics(keyword, zipcode) {
+function getTopics(apiKey, keyword, zipcode) {
     var meetUpLink;
+    var zip = zipcode;
+    var userWord = keyword;
+    var meetUpKey = apiKey;
     if(keyword === undefined){ //if no topic is passed, do generic search for topics at meetup
-        meetUpLink = 'https://api.meetup.com/topics?&page=5&key=702403fb782d606165f7638a242a&sign=true';
+        meetUpLink = 'https://api.meetup.com/topics?&page=5&key=' + meetUpKey + '&sign=true';
     }else{ //other use user entered word to search for urlkeys of topics
-        //meetUpLink = 'https://api.meetup.com/topics?search=' + keyword + '&page=5&key=702403fb782d606165f7638a242a&sign=true';
-        meetUpLink = 'https://api.meetup.com/topics?search=' + keyword + '&page=5&key=163736143b31146c5361736d41103459&sign=true';
+        meetUpLink = 'https://api.meetup.com/topics?search=' + userWord + '&page=5&key=' + meetUpKey + '&sign=true';
     }
     $.ajax({
         dataType: 'jsonp',
@@ -135,19 +141,23 @@ function getTopics(keyword, zipcode) {
         success: function (response) {
             console.log('UrlKeys:', response.results);
             var topics = '';
-            if (response.results.length > 0) { //check the array > 0; is there related topics to user search
-                console.log('Result is true');
-                for (var i = 0; i < response.results.length; i++) { //for the amount of results, add to string separted by commas
-                    console.log('in for loop');
-                    if (i !== response.results.length - 1) { //current topic is not the last in the array of topic returned
-                        topics += response.results[i]['urlkey'] + ',';
-                    } else {
-                        topics += response.results[i]['urlkey']; //last topic, do not add comma
+            if (response['code'] === 'blocked') {
+                getTopics(meetUpKey2, userWord, zip)
+            } else {
+                if (response.results.length > 0) { //check the array > 0; is there related topics to user search
+                    console.log('Result is true');
+                    for (var i = 0; i < response.results.length; i++) { //for the amount of results, add to string separted by commas
+                        console.log('in for loop');
+                        if (i !== response.results.length - 1) { //current topic is not the last in the array of topic returned
+                            topics += response.results[i]['urlkey'] + ',';
+                        } else {
+                            topics += response.results[i]['urlkey']; //last topic, do not add comma
+                        }
                     }
                 }
+                //console.log('Topics', topics);
+                getEvents(meetUpKey, topics, zip); //pass the urlkey and zipcode to look for open events
             }
-            //console.log('Topics', topics);
-            getEvents(topics, zipcode); //pass the urlkey and zipcode to look for open events
         }
     });
 }
@@ -156,13 +166,13 @@ function getTopics(keyword, zipcode) {
  * @param {string} keyword - urlkeys from meetup separated by commas
  * @param {string} zip - user-entered zipcode
  */
-function getEvents(keyword, zip) {
+function getEvents(apiKey, keyword, zip) {
     var userKeyword = keyword;
     var userZip = zip;
+    var meetUpKey = apiKey;
     $.ajax({
         dataType: 'jsonp',
-        //url: 'https://api.meetup.com/2/open_events?key=702403fb782d606165f7638a242a&zip=' + userZip + '&topic=' + userKeyword + '&page=20',
-        url: 'https://api.meetup.com/2/open_events?key=163736143b31146c5361736d41103459&zip=' + userZip + '&topic=' + userKeyword + '&page=20',
+        url: 'https://api.meetup.com/2/open_events?key=' + meetUpKey + '&zip=' + userZip + '&topic=' + userKeyword + '&page=20',
         method: 'get',
         success: function (response) {
             var eventList = response.results;
@@ -178,7 +188,7 @@ function getEvents(keyword, zip) {
                     $('#map_left').addClass('map-left'); // added this wed. night - taylor
                 });
             }else{ //if event is 1 or less, generic topic search urlkey for generic open events
-                getTopics();
+                getTopics(meetUpKey);
             }
         }
     });
@@ -201,9 +211,6 @@ function createEventCard(event){
         class: 'card-title',
         text: eventName
     });
-    var $group = $('<h5>', {
-        text:groupName
-    });
     var $date = $('<p>', {
         text: date
     });
@@ -216,7 +223,7 @@ function createEventCard(event){
     //append elements to the dom
     var $cardContent = $('<div>', {
         class: 'card-content white-text'
-    }).append($title,$group, $date, $venue, $address);
+    }).append($title, $date, $venue, $address);
     var $card = $('<div>', {
         class: 'card red lighten-1'
     }).append($cardContent);
