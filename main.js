@@ -139,6 +139,10 @@ function getEvents(keyword, zip) {
         }
     });
 }
+/**
+ * createEventCard - dynamically create and append event info cards
+ * @param {object} event - event containing necessary info
+ */
 function createEventCard(event){
     console.log('Event card', event);
     global_event.push(event);
