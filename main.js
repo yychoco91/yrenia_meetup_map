@@ -2,7 +2,7 @@
  * Created by LFZ C11 Hackathon TEAM 2 - Yrenia, Danh, Kevin, Dan, and Taylor on 10/26/2016.
  */
 $(document).ready(click_handlers);
-
+var global_event = [];
 // Danh's Section
 var global_zip = null;
 /**
@@ -126,13 +126,13 @@ function getEvents(keyword, zip) {
     });
 }
 function createEventCard(event) {
+    global_event.push(event);
     var eventName = event['name'];
     var groupName = event.group.name;
     var date = new Date(event['time']);
     var venueName = event.venue.name;
     var address = event.venue.address_1;
     var city = event.venue.city;
-    var state = event.venue.state;
 
     var $title = $('<span>', {
         class: 'card-title',
@@ -145,7 +145,7 @@ function createEventCard(event) {
         text: venueName
     });
     var $address = $('<p>', {
-        text: address + city + state
+        text: address + ' ' + ' ' + city
     });
     var $cardContent = $('<div>', {
         class: 'card-content white-text'
