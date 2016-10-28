@@ -83,6 +83,7 @@ function click_handlers() {
             var userZip = $("#zip").val();
             geoCoding(userSearch, userZip);
             youTubeApi(userSearch);
+            $(".preloader-wrapper").show();
         }
     });
 
@@ -94,6 +95,7 @@ function click_handlers() {
             var userZip = $("#nav_zip").val();
             geoCoding(userSearch, userZip);
             youTubeApi(userSearch);
+            $(".preloader-wrapper").show();
 
         }
     });
@@ -103,12 +105,14 @@ function click_handlers() {
         var userZip = $("#zip").val();
         geoCoding(userSearch, userZip);
         youTubeApi(userSearch);
+        $(".preloader-wrapper").show();
     });
     $("button#nav-go").click(function () {
         var userSearch = $('#nav_search').val();
         var userZip = $("#nav_zip").val();
         geoCoding(userSearch, userZip);
         youTubeApi(userSearch);
+        $(".preloader-wrapper").show();
     });
 
     $("#top_search").on("click",".logo-nav",function () {
@@ -203,6 +207,7 @@ function getEvents(apiKey, keyword, zip) {
                 $(".intro-wrapper").animate({top: '-100vh'}, 750, function () {
                     $('#top_search').addClass('search-top');
                     $('#map_left').addClass('map-left'); // added this wed. night - taylor
+                    $(".preloader-wrapper").hide();
                 });
             }else{ //if event is 1 or less, generic topic search urlkey for generic open events
                 getTopics(meetUpKey, undefined, zip);

@@ -245,13 +245,13 @@ MAP MARKER
 *******************/
 
 .mylabel {
-    width: 50%;
+    width: 20%;
     height: 20%;
-    padding: 10px;
+    padding: 3px;
 }
 
 .mylabel span {
-    font-size: 16px;
+    font-size: 15px;
     font-weight: bold;
 }
 .div_links {
