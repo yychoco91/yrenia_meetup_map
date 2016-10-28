@@ -204,7 +204,8 @@ function getEvents(apiKey, keyword, zip) {
                     $('#map_left').addClass('map-left'); // added this wed. night - taylor
                 });
             }else{ //if event is 1 or less, generic topic search urlkey for generic open events
-                getTopics(meetUpKey, undefined, zip);
+                //getTopics(meetUpKey, undefined, zip);
+                Materialize.toast('No open events found in your area', 2000, 'white red-text')
             }
         }
     });
