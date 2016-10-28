@@ -117,7 +117,7 @@
     position: fixed;
     height: 100vh;
     z-index: 2;
-    top: 14vh;
+    top: 0vh;
     left: 3vh !important;
     overflow: scroll;
 }
@@ -153,13 +153,26 @@
 }
 
 .go-btn2 {
-    width: 100%;
+    width: 75%;
 }
 
 .card {
     cursor: pointer;
 }
 
+.back-to-map {
+    left: 90%;
+    transform: translateX(-10%);
+    top: 5.5vh;
+}
+
+.card .card-content .card-title {
+    line-height: 32px;
+}
+
+.first-card {
+    height: 14vh;
+}
 
 /********************
 DETAILS PAGE
@@ -168,4 +181,12 @@ DETAILS PAGE
 .video-list, .event-details {
     top: 14vh;
     position: relative;
+}
+
+.event-photos {
+    height: 12vh;
+}
+
+.event-details .row {
+    margin: 2vh 0;
 }
