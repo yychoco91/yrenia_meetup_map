@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="style.css">
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
+    <script src="infobubble-compiled.js"></script>
     <script src="main.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
@@ -19,15 +20,17 @@
                 <div class="col s10 offset-s1 l6 offset-l3 valign valign-wrapper intro-contain">
                     <div class="row">
                         <div class="col s6 offset-s3 logo"></div>
-                        <div class="col s6 offset-s3 slogan">Map meet ups in your area!</div>
+                        <!-- <div class="col s6 offset-s3 slogan"><h5>Map meet ups in your area!</h5></div> -->
                     </div>
                     <div class="row">
                         <div class="col s12 input-container">
                             <div class="input-field col s6 offset-s1">
+                                <i class="material-icons prefix red-text darken-1 intro-icons">search</i>
                                 <input class="validate" type="text" id="search">
-                                <label for="search">What are your interests?</label>
+                                <label for="search">What are you interested in?</label>
                             </div>
                             <div class="input-field col s3 offset-s1">
+                                <i class="material-icons prefix red-text darken-1 intro-icons">location_on</i>
                                 <input class="validate" type="text" id="zip">
                                 <label for="zip">Your zip code</label>
                             </div>
@@ -46,8 +49,7 @@
         </div>
         <div class="row">
             <div class="col s12 valign-wrapper white intro-bottom z-depth-2">
-                <p class="col s12 valign intro-bottom-text"><em>Disclaimer:</em> Meetmap Map&trade; is not affiliated in any
-                    way with Meetup&trade;.</p>
+                <p class="col s12 valign intro-bottom-text"><em>Meetup Map is in no way affiliated with Meetup&trade;</em></p>
             </div>
         </div>
         <video id="bgvid" autoplay muted loop>
@@ -57,14 +59,17 @@
         <div class="map-wrapper">
             <div class="row">
                 <div id="top_search" class="col s12 red darken-1 valign-wrapper z-depth-2">
+                    <div class="btn-floating btn-large waves-effect waves-light grey lighten-3 z-depth-3 back-to-map">
+                        <i class="material-icons red-text darken-1">navigation</i>
+                    </div>
                     <div class="col s10 offset-s1 input-nav valign">
                         <div class="input-nav-container valign-wrapper">
                             <div class="logo-nav col s2 valign"></div>
                             <div class="input-field col s3 offset-s1 valign">
-                                <input placeholder="What are your interests?" class="validate" type="text"
+                                <input placeholder="What are you interested in?" class="validate" type="text"
                                        id="nav_search">
                             </div>
-                            <div class="input-field col s2 offset-s1 valign">
+                            <div class="input-field col s1 offset-s1 valign">
                                 <input placeholder="Your zip code" class="validate" type="text" id="nav_zip">
                             </div>
                             <div class="button-div col s2 offset-s1 valign">
@@ -79,62 +84,6 @@
             </div>
             <div class="row">
                 <div id="map_left" class="col s3">
-                    <div class="card red lighten-1 z-depth-2">
-                        <div class="card-content white-text">
-                            <span class="card-title">Card Title</span>
-                            <p>I am a very simple card. I am good at containing small bits of information.
-                                I am convenient because I require little markup to use effectively.</p>
-                        </div>
-                    </div>
-                    <div class="card red lighten-1 z-depth-2">
-                        <div class="card-content white-text">
-                            <span class="card-title">Card Title</span>
-                            <p>I am a very simple card. I am good at containing small bits of information.
-                                I am convenient because I require little markup to use effectively.</p>
-                        </div>
-                    </div>
-                    <div class="card red lighten-1 z-depth-2">
-                        <div class="card-content white-text">
-                            <span class="card-title">Card Title</span>
-                            <p>I am a very simple card. I am good at containing small bits of information.
-                                I am convenient because I require little markup to use effectively.</p>
-                        </div>
-                    </div>
-                    <div class="card red lighten-1 z-depth-2">
-                        <div class="card-content white-text">
-                            <span class="card-title">Card Title</span>
-                            <p>I am a very simple card. I am good at containing small bits of information.
-                                I am convenient because I require little markup to use effectively.</p>
-                        </div>
-                    </div>
-                    <div class="card red lighten-1 z-depth-2">
-                        <div class="card-content white-text">
-                            <span class="card-title">Card Title</span>
-                            <p>I am a very simple card. I am good at containing small bits of information.
-                                I am convenient because I require little markup to use effectively.</p>
-                        </div>
-                    </div>
-                    <div class="card red lighten-1 z-depth-2">
-                        <div class="card-content white-text">
-                            <span class="card-title">Card Title</span>
-                            <p>I am a very simple card. I am good at containing small bits of information.
-                                I am convenient because I require little markup to use effectively.</p>
-                        </div>
-                    </div>
-                    <div class="card red lighten-1 z-depth-2">
-                        <div class="card-content white-text">
-                            <span class="card-title">Card Title</span>
-                            <p>I am a very simple card. I am good at containing small bits of information.
-                                I am convenient because I require little markup to use effectively.</p>
-                        </div>
-                    </div>
-                    <div class="card red lighten-1 z-depth-2">
-                        <div class="card-content white-text">
-                            <span class="card-title">Card Title</span>
-                            <p>I am a very simple card. I am good at containing small bits of information.
-                                I am convenient because I require little markup to use effectively.</p>
-                        </div>
-                    </div>
                 </div>
             </div>
             <div class="row">
@@ -147,11 +96,26 @@
             <div class="row">
                 <div class="col s10 offset-s4">
                     <div class="col s4 event-details">
-                        <div class="video-container black"></div>
-                        <div class="video-container black"></div>
-                        <div class="video-container black"></div>
-                        <div class="video-container black"></div>
-                        <div class="video-container black"></div>
+                        <h1>Event Title</h1>
+                        <h5>Group Name</h5>
+                        <h4>October 27th at 4:30pm</h4>
+                        <h4>1234 Address Lane, Irvine, CA</h4>
+                        <p>Description Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam assumenda
+                            distinctio id iure laboriosam laudantium libero modi molestiae, nam, omnis provident quaerat
+                            qui quibusdam recusandae saepe sapiente temporibus vero vitae.</p>
+                        <br>
+                        <div class="row">
+                            <div class="col s5 event-photos red lighten-3"></div>
+                            <div class="col s5 offset-s1 event-photos red lighten-3"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col s5 event-photos red lighten-3"></div>
+                            <div class="col s5 offset-s1 event-photos red lighten-3"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col s5 event-photos red lighten-3"></div>
+                            <div class="col s5 offset-s1 event-photos red lighten-3"></div>
+                        </div>
                     </div>
                     <div class="col s3 offset-s1 video-list"></div>
                 </div>
@@ -163,7 +127,7 @@
 
     var locations = [];
 
-    function initMap(myLatLng,eventObj) {
+    function initMap(myLatLng, eventObj) {
         console.log("Zip ", myLatLng);
         if (myLatLng === undefined) {
             //console.log("undefined");
@@ -184,19 +148,28 @@
                 {lat: 33.87, lng: -117.853352}
             ]
         } else {
-           locations = eventObj;
+            locations = eventObj;
         }
 
-        console.log('param locations is ',eventObj);
-        var locations2 = eventObj;
+        //console.log('global venue is ',global_venue);
+
+        console.log('param locations is ', eventObj);
+        //var locations2 = eventObj;
+
+
 
         // In the following example, markers appear when the user clicks on the map.
         // Each marker is labeled with a single alphabetical character.
-        var labels = ['You Are Here', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'LMNOPQRSTUVWXYZ'];
+        var labels = [];
+        //console.log("global labels is ", labels);
+        labels = global_venue;
+        //console.log("global venue is ", global_venue);
+        //labels.unshift("You are here");
+        console.log('global venue is ',labels);
         var labelIndex = 0;
 
         var map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 10,
+            zoom: 11,
             center: myLatLng,
             styles: [{
                 "featureType": "administrative",
@@ -225,58 +198,86 @@
             }, {"featureType": "water", "elementType": "all", "stylers": [{"color": "#46bcec"}, {"visibility": "on"}]}]
         });
 
+        if(eventObj != undefined) {
+            var j =1;
+            for(var i =0;i<eventObj.length;i++) {
+                var marker = new google.maps.Marker({
+                    position: {
+                        lat: eventObj[i].lat,
+                        lng: eventObj[i].lng},
+                    map: map,
+                    label: ""+j,
+                    icon: 'assets/images/people35.png'
+                });
+                j++;
+
+                infoBubble2 = new InfoBubble({
+                    map: map,
+                    position: new google.maps.LatLng(eventObj[i].lat, eventObj[i].lng),
+                    content: '<div class="mylabel">'+eventObj[i].title+'</div>',
+                    //position: new google.maps.LatLng(-32.0, 149.0),
+                    shadowStyle: 1,
+                    padding: 0,
+                    backgroundColor: 'rgb(255,255,255)',
+                    borderRadius: 5,
+                    arrowSize: 10,
+                    borderWidth: 1,
+                    borderColor: '#2c2c2c',
+                    //disableAutoPan: true,
+                    //hideCloseButton: true,
+                    arrowPosition: 30,
+                    backgroundClassName: 'transparent',
+                    arrowStyle: 2,
+                });
+
+                marker.pos = new google.maps.LatLng(eventObj[i].lat, eventObj[i].lng);
+                marker.html = '<div class="mylabel"><span>'+
+                        eventObj[i].title+
+                                '</span><div class="div_links">More Info</div>'+
+                        '<div class="div_links">Youtube</div>'+
+                        '<div class="div_links">Directions</div>'+
+                        '<div class="div_links">Address</div>'+
+                        '</div>';
+
+                marker.addListener('click', function () {
+                    //infowindow.open(map, marker);
+                    infoBubble2.setContent(this.html);
+                    infoBubble2.open(map, this);
+                    //map.panTo(this.pos);
+                });
+
+            }
+        }
+
+        infoBubble = new InfoBubble({
+            map: map,
+            content: '<div class="mylabel"><span>You Are Here!</span></div>',
+            //position: new google.maps.LatLng(-32.0, 149.0),
+            shadowStyle: 1,
+            padding: 0,
+            backgroundColor: 'rgb(255,255,255)',
+            borderRadius: 5,
+            arrowSize: 10,
+            borderWidth: 1,
+            borderColor: '#2c2c2c',
+            //disableAutoPan: true,
+            //hideCloseButton: true,
+            arrowPosition: 30,
+            backgroundClassName: 'transparent',
+            arrowStyle: 2
+        });
+
         var marker = new google.maps.Marker({
             position: myLatLng,
             map: map,
-            label: labels[labelIndex++ % labels.length],
-            title: 'Hello World!'
-        });
-
-        var markers = locations.map(function (location, i) {
-            return new google.maps.Marker({
-                position: location,
-                label: labels[i % labels.length]
-            });
-        });
-
-        var options = {
-            imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m',
-            textColor: 'white',
-            url: 'assets/images/steak.png',
-            height: 50,
-            width: 50
-        }
-
-        // Add a marker clusterer to manage the markers.
-        var markerCluster = new MarkerClusterer(map, markers,options);
-
-        var contentString = '<div id="content">' +
-                '<div id="siteNotice">' +
-                '</div>' +
-                '<h1 id="firstHeading" class="firstHeading">Uluru</h1>' +
-                '<div id="bodyContent">' +
-                '<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large ' +
-                'sandstone rock formation in the southern part of the ' +
-                'Northern Territory, central Australia. It lies 335&#160;km (208&#160;mi) ' +
-                'south west of the nearest large town, Alice Springs; 450&#160;km ' +
-                '(280&#160;mi) by road. Kata Tjuta and Uluru are the two major ' +
-                'features of the Uluru - Kata Tjuta National Park. Uluru is ' +
-                'sacred to the Pitjantjatjara and Yankunytjatjara, the ' +
-                'Aboriginal people of the area. It has many springs, waterholes, ' +
-                'rock caves and ancient paintings. Uluru is listed as a World ' +
-                'Heritage Site.</p>' +
-                '<p>Attribution: Uluru, <a href="https://en.wikipedia.org/w/index.php?title=Uluru&oldid=297882194">' +
-                'https://en.wikipedia.org/w/index.php?title=Uluru</a> ' +
-                '(last visited June 22, 2009).</p>' +
-                '</div>' +
-                '</div>';
-
-        var infowindow = new google.maps.InfoWindow({
-            content: contentString
+            label: "You Are Here",
+            title: 'Meetmap!'
+            /*icon: 'assets/images/steak.png'*/
         });
 
         marker.addListener('click', function () {
-            infowindow.open(map, marker);
+            //infowindow.open(map, marker);
+            infoBubble.open(map, marker);
         });
     }
 
