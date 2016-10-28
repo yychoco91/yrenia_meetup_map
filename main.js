@@ -285,6 +285,13 @@ $('#map_left').on('click','.card', function(){
 
 });
 
+//API IS BEING THROTTLED FUNCTION
+function apiThrottled(heading,message) {
+    $('#error_modal .modal-content h4').text(heading);
+    $('#error_modal .modal-content p').text(message);
+    $('#error_modal').openModal();
+};
+
 //YOUTUBE SECTION -- DANs
 function youTubeApi(usersChoice) {
     console.log('In the youTubeApi function');
@@ -292,19 +299,20 @@ function youTubeApi(usersChoice) {
     $.ajax({
         dataType: 'json',
         data: {
-            q: usersChoice,
+            q: usersChoice,  // this is used as the parameter for the function
             maxResults: 3
         },
         method: 'POST',
         url: "https://s-apis.learningfuze.com/hackathon/youtube/search.php",
         //BEGIN SUCCESS'S ANONYMOUS FUNCTION
         success: function (response) {
-            if (response) {
+            if (response.success === true) {
                 //CONSOLE LOGS FOR TESTING PURPOSES
                 console.log('successful connection to YouTube API');
 
                 //LOOP FOR VIDEO ID AND TITLE
                 for (var i = 0; i < response.video.length; i++) {
+                    //THE BELOW CODE
                     var iframeDiv = $('<div>').addClass('video-container card');
 
                     //CREATION OF YOUTUBE VIDEO LINK
@@ -314,14 +322,18 @@ function youTubeApi(usersChoice) {
                         allowfullscreen: true
                     });
                     iframe.appendTo(iframeDiv);
-                    //ADDING TITLE AND VIDEO LINK TO THE DOM
-                    // $('div.video-list').append(titleText);
+                    //ADDING VIDEO LINK TO THE DOM
                     $('div.video-list').append(iframeDiv);
                     console.log('This is the new div and class ', iframeDiv);
                 }
             } else {
                 //CONSOLE LOG FOR TESTING PURPOSES
                 console.log('failure -- Unable to connect to YouTube api');
+                //CALLING A FUNCTION FOR IF THE API IS DOWN
+                var youTubeFailHeading = 'Woah!';
+                var youTubeFailMessage = 'This is rare, but we are unable to pull any videos at this time.  Please' +
+                    ' try again later.';
+                apiThrottled(youTubeFailHeading,youTubeFailMessage);
             }
         }
     });
