@@ -162,7 +162,7 @@ function youTubeApi(usersChoice) {
     $.ajax({
         dataType: 'json',
         data: {
-            q: usersChoice,
+            q: usersChoice,  // this is used as the parameter for the function
             maxResults: 3
         },
         method: 'POST',
@@ -175,6 +175,7 @@ function youTubeApi(usersChoice) {
 
                 //LOOP FOR VIDEO ID AND TITLE
                 for (var i = 0; i < response.video.length; i++) {
+                    //THE BELOW CODE
                     var iframeDiv = $('<div>').addClass('video-container card');
 
                     //CREATION OF YOUTUBE VIDEO LINK
@@ -184,7 +185,7 @@ function youTubeApi(usersChoice) {
                         allowfullscreen: true
                     });
                     iframe.appendTo(iframeDiv);
-                    //ADDING TITLE AND VIDEO LINK TO THE DOM
+                    //ADDING VIDEO LINK TO THE DOM
                     // $('div.video-list').append(titleText);
                     $('div.video-list').append(iframeDiv);
                     console.log('This is the new div and class ', iframeDiv);
