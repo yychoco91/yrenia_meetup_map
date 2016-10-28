@@ -201,9 +201,9 @@ function createEventCard(event){
         class: 'card-title',
         text: eventName
     });
-    var $group = $('<h5>', {
-        text:groupName
-    });
+    // var $group = $('<h5>', {
+    //     text:groupName
+    // });
     var $date = $('<p>', {
         text: date
     });
