@@ -188,7 +188,7 @@ function getEvents(apiKey, keyword, zip) {
                     $('#map_left').addClass('map-left'); // added this wed. night - taylor
                 });
             }else{ //if event is 1 or less, generic topic search urlkey for generic open events
-                getTopics(meetUpKey);
+                getTopics(meetUpKey, undefined, zip);
             }
         }
     });
@@ -270,7 +270,7 @@ $('#map_left').on('click','.card', function(){
         text: new Date(event[i]['time'])
     });
     var $eventAddress= $('<h4>',{
-        text:event[i].venue.address_1 +event[i].venue.city +event[i].venue.state
+        text:event[i].venue.address_1 + ' ' + event[i].venue.city + ', ' + event[i].venue.state
     });
     var $eventDescription=$('<p>',{
         text:event[i]['description']
