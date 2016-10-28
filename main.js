@@ -277,6 +277,7 @@ function parseTime(date){
     return newDate;
 }
 
+<<<<<<< HEAD
 $('#map_left').on('click','.card', function(){
     var $eventName=$('<h1>',{
         text:event[i]['name']
@@ -310,12 +311,15 @@ function missingPropertyValues(objName) {
     }
 }
 
+=======
+>>>>>>> a7a6e7d07551899c80986df04bf025756c1eaf9a
 //API IS BEING THROTTLED FUNCTION
 function apiThrottled(heading,message) {
     $('#error_modal .modal-content h4').text(heading);
     $('#error_modal .modal-content p').text(message);
     $('#error_modal').openModal();
 };
+
 
 //YOUTUBE SECTION -- DANs
 function youTubeApi(usersChoice) {
@@ -393,11 +397,16 @@ function createEventDescription(eventCard) {
     });
     var $eventAddress= $('<h5>',{
         class: 'red-text',
-        text: cardEvent.venue.address_1 + cardEvent.venue.city + cardEvent.venue.state
+        text: cardEvent.venue.address_1 + " "+ cardEvent.venue.city + " "+ cardEvent.venue.state
+    });
+    var $eventURL=$('<a/>',{
+        href:cardEvent['event_url'],
+        text: 'Event Link',
     });
     var $eventDescription=$('<p>',{
         html: cardEvent['description']
     });
 
-    $('.event-details').append($eventName,$groupName,$eventDate,$eventAddress,$eventDescription);
+    $('.event-details').append($eventName,$groupName,$eventDate,$eventAddress, $eventURL,$eventDescription);
 }
+
