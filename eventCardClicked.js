@@ -2,23 +2,30 @@
  * Created by kevin on 10/27/16.
  */
 $('#map_left').on('click','.card', function(){
-    var $eventName=$('<span>',{
-        class:'',
+    var $eventName=$('<h1>',{
         text:eventList[i]['name']
         });
-    var $groupName=$('<span>',{
-        class:'',
+    var $groupName=$('<h5>',{
         text:eventList[i].group.name
     })
-    var $eventDate= $('<p>',{
+    var $eventDate= $('<h4>',{
         text: new Date(eventList[i]['time'])
     });
-    var $eventAddress= $('<p>',{
+    var $eventAddress= $('<h4>',{
         text:eventList[i].venue.address_1 +eventList[i].venue.city +eventList[i].venue.state
     });
     var $eventDescription=('<p>',{
         text:eventList[i]['description']
     });
+
+    var $eventDetail=('<div>',{
+        class:'event-details'
+    }).append($eventName,$groupName,$eventDate,$eventAddress,$eventDescription);
+
+    var $eventPage=('<div>',{
+        class:'details-wrapper white',
+    }).append($eventDetail);
+
 
     //var $groupPictures;
 
@@ -54,6 +61,7 @@ function createEventCard(eventList) {
             var $cardContent = $('<div>', {
                 class: 'card-content white-text'
             }).append($title, $date, $venue, $address);
+
             var $card = $('<div>',{
                 class: 'card red lighten-1'
             }).append($cardContent);
