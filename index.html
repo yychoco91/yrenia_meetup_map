@@ -206,7 +206,8 @@
                         lat: eventObj[i].lat,
                         lng: eventObj[i].lng},
                     map: map,
-                    label: ""+j
+                    label: ""+j,
+                    icon: 'assets/images/people35.png'
                 });
                 j++;
 
@@ -222,7 +223,7 @@
                     arrowSize: 10,
                     borderWidth: 1,
                     borderColor: '#2c2c2c',
-                    disableAutoPan: true,
+                    //disableAutoPan: true,
                     //hideCloseButton: true,
                     arrowPosition: 30,
                     backgroundClassName: 'transparent',
@@ -242,7 +243,7 @@
                     //infowindow.open(map, marker);
                     infoBubble2.setContent(this.html);
                     infoBubble2.open(map, this);
-                    map.panTo(this.pos);
+                    //map.panTo(this.pos);
                 });
 
             }
@@ -259,7 +260,7 @@
             arrowSize: 10,
             borderWidth: 1,
             borderColor: '#2c2c2c',
-            disableAutoPan: true,
+            //disableAutoPan: true,
             //hideCloseButton: true,
             arrowPosition: 30,
             backgroundClassName: 'transparent',
