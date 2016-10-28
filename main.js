@@ -30,6 +30,8 @@ function parseEventsForMaps(eventObj) {
     console.log("Event Object is", eventObj);
     var geocodeArray = [];
     $("#map_left").html("");
+    var empty_card = $('<div>').addClass('card first-card');
+    $("#map_left").append(empty_card);
     for (var i = 0; i < eventObj.length; i++) {
 
         if (eventObj[i].hasOwnProperty("venue")) {
