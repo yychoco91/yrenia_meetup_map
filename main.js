@@ -62,6 +62,16 @@ function parseEventsForMaps(eventObj) {
 // Danh's Section End
 function click_handlers() {
 
+    $("#top_search").on("click",".logo-nav, .btn-floating",function () {
+        console.log("HI");
+        //$(".intro-wrapper").slideUp(750);
+        $('#top_search').removeClass('search-top');
+        $('#map_left').removeClass('map-left');
+        $(".intro-wrapper").animate({top: '0vh'}, 750, function(){
+
+        });
+    });
+
     $("#map_left").on("click",".card-content",function () {
         console.log("HI");
         $(".intro-wrapper").animate({top: '-200vh'}, 750);
