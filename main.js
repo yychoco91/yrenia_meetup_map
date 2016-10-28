@@ -311,6 +311,7 @@ function youTubeApi(usersChoice) {
             } else {
                 //CONSOLE LOG FOR TESTING PURPOSES
                 console.log('failure -- Unable to connect to YouTube api');
+                //ALERT IF THE API IS DOWN
                 alert('Video server is down, please try later.');
             }
         }
