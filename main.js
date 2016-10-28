@@ -39,6 +39,8 @@ function geoCoding(search,zip) {
 /**
  * function parseEventsForMaps
  *
+ * This function loops through our events and parses out bad Open Events that have no venue property objects
+ *
  * @param {object} eventObj - event object passed from Meetup Open Events API
  */
 function parseEventsForMaps(eventObj) {
@@ -77,7 +79,14 @@ function parseEventsForMaps(eventObj) {
     return geocodeArray;
 }
 // Danh's Section End
+/**
+ * function click_handlers
+ */
 function click_handlers() {
+
+    /*
+    When the user presses ENTER, it will submit the inputs on the FRONT PAGE
+     */
 
     $(".input-container input").keypress(function(event) {
         if (event.which == 13) {
@@ -89,6 +98,10 @@ function click_handlers() {
             $(".preloader-wrapper").show();
         }
     });
+
+    /*
+     When the user presses ENTER, it will submit the inputs on the TOP NAV BAR
+     */
 
     $(".input-nav-container input").keypress(function(event) {
         if (event.which == 13) {
@@ -102,13 +115,18 @@ function click_handlers() {
 
         }
     });
-
+    /*
+        When the user clicks GO , it will submit the inputs on the FRONT PAGE
+    */
     $("button#front-go").click(function () {
         var userSearch = $('#search').val();
         var userZip = $("#zip").val();
         geoCoding(userSearch, userZip);
         $(".preloader-wrapper").show();
     });
+    /*
+     When the user clicks GO , it will submit the inputs on the TOP NAV BAR
+     */
     $("button#nav-go").click(function () {
         var userSearch = $('#nav_search').val();
         var userZip = $("#nav_zip").val();
@@ -117,8 +135,12 @@ function click_handlers() {
         $(".preloader-wrapper").show();
     });
 
+    /*
+     When the user clicks on the LOGO it will take it to the first page
+     */
+
     $("#top_search").on("click",".logo-nav",function () {
-        console.log("Logo Clicked!");
+        //console.log("Logo Clicked!");
         $('#top_search').removeClass('search-top');
         $('#map_left').removeClass('map-left');
         $(".intro-wrapper").animate({top: '0vh'}, 750, function(){
@@ -126,12 +148,18 @@ function click_handlers() {
         });
     });
 
+    /*
+     When the user clicks on the ROUND CIRCLE BUTTON on the top right off the
+     Details Wrapper page, it will move up to the map (using event delegation)
+     */
+
     $(".details-wrapper").on("click",".btn-floating",function () {
-        console.log("Button Up Clicked!");
+        //console.log("Button Up Clicked!");
         $(".intro-wrapper").animate({top: '-100vh'}, 750, function(){
 
         });
     });
+
     //Event delegation for card events. On click, dynamically adds specific event info to event description page
     $("#map_left").on("click",".card-content",function () {
         console.log("HI");
@@ -213,7 +241,8 @@ function getEvents(apiKey, keyword, zip) {
                     $(".preloader-wrapper").hide();
                 });
             }else{ //if event is 1 or less, generic topic search urlkey for generic open events
-                getTopics(meetUpKey, undefined, zip);
+                //getTopics(meetUpKey, undefined, zip);
+                Materialize.toast('No open events found in your area', 2000, 'white red-text')
             }
         }
     });
@@ -285,38 +314,13 @@ function parseTime(date){
     return newDate;
 }
 
-$('#map_left').on('click','.card', function(){
-    var $eventName=$('<h1>',{
-        text:event[i]['name']
-    });
-    var $groupName=$('<h5>',{
-        text:event[i].group.name
-    });
-    var $eventDate= $('<h4>',{
-        text: new Date(event[i]['time'])
-    });
-    var $eventAddress= $('<h4>',{
-        text:event[i].venue.address_1 + ' ' + event[i].venue.city + ', ' + event[i].venue.state
-    });
-    var $eventDescription=$('<p>',{
-        text:event[i]['description']
-    });
-    var $eventDetail=$('<div>',{
-        class:"event-details"
-    }).append($eventName,$groupName,$eventDate,$eventAddress,$eventDescription);
-
-    var $eventPage=$('<div>',{
-        class:'details-wrapper white',
-    }).append($eventDetail);
-
-});
-
 //API IS BEING THROTTLED FUNCTION
 function apiThrottled(heading,message) {
     $('#error_modal .modal-content h4').text(heading);
     $('#error_modal .modal-content p').text(message);
     $('#error_modal').openModal();
 };
+
 
 //YOUTUBE SECTION -- DANs
 function youTubeApi(usersChoice) {
@@ -392,11 +396,16 @@ function createEventDescription(eventCard) {
     });
     var $eventAddress= $('<h5>',{
         class: 'red-text',
-        text: cardEvent.venue.address_1 + cardEvent.venue.city + cardEvent.venue.state
+        text: cardEvent.venue.address_1 + " "+ cardEvent.venue.city + " "+ cardEvent.venue.state
+    });
+    var $eventURL=$('<a/>',{
+        href:cardEvent['event_url'],
+        text: 'Event Link',
     });
     var $eventDescription=$('<p>',{
         html: cardEvent['description']
     });
 
-    $('.event-details').append($eventName,$groupName,$eventDate,$eventAddress,$eventDescription);
+    $('.event-details').append($eventName,$groupName,$eventDate,$eventAddress, $eventURL,$eventDescription);
 }
+
