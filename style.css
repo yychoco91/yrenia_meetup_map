@@ -301,7 +301,7 @@ SCROLL BAR
     transform: translate(-50%,-50%);
 }
 
-@media only screen and (min-device-width : 320px) and (max-device-width : 667px) {
+@media only screen and (min-device-width : 320px) and (max-device-width : 660px) {
 
     .input-container .input-field label {
         font-size: .7rem;
