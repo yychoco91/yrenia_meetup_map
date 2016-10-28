@@ -190,32 +190,6 @@ function parseTime(date){
     return newDate;
 }
 
-$('#map_left').on('click','.card', function(){
-    var $eventName=$('<h1>',{
-        text:event[i]['name']
-    });
-    var $groupName=$('<h5>',{
-        text:event[i].group.name
-    })
-    var $eventDate= $('<h4>',{
-        text: new Date(event[i]['time'])
-    });
-    var $eventAddress= $('<h4>',{
-        text:event[i].venue.address_1 +event[i].venue.city +event[i].venue.state
-    });
-    var $eventDescription=$('<p>',{
-        text:event[i]['description']
-    });
-    var $eventDetail=$('<div>',{
-        class:"event-details"
-    }).append($eventName,$groupName,$eventDate,$eventAddress,$eventDescription);
-
-    var $eventPage=$('<div>',{
-        class:'details-wrapper white',
-    }).append($eventDetail);
-
-});
-
 //YOUTUBE SECTION -- DANs
 function youTubeApi(usersChoice) {
     console.log('In the youTubeApi function');
