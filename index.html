@@ -35,6 +35,18 @@
                                 <label for="zip">Your zip code</label>
                             </div>
                         </div>
+                        <div class="col s12 mobile-input-container">
+                            <div class="input-field col s6">
+                                <i class="material-icons prefix red-text darken-1 intro-icons">search</i>
+                                <input class="validate" type="text" id="search">
+                                <label for="search">Interest</label>
+                            </div>
+                            <div class="input-field col s4 offset-s1">
+                                <i class="material-icons prefix red-text darken-1 intro-icons">location_on</i>
+                                <input class="validate" type="text" id="zip">
+                                <label for="zip">Zip</label>
+                            </div>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col s4 offset-s4 go-button">
@@ -108,7 +120,7 @@
 <!-------PRELOADER------->
 
 <div class="preloader-wrapper active pre-load">
-    <div class="spinner-layer spinner-red-only big">
+    <div class="spinner-layer spinner-yellow-only big">
         <div class="circle-clipper left">
             <div class="circle"></div>
         </div>
@@ -260,7 +272,7 @@
 
         infoBubble = new InfoBubble({
             map: map,
-            content: '<div class="mylabel"><span>You Are Here!</span></div>',
+            content: '<div class="mylabel"><span>You&nbsp;Are&nbsp;Here!</span></div>',
             //position: new google.maps.LatLng(-32.0, 149.0),
             shadowStyle: 1,
             padding: 0,
@@ -281,7 +293,7 @@
             map: map,
             label: "You Are Here",
             title: 'Meetmap!',
-            icon: 'assets/images/map-pin-sm.png'
+            icon: 'assets/images/blue-pin.png'
         });
 
         marker.addListener('click', function () {
