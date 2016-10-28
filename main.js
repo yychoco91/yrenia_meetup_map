@@ -130,6 +130,8 @@ function click_handlers() {
     $("#map_left").on("click",".card-content",function () {
         console.log("HI");
         $(".intro-wrapper").animate({top: '-200vh'}, 750);
+        $('.active-card').removeClass('active-card');
+        $(this).addClass('active-card');
         console.log(this);
         createEventDescription(this);
     });
@@ -311,17 +313,20 @@ function apiThrottled(heading,message) {
 //YOUTUBE SECTION -- DANs
 function youTubeApi(usersChoice) {
     console.log('In the youTubeApi function');
+    $('div.video-list').html('');
     //BEGINNING OF AJAX FUNCTION
     $.ajax({
         dataType: 'json',
         data: {
             q: usersChoice,  // this is used as the parameter for the function
-            maxResults: 3
+            maxResults: 5
         },
         method: 'POST',
         url: "https://s-apis.learningfuze.com/hackathon/youtube/search.php",
         //BEGIN SUCCESS'S ANONYMOUS FUNCTION
         success: function (response) {
+            var relatedVideos = $('<h4>Related Videos</h4>');
+            var videoList = $('div.video-list').append(relatedVideos);
             if (response.success === true) {
                 //CONSOLE LOGS FOR TESTING PURPOSES
                 console.log('successful connection to YouTube API');
@@ -339,16 +344,17 @@ function youTubeApi(usersChoice) {
                     });
                     iframe.appendTo(iframeDiv);
                     //ADDING VIDEO LINK TO THE DOM
-                    $('div.video-list').append(iframeDiv);
+                    //var videoList = $('div.video-list').append(relatedVideos);
+                    videoList.append(iframe);
                     console.log('This is the new div and class ', iframeDiv);
                 }
             } else {
                 //CONSOLE LOG FOR TESTING PURPOSES
                 console.log('failure -- Unable to connect to YouTube api');
                 //CALLING A FUNCTION FOR IF THE API IS DOWN
-                var youTubeFailHeading = 'Woah!';
-                var youTubeFailMessage = 'This is rare, but we are unable to pull any videos at this time.  Please' +
-                    ' try again later.';
+                var youTubeFailHeading = 'Oh no!';
+                var youTubeFailMessage = 'This is rare, but we are unable to pull any videos at this time.' +
+                    'Please, try again later.';
                 apiThrottled(youTubeFailHeading,youTubeFailMessage);
             }
         }
@@ -366,18 +372,18 @@ function createEventDescription(eventCard) {
     date = parseTime(date);
 
     var $eventName=$('<h3>',{
-        class: 'light-blue-text darken-4',
+        class: 'red-text',
         text: cardEvent['name']
     });
     var $groupName=$('<h6>',{
         text: cardEvent.group.name
     });
     var $eventDate= $('<h5>',{
-        class: 'light-blue-text darken-4',
+        class: 'red-text',
         text: date
     });
     var $eventAddress= $('<h5>',{
-        class: 'light-blue-text darken-4',
+        class: 'red-text',
         text: cardEvent.venue.address_1 + cardEvent.venue.city + cardEvent.venue.state
     });
     var $eventDescription=$('<p>',{
