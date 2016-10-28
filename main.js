@@ -152,6 +152,7 @@ function click_handlers() {
  * @param {number} zipcode - user-entered zipcode
  */
 function getTopics(apiKey, keyword, zipcode) {
+    console.log('in get topics ', keyword);
     var meetUpLink;
     var zip = zipcode;
     var userWord = keyword;
@@ -348,17 +349,20 @@ function youTubeApi(usersChoice) {
         }
     });
 }
-
+/**
+ * createEventDescription - dynamically add event info to more event info page'
+ * @param {object} eventCard - contains event information
+ */
 function createEventDescription(eventCard) {
     $('.event-details').html('');
     var cardClicked = eventCard;
-    var cardId = $(cardClicked).attr('id');
+    var cardId = $(cardClicked).attr('id'); //finds card id to look for matching event
     console.log('Card Clicked', cardId);
     cardEvent = global_event[cardId];
     console.log('This Event ', cardEvent);
     var date = new Date(cardEvent['time']);
-    date = parseTime(date);
-
+    date = parseTime(date); //get readable date format
+    //create elements with event information and classes for styling
     var $eventName=$('<h3>',{
         class: 'red-text',
         text: cardEvent['name']
@@ -381,7 +385,6 @@ function createEventDescription(eventCard) {
     var $eventDescription=$('<p>',{
         html: cardEvent['description']
     });
-
+    //attach elements to dom
     $('.event-details').append($eventName,$groupName,$eventDate,$eventAddress, $eventURL,$eventDescription);
 }
-
