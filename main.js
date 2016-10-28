@@ -302,6 +302,13 @@ $('#map_left').on('click','.card', function(){
 
 });
 
+function missingPropertyValues(objName) {
+    for(var i=0 in event) {
+        console.log()
+        console.log(objName[i]);
+    }
+}
+
 //API IS BEING THROTTLED FUNCTION
 function apiThrottled(heading,message) {
     $('#error_modal .modal-content h4').text(heading);
@@ -311,6 +318,8 @@ function apiThrottled(heading,message) {
 
 //YOUTUBE SECTION -- DANs
 function youTubeApi(usersChoice) {
+    missingPropertyValues(event);
+    //usersChoice = usersChoice + ' Meetup';
     console.log('In the youTubeApi function');
     $('div.video-list').html('');
     //BEGINNING OF AJAX FUNCTION
