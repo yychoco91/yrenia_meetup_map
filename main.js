@@ -5,6 +5,7 @@ $(document).ready(click_handlers);
 
 // Danh's Section
 var global_zip = null;
+var global_venue = [];
 /**
  * function geoCoding converts zip code to longitude and latitude
  *
@@ -23,6 +24,7 @@ function geoCoding(query) {
     })
 }
 /**
+ * function parseEventsForMaps
  *
  * @param {object} eventObj - event object passed from Meetup Open Events API
  */
@@ -30,6 +32,7 @@ function parseEventsForMaps(eventObj) {
     console.log("Event Object is", eventObj);
     var geocodeArray = [];
     $("#map_left").html("");
+    var j = 1;
     for (var i = 0; i < eventObj.length; i++) {
 
         if (eventObj[i].hasOwnProperty("venue")) {
@@ -37,12 +40,18 @@ function parseEventsForMaps(eventObj) {
             var eventLat = eventObj[i].venue.lat;
             var eventLon = eventObj[i].venue.lon;
 
-            createEventCard(eventObj[i]);
+            if (eventLat != 0 || eventLon != 0) {
+                createEventCard(eventObj[i]);
+                global_venue.push(j+") "+eventObj[i].venue.name);
 
-            geocodeArray.push({
-                lat: eventLat,
-                lng: eventLon
-            });
+                geocodeArray.push({
+                    lat: eventLat,
+                    lng: eventLon,
+                    title: eventObj[i].venue.name
+                });
+                j++;
+            }
+
         }
     }
 

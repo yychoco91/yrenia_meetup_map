@@ -187,12 +187,19 @@
            locations = eventObj;
         }
 
-        console.log('param locations is ',eventObj);
+        //console.log('global venue is ',global_venue);
         var locations2 = eventObj;
+
+
 
         // In the following example, markers appear when the user clicks on the map.
         // Each marker is labeled with a single alphabetical character.
-        var labels = ['You Are Here', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'LMNOPQRSTUVWXYZ'];
+        var labels = [];
+        //console.log("global labels is ", labels);
+        labels = global_venue;
+        //console.log("global venue is ", global_venue);
+        //labels.unshift("You are here");
+        console.log('global venue is ',labels);
         var labelIndex = 0;
 
         var map = new google.maps.Map(document.getElementById('map'), {
@@ -228,23 +235,28 @@
         var marker = new google.maps.Marker({
             position: myLatLng,
             map: map,
-            label: labels[labelIndex++ % labels.length],
+            label: "You Are Here",
             title: 'Hello World!'
         });
 
         var markers = locations.map(function (location, i) {
             return new google.maps.Marker({
                 position: location,
-                label: labels[i % labels.length]
+                label: labels[i % labels.length],
+                title: labels[i % labels.length]
             });
         });
 
+        var clusterStyles = [{
+            height: 128,
+            url: 'assets/images/steak.png',
+            width: 128
+        }];
+
         var options = {
             imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m',
-            textColor: 'white',
-            url: 'assets/images/steak.png',
-            height: 50,
-            width: 50
+            styles: clusterStyles,
+            class: "cluster_steak"
         }
 
         // Add a marker clusterer to manage the markers.
