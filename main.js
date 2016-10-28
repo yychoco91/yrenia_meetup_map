@@ -358,11 +358,15 @@ function createEventDescription(eventCard) {
     });
     var $eventAddress= $('<h5>',{
         class: 'red-text',
-        text: cardEvent.venue.address_1 + cardEvent.venue.city + cardEvent.venue.state
+        text: cardEvent.venue.address_1 + " "+ cardEvent.venue.city + " "+ cardEvent.venue.state
+    });
+    var $eventURL=$('<a/>',{
+        href:cardEvent['event_url'],
+        text: 'Event Link',
     });
     var $eventDescription=$('<p>',{
         html: cardEvent['description']
     });
 
-    $('.event-details').append($eventName,$groupName,$eventDate,$eventAddress,$eventDescription);
+    $('.event-details').append($eventName,$groupName,$eventDate,$eventAddress, $eventURL,$eventDescription);
 }
