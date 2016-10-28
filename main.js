@@ -112,6 +112,8 @@ function click_handlers() {
     $("#map_left").on("click",".card-content",function () {
         console.log("HI");
         $(".intro-wrapper").animate({top: '-200vh'}, 750);
+        $('.active-card').removeClass('active-card');
+        $(this).addClass('active-card');
         console.log(this);
         createEventDescription(this);
     });
@@ -363,18 +365,18 @@ function createEventDescription(eventCard) {
     date = parseTime(date);
 
     var $eventName=$('<h3>',{
-        class: 'light-blue-text darken-4',
+        class: 'red-text',
         text: cardEvent['name']
     });
     var $groupName=$('<h6>',{
         text: cardEvent.group.name
     });
     var $eventDate= $('<h5>',{
-        class: 'light-blue-text darken-4',
+        class: 'red-text',
         text: date
     });
     var $eventAddress= $('<h5>',{
-        class: 'light-blue-text darken-4',
+        class: 'red-text',
         text: cardEvent.venue.address_1 + cardEvent.venue.city + cardEvent.venue.state
     });
     var $eventDescription=$('<p>',{
