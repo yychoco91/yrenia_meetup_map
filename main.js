@@ -103,6 +103,9 @@ function click_handlers() {
     $("button#front-go").click(function () {
         var userSearch = $('#search').val();
         var userZip = $("#zip").val();
+        if (userSearch == '' || userZip == ''){
+            return;
+        }
         geoCoding(userSearch, userZip);
         youTubeApi(userSearch);
         $(".preloader-wrapper").show();
@@ -110,6 +113,9 @@ function click_handlers() {
     $("button#nav-go").click(function () {
         var userSearch = $('#nav_search').val();
         var userZip = $("#nav_zip").val();
+        if (userSearch == '' || userZip == ''){
+            return;
+        }
         geoCoding(userSearch, userZip);
         youTubeApi(userSearch);
         $(".preloader-wrapper").show();
@@ -212,7 +218,8 @@ function getEvents(apiKey, keyword, zip) {
                 });
             }else{ //if event is 1 or less, generic topic search urlkey for generic open events
                 //getTopics(meetUpKey, undefined, zip);
-                Materialize.toast('No open events found in your area', 2000, 'white red-text')
+                $(".preloader-wrapper").hide();
+                Materialize.toast('No open events found in your area', 2000, 'white red-text');
             }
         }
     });
