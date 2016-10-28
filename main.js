@@ -130,6 +130,7 @@ function createEventCard(event) {
     var eventName = event['name'];
     var groupName = event.group.name;
     var date = new Date(event['time']);
+    date = parseTime(date);
     var venueName = event.venue.name;
     var address = event.venue.address_1;
     var city = event.venue.city;
@@ -154,6 +155,26 @@ function createEventCard(event) {
         class: 'card red lighten-1'
     }).append($cardContent);
     $('#map_left').append($card);
+}
+function parseTime(date){
+    var day = date.toDateString();
+    var hour = date.getHours();
+    var minutes = date.getMinutes();
+    var newDate;
+    var amOrPm;
+    console.log('day ', day);
+    if(hour > 12){
+        hour -= 12;
+        amOrPm = 'pm';
+    }else{
+        amOrPm = 'am'
+    }
+    if(minutes === 0){
+        minutes = '00';
+    }
+    newDate = day + ' ' + hour + ':' + minutes + ' ' + amOrPm;
+    console.log(newDate);
+    return newDate;
 }
 //YOUTUBE SECTION -- DANs
 function youTubeApi(usersChoice) {
