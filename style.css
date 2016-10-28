@@ -28,7 +28,6 @@
     z-index: 999;
     height: 4em;
     width: 4em;
-    overflow: show;
     margin: auto;
     top: 30%;
     left: 0;
@@ -131,6 +130,10 @@ INTRO PAGE
 
 .intro-bottom-text {
     text-align: center;
+}
+
+.mobile-input-container {
+    display: none;
 }
 
 /********************
@@ -240,6 +243,15 @@ DETAILS PAGE
     border-bottom: 2px solid black;
 }
 
+.event-details img {
+    width: 100%;
+    height: auto;
+}
+
+.event-details {
+    padding: 3vh;
+}
+
 /*******************
 MAP MARKER
 *******************/
@@ -283,4 +295,24 @@ SCROLL BAR
     bottom: 50%;
     left: 50%;
     transform: translate(-50%,-50%);
+}
+
+@media only screen and (min-device-width : 320px) and (max-device-width : 667px) {
+
+    .input-container {
+        display: none;
+    }
+
+    .mobile-input-container {
+        display: block;
+    }
+
+/*    .map-left {
+        position: fixed;
+        height: 88vh;
+        z-index: 2;
+        overflow-y: scroll;
+        overflow-x: hidden;
+    }*/
+
 }
