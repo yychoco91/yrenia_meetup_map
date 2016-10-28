@@ -173,7 +173,8 @@ SIDEBAR
 .back-to-map {
     left: 90%;
     transform: translateX(-10%);
-    top: 5.5vh;
+    top: 9vh;
+    z-index: 100;
 }
 
 .card .card-content .card-title {
