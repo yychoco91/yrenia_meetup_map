@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="style.css">
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
+    <script src="infobubble-compiled.js"></script>
     <script src="main.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
@@ -227,6 +228,25 @@
         // Add a marker clusterer to manage the markers.
         var markerCluster = new MarkerClusterer(map, markers, options);
 
+        infoBubble = new InfoBubble({
+            map: map,
+            content: '<div class="mylabel">The label</div>',
+            //position: new google.maps.LatLng(-32.0, 149.0),
+            shadowStyle: 1,
+            width: 100,
+            padding: 15,
+            backgroundColor: 'rgb(255,255,255)',
+            borderRadius: 5,
+            arrowSize: 10,
+            borderWidth: 1,
+            borderColor: '#2c2c2c',
+            disableAutoPan: true,
+            //hideCloseButton: true,
+            arrowPosition: 30,
+            backgroundClassName: 'transparent',
+            arrowStyle: 2
+        });
+
         var contentString = '<div id="content">' +
                 '<div id="siteNotice">' +
                 '</div>' +
@@ -234,17 +254,7 @@
                 '<div id="bodyContent">' +
                 '<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large ' +
                 'sandstone rock formation in the southern part of the ' +
-                'Northern Territory, central Australia. It lies 335&#160;km (208&#160;mi) ' +
-                'south west of the nearest large town, Alice Springs; 450&#160;km ' +
-                '(280&#160;mi) by road. Kata Tjuta and Uluru are the two major ' +
-                'features of the Uluru - Kata Tjuta National Park. Uluru is ' +
-                'sacred to the Pitjantjatjara and Yankunytjatjara, the ' +
-                'Aboriginal people of the area. It has many springs, waterholes, ' +
-                'rock caves and ancient paintings. Uluru is listed as a World ' +
-                'Heritage Site.</p>' +
-                '<p>Attribution: Uluru, <a href="https://en.wikipedia.org/w/index.php?title=Uluru&oldid=297882194">' +
-                'https://en.wikipedia.org/w/index.php?title=Uluru</a> ' +
-                '(last visited June 22, 2009).</p>' +
+                'Northern Territory, central Australia.</p>' +
                 '</div>' +
                 '</div>';
 
@@ -253,7 +263,8 @@
         });
 
         marker.addListener('click', function () {
-            infowindow.open(map, marker);
+            //infowindow.open(map, marker);
+            infoBubble.open(map, marker);
         });
     }
 

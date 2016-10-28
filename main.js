@@ -62,6 +62,29 @@ function parseEventsForMaps(eventObj) {
 // Danh's Section End
 function click_handlers() {
 
+    $(".input-container input").keypress(function(event) {
+        if (event.which == 13) {
+            event.preventDefault();
+            console.log("HI");
+            var userSearch = $('#search').val();
+            var userZip = $("#zip").val();
+            geoCoding(userZip);
+            getTopics(userSearch, userZip);
+        }
+    });
+
+    $(".input-nav-container input").keypress(function(event) {
+        if (event.which == 13) {
+            event.preventDefault();
+            console.log("HI");
+            var userSearch = $('#search').val();
+            var userZip = $("#nav_zip").val();
+            geoCoding(userZip);
+            getTopics(userSearch, userZip);
+            youTubeApi(userSearch);
+        }
+    });
+
     $("#top_search").on("click",".logo-nav, .btn-floating",function () {
         console.log("HI");
         //$(".intro-wrapper").slideUp(750);
