@@ -73,7 +73,7 @@
 }
 
 .logo-nav {
-    background: url(assets/images/meetupmap-logo-white.png) no-repeat left center;
+    background: url(assets/images/meetupmap-logo-new-white.png) no-repeat left center;
     background-size: contain;
     height: 8vh;
     margin-left: 0 !important;
@@ -81,7 +81,7 @@
 }
 
 .logo {
-    background: url(assets/images/meetupmap-logo-red-white.png) no-repeat center;
+    background: url(assets/images/meetupmap-logo-new.png) no-repeat center;
     background-size: 100%;
     width: 100%;
     height: 15vh;
@@ -120,7 +120,8 @@
     z-index: 2;
     top: 0vh;
     left: 3vh !important;
-    overflow: scroll;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 .map-center {
@@ -159,6 +160,7 @@
 
 .card {
     cursor: pointer;
+    margin-right: 2rem;
 }
 
 .back-to-map {
@@ -172,9 +174,13 @@
 }
 
 .first-card {
-    height: 14vh;
+    height: 12vh;
     box-shadow: 0 0;
     background-color: rgba(0,0,0,0);
+}
+
+.intro-icons {
+    top: 1vh;
 }
 
 /********************
@@ -212,4 +218,22 @@ Map Marker Styling
     color: blue;
     text-decoration: underline;
     cursor: pointer;
+}
+/********************
+SCROLL BAR
+********************/
+
+#map_left::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    background-color: #F5F5F5;
+}
+
+#map_left::-webkit-scrollbar {
+    width: 6px;
+    background-color: rgba(255,255,255,.2);
+}
+
+#map_left::-webkit-scrollbar-thumb
+{
+    background-color: #e53935;
 }
