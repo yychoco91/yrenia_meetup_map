@@ -169,7 +169,7 @@
         var labelIndex = 0;
 
         var map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 10,
+            zoom: 11,
             center: myLatLng,
             styles: [{
                 "featureType": "administrative",
@@ -198,43 +198,62 @@
             }, {"featureType": "water", "elementType": "all", "stylers": [{"color": "#46bcec"}, {"visibility": "on"}]}]
         });
 
-        var marker = new google.maps.Marker({
-            position: myLatLng,
-            map: map,
-            label: "You Are Here",
-            title: 'Meetmap!'
-            /*icon: 'assets/images/steak.png'*/
-        });
+        if(eventObj != undefined) {
+            var j =1;
+            for(var i =0;i<eventObj.length;i++) {
+                var marker = new google.maps.Marker({
+                    position: {
+                        lat: eventObj[i].lat,
+                        lng: eventObj[i].lng},
+                    map: map,
+                    label: ""+j
+                });
+                j++;
 
-        var markers = locations.map(function (location, i) {
-            return new google.maps.Marker({
-                position: location,
-                label: labels[i % labels.length],
-                title: labels[i % labels.length]
-            });
-        });
+                infoBubble2 = new InfoBubble({
+                    map: map,
+                    position: new google.maps.LatLng(eventObj[i].lat, eventObj[i].lng),
+                    content: '<div class="mylabel">'+eventObj[i].title+'</div>',
+                    //position: new google.maps.LatLng(-32.0, 149.0),
+                    shadowStyle: 1,
+                    padding: 0,
+                    backgroundColor: 'rgb(255,255,255)',
+                    borderRadius: 5,
+                    arrowSize: 10,
+                    borderWidth: 1,
+                    borderColor: '#2c2c2c',
+                    disableAutoPan: true,
+                    //hideCloseButton: true,
+                    arrowPosition: 30,
+                    backgroundClassName: 'transparent',
+                    arrowStyle: 2,
+                });
 
-        var clusterStyles = [{
-            height: 66,
-            url: 'assets/images/m3.png',
-            width: 66
-        }];
+                marker.pos = new google.maps.LatLng(eventObj[i].lat, eventObj[i].lng);
+                marker.html = '<div class="mylabel"><span>'+
+                        eventObj[i].title+
+                                '</span><div class="div_links">More Info</div>'+
+                        '<div class="div_links">Youtube</div>'+
+                        '<div class="div_links">Directions</div>'+
+                        '<div class="div_links">Address</div>'+
+                        '</div>';
 
-        var options = {
-            imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m',
-            styles: clusterStyles,
+                marker.addListener('click', function () {
+                    //infowindow.open(map, marker);
+                    infoBubble2.setContent(this.html);
+                    infoBubble2.open(map, this);
+                    map.panTo(this.pos);
+                });
+
+            }
         }
-
-        // Add a marker clusterer to manage the markers.
-        var markerCluster = new MarkerClusterer(map, markers, options);
 
         infoBubble = new InfoBubble({
             map: map,
-            content: '<div class="mylabel">The label</div>',
+            content: '<div class="mylabel"><span>You Are Here!</span></div>',
             //position: new google.maps.LatLng(-32.0, 149.0),
             shadowStyle: 1,
-            width: 100,
-            padding: 15,
+            padding: 0,
             backgroundColor: 'rgb(255,255,255)',
             borderRadius: 5,
             arrowSize: 10,
@@ -247,19 +266,12 @@
             arrowStyle: 2
         });
 
-        var contentString = '<div id="content">' +
-                '<div id="siteNotice">' +
-                '</div>' +
-                '<h1 id="firstHeading" class="firstHeading">Uluru</h1>' +
-                '<div id="bodyContent">' +
-                '<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large ' +
-                'sandstone rock formation in the southern part of the ' +
-                'Northern Territory, central Australia.</p>' +
-                '</div>' +
-                '</div>';
-
-        var infowindow = new google.maps.InfoWindow({
-            content: contentString
+        var marker = new google.maps.Marker({
+            position: myLatLng,
+            map: map,
+            label: "You Are Here",
+            title: 'Meetmap!'
+            /*icon: 'assets/images/steak.png'*/
         });
 
         marker.addListener('click', function () {

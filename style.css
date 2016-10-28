@@ -193,3 +193,22 @@ DETAILS PAGE
 .event-details .row {
     margin: 2vh 0;
 }
+
+/*******************
+Map Marker Styling
+*******************/
+
+.mylabel {
+    width: 50%;
+    height: 20%;
+    padding: 10px;
+}
+
+.mylabel span {
+    font-size: 16px;
+    font-weight: bold;
+}
+.div_links {
+    color: blue;
+    text-decoration: underline;
+}
