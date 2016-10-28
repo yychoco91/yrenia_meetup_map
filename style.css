@@ -116,7 +116,7 @@
     position: fixed;
     height: 100vh;
     z-index: 2;
-    top: 14vh;
+    /*top: 14vh;*/
     left: 3vh !important;
     overflow: scroll;
 }
@@ -163,6 +163,14 @@
     left: 90%;
     transform: translateX(-10%);
     top: 5.5vh;
+}
+
+.card .card-content .card-title {
+    line-height: 32px;
+}
+
+.first-card {
+    height: 14vh;
 }
 
 /********************
