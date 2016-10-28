@@ -19,9 +19,15 @@ function geoCoding(query) {
         method: 'GET',
         url: "https://maps.googleapis.com/maps/api/geocode/json?address=" + query + "&key=AIzaSyDa6lkpC-bOxXWEbrWaPlw_FneCpQhlgNE",
         success: function (response) {
-            var output = response.results[0].geometry.location;
-            global_zip = output;
-            //console.log("response", output);
+            if(response.status === 'OK')
+            {
+                var output = response.results[0].geometry.location;
+                global_zip = output;
+                //console.log("response", output);
+            } else {
+                alert("FAIL!");
+            }
+
         }
     })
 }
@@ -67,7 +73,7 @@ function click_handlers() {
     $(".input-container input").keypress(function(event) {
         if (event.which == 13) {
             event.preventDefault();
-            console.log("HI");
+            console.log("Front Page Search");
             var userSearch = $('#search').val();
             var userZip = $("#zip").val();
             geoCoding(userZip);
@@ -78,7 +84,7 @@ function click_handlers() {
     $(".input-nav-container input").keypress(function(event) {
         if (event.which == 13) {
             event.preventDefault();
-            console.log("HI");
+            console.log("Nav Bar Search");
             var userSearch = $('#search').val();
             var userZip = $("#nav_zip").val();
             geoCoding(userZip);
@@ -87,12 +93,18 @@ function click_handlers() {
         }
     });
 
-    $("#top_search").on("click",".logo-nav, .btn-floating",function () {
-        console.log("HI");
-        //$(".intro-wrapper").slideUp(750);
+    $("#top_search").on("click",".logo-nav",function () {
+        console.log("Logo Clicked!");
         $('#top_search').removeClass('search-top');
         $('#map_left').removeClass('map-left');
         $(".intro-wrapper").animate({top: '0vh'}, 750, function(){
+
+        });
+    });
+
+    $(".details-wrapper").on("click",".btn-floating",function () {
+        console.log("Button Up Clicked!");
+        $(".intro-wrapper").animate({top: '-100vh'}, 750, function(){
 
         });
     });
@@ -212,6 +224,7 @@ function createEventCard(event){
         class: 'card-title',
         text: eventName
     });
+
     var $date = $('<p>', {
         text: date
     });
