@@ -265,7 +265,7 @@ $('#map_left').on('click','.card', function(){
     });
     var $groupName=$('<h5>',{
         text:event[i].group.name
-    })
+    });
     var $eventDate= $('<h4>',{
         text: new Date(event[i]['time'])
     });
@@ -337,16 +337,19 @@ function createEventDescription(eventCard) {
     var date = new Date(cardEvent['time']);
     date = parseTime(date);
 
-    var $eventName=$('<h1>',{
+    var $eventName=$('<h3>',{
+        class: 'light-blue-text darken-4',
         text: cardEvent['name']
     });
-    var $groupName=$('<h5>',{
+    var $groupName=$('<h6>',{
         text: cardEvent.group.name
     });
-    var $eventDate= $('<h4>',{
+    var $eventDate= $('<h5>',{
+        class: 'light-blue-text darken-4',
         text: date
     });
-    var $eventAddress= $('<h4>',{
+    var $eventAddress= $('<h5>',{
+        class: 'light-blue-text darken-4',
         text: cardEvent.venue.address_1 + cardEvent.venue.city + cardEvent.venue.state
     });
     var $eventDescription=$('<p>',{
