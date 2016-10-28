@@ -80,9 +80,9 @@ function click_handlers() {
  */
 function getTopics(keyword, zipcode) {
     var meetUpLink;
-    if(keyword === undefined){
+    if(keyword === undefined){ //if no topic is passed, do generic search for topics at meetup
         meetUpLink = 'https://api.meetup.com/topics?&page=5&key=702403fb782d606165f7638a242a&sign=true';
-    }else{
+    }else{ //other use user entered word to search for urlkeys of topics
         meetUpLink = 'https://api.meetup.com/topics?search=' + keyword + '&page=5&key=702403fb782d606165f7638a242a&sign=true';
     }
     $.ajax({
@@ -92,22 +92,27 @@ function getTopics(keyword, zipcode) {
         success: function (response) {
             console.log('UrlKeys:', response.results);
             var topics = '';
-            if (response.results.length > 0) {
+            if (response.results.length > 0) { //check the array > 0; is there related topics to user search
                 console.log('Result is true');
-                for (var i = 0; i < response.results.length; i++) {
+                for (var i = 0; i < response.results.length; i++) { //for the amount of results, add to string separted by commas
                     console.log('in for loop');
-                    if (i !== response.results.length - 1) {
+                    if (i !== response.results.length - 1) { //current topic is not the last in the array of topic returned
                         topics += response.results[i]['urlkey'] + ',';
                     } else {
-                        topics += response.results[i]['urlkey'];
+                        topics += response.results[i]['urlkey']; //last topic, do not add comma
                     }
                 }
             }
-            console.log('Topics', topics);
-            getEvents(topics, zipcode);
+            //console.log('Topics', topics);
+            getEvents(topics, zipcode); //pass the urlkey and zipcode to look for open events
         }
     });
 }
+/**
+ * getEvents - ajax call to meetup api and using urlkey from getTopics gets open events
+ * @param {string} keyword - urlkeys from meetup separated by commas
+ * @param {string} zip - user-entered zipcode
+ */
 function getEvents(keyword, zip) {
     var userKeyword = keyword;
     var userZip = zip;
@@ -117,18 +122,18 @@ function getEvents(keyword, zip) {
         method: 'get',
         success: function (response) {
             var eventList = response.results;
-            if(response.results.length > 1) {
-                console.log('Event list', eventList);
-                console.log('global zip', global_zip);
-                var newEventList = parseEventsForMaps(eventList);
-                console.log("new event list ", newEventList);
+            if(response.results.length > 1) { //check that array containing open events is greater than 1
+                //console.log('Event list', eventList);
+                //console.log('global zip', global_zip);
+                var newEventList = parseEventsForMaps(eventList); //gets latitude and longitude for map
+                //console.log("new event list ", newEventList);
                 initMap(global_zip, newEventList);
                 $(".intro-wrapper").slideDown(750);
                 $(".intro-wrapper").animate({top: '-100vh'}, 750, function () {
                     $('#top_search').addClass('search-top');
                     $('#map_left').addClass('map-left'); // added this wed. night - taylor
                 });
-            }else{
+            }else{ //if event is 1 or less, generic topic search urlkey for generic open events
                 getTopics();
             }
         }
