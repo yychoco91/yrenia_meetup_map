@@ -261,19 +261,16 @@ MAP MARKER
 *******************/
 
 .mylabel {
-    width: 20%;
-    height: 20%;
-    padding: 3px;
+    padding: 5px;
 }
 
 .mylabel span {
-    font-size: 15px;
+    width:100%;
+    font-size: 16px;
     font-weight: bold;
 }
 .div_links {
-    color: blue;
-    text-decoration: underline;
-    cursor: pointer;
+    color: grey;
 }
 /********************
 SCROLL BAR

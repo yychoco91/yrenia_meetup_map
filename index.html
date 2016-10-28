@@ -216,21 +216,24 @@
                     },
                     map: map,
                     //label: ""+j,
-                    icon: 'assets/images/meetup-logo-sm.png'
+                    icon: 'assets/images/meetup-logo-sm.png',
+                    title: eventObj[i].title
                 });
                 j++;
 
                 infoBubble2 = new InfoBubble({
                     map: map,
                     position: new google.maps.LatLng(eventObj[i].lat, eventObj[i].lng),
-                    content: '<div class="mylabel">' + eventObj[i].title + '</div>',
+                    content: '<div class="mylabel">' + eventObj[i].venue + '</div>',
                     //position: new google.maps.LatLng(-32.0, 149.0),
                     shadowStyle: 1,
-                    padding: 0,
+                    padding: 5,
                     backgroundColor: 'rgb(255,255,255)',
                     borderRadius: 5,
                     arrowSize: 10,
                     borderWidth: 1,
+                    minWidth: 200,
+                    minHeight: 100,
                     borderColor: '#2c2c2c',
                     //disableAutoPan: true,
                     //hideCloseButton: true,
@@ -241,11 +244,9 @@
 
                 marker.pos = new google.maps.LatLng(eventObj[i].lat, eventObj[i].lng);
                 marker.html = '<div class="mylabel"><span>' +
-                        eventObj[i].title +
-                        '</span><div class="div_links">More Info</div>' +
-                        '<div class="div_links">Youtube</div>' +
-                        '<div class="div_links">Directions</div>' +
-                        '<div class="div_links">Address</div>' +
+                        eventObj[i].venue +
+                        '</span><div class="div_links">'+eventObj[i].title+'</div>' +
+                        '<div class="div_links">'+eventObj[i].address+'</div>' +
                         '</div>';
 
                 marker.addListener('click', function () {
@@ -255,20 +256,23 @@
                     //map.panTo(this.pos);
                 });
 
+
             }
         }
 
         infoBubble = new InfoBubble({
             map: map,
-            content: '<div class="mylabel"><span>You&nbsp;Are&nbsp;Here!</span></div>',
+            content: '<div class="mylabel"><span>You Are Here!</span></div>',
             //position: new google.maps.LatLng(-32.0, 149.0),
             shadowStyle: 1,
-            padding: 0,
+            padding: 5,
             backgroundColor: 'rgb(255,255,255)',
             borderRadius: 5,
             arrowSize: 10,
             borderWidth: 1,
             borderColor: '#2c2c2c',
+            minWidth: 200,
+            minHeight: 100,
             //disableAutoPan: true,
             //hideCloseButton: true,
             arrowPosition: 30,
@@ -288,6 +292,7 @@
             //infowindow.open(map, marker);
             infoBubble.open(map, marker);
         });
+
     }
 
 </script>
