@@ -5,6 +5,7 @@ $(document).ready(click_handlers);
 var global_event = [];
 // Danh's Section
 var global_zip = null;
+var global_venue = [];
 /**
  * function geoCoding converts zip code to longitude and latitude
  *
@@ -23,13 +24,15 @@ function geoCoding(query) {
     })
 }
 /**
+ * function parseEventsForMaps
  *
  * @param {object} eventObj - event object passed from Meetup Open Events API
  */
 function parseEventsForMaps(eventObj) {
     //console.log("Event Object is", eventObj);
     var geocodeArray = [];
-    $("#map_left").html(' ');
+    $("#map_left").html("");
+    var j = 1;
     var empty_card = $('<div>').addClass('card first-card');
     $("#map_left").append(empty_card);
     for (var i = 0; i < eventObj.length; i++) {
@@ -39,12 +42,18 @@ function parseEventsForMaps(eventObj) {
             var eventLat = eventObj[i].venue.lat;
             var eventLon = eventObj[i].venue.lon;
 
-            createEventCard(eventObj[i]);
+            if (eventLat != 0 || eventLon != 0) {
+                createEventCard(eventObj[i]);
+                global_venue.push(j+") "+eventObj[i].venue.name);
 
-            geocodeArray.push({
-                lat: eventLat,
-                lng: eventLon
-            });
+                geocodeArray.push({
+                    lat: eventLat,
+                    lng: eventLon,
+                    title: eventObj[i].venue.name
+                });
+                j++;
+            }
+
         }
     }
 
@@ -52,6 +61,39 @@ function parseEventsForMaps(eventObj) {
 }
 // Danh's Section End
 function click_handlers() {
+
+    $(".input-container input").keypress(function(event) {
+        if (event.which == 13) {
+            event.preventDefault();
+            console.log("HI");
+            var userSearch = $('#search').val();
+            var userZip = $("#zip").val();
+            geoCoding(userZip);
+            getTopics(userSearch, userZip);
+        }
+    });
+
+    $(".input-nav-container input").keypress(function(event) {
+        if (event.which == 13) {
+            event.preventDefault();
+            console.log("HI");
+            var userSearch = $('#search').val();
+            var userZip = $("#nav_zip").val();
+            geoCoding(userZip);
+            getTopics(userSearch, userZip);
+            youTubeApi(userSearch);
+        }
+    });
+
+    $("#top_search").on("click",".logo-nav, .btn-floating",function () {
+        console.log("HI");
+        //$(".intro-wrapper").slideUp(750);
+        $('#top_search').removeClass('search-top');
+        $('#map_left').removeClass('map-left');
+        $(".intro-wrapper").animate({top: '0vh'}, 750, function(){
+
+        });
+    });
 
     $("#map_left").on("click",".card-content",function () {
         console.log("HI");
