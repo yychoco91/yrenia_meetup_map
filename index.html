@@ -46,7 +46,8 @@
         </div>
         <div class="row">
             <div class="col s12 valign-wrapper white intro-bottom z-depth-2">
-                <p class="col s12 valign intro-bottom-text"><em>Disclaimer:</em> Meetmap Map&trade; is not affiliated in any
+                <p class="col s12 valign intro-bottom-text"><em>Disclaimer:</em> Meetmap Map&trade; is not affiliated in
+                    any
                     way with Meetup&trade;.</p>
             </div>
         </div>
@@ -57,6 +58,9 @@
         <div class="map-wrapper">
             <div class="row">
                 <div id="top_search" class="col s12 red darken-1 valign-wrapper z-depth-2">
+                    <div class="btn-floating btn-large waves-effect waves-light grey lighten-3 z-depth-3 back-to-map">
+                        <i class="material-icons red-text darken-1">navigation</i>
+                    </div>
                     <div class="col s10 offset-s1 input-nav valign">
                         <div class="input-nav-container valign-wrapper">
                             <div class="logo-nav col s2 valign"></div>
@@ -64,7 +68,7 @@
                                 <input placeholder="What are your interests?" class="validate" type="text"
                                        id="nav_search">
                             </div>
-                            <div class="input-field col s2 offset-s1 valign">
+                            <div class="input-field col s1 offset-s1 valign">
                                 <input placeholder="Your zip code" class="validate" type="text" id="nav_zip">
                             </div>
                             <div class="button-div col s2 offset-s1 valign">
@@ -147,11 +151,26 @@
             <div class="row">
                 <div class="col s10 offset-s4">
                     <div class="col s4 event-details">
-                        <div class="video-container black"></div>
-                        <div class="video-container black"></div>
-                        <div class="video-container black"></div>
-                        <div class="video-container black"></div>
-                        <div class="video-container black"></div>
+                        <h1>Event Title</h1>
+                        <h5>Group Name</h5>
+                        <h4>October 27th at 4:30pm</h4>
+                        <h4>1234 Address Lane, Irvine, CA</h4>
+                        <p>Description Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam assumenda
+                            distinctio id iure laboriosam laudantium libero modi molestiae, nam, omnis provident quaerat
+                            qui quibusdam recusandae saepe sapiente temporibus vero vitae.</p>
+                        <br>
+                        <div class="row">
+                            <div class="col s5 event-photos red lighten-3"></div>
+                            <div class="col s5 offset-s1 event-photos red lighten-3"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col s5 event-photos red lighten-3"></div>
+                            <div class="col s5 offset-s1 event-photos red lighten-3"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col s5 event-photos red lighten-3"></div>
+                            <div class="col s5 offset-s1 event-photos red lighten-3"></div>
+                        </div>
                     </div>
                     <div class="col s3 offset-s1 video-list"></div>
                 </div>
@@ -163,7 +182,7 @@
 
     var locations = [];
 
-    function initMap(myLatLng,eventObj) {
+    function initMap(myLatLng, eventObj) {
         console.log("Zip ", myLatLng);
         if (myLatLng === undefined) {
             //console.log("undefined");
@@ -184,10 +203,10 @@
                 {lat: 33.87, lng: -117.853352}
             ]
         } else {
-           locations = eventObj;
+            locations = eventObj;
         }
 
-        console.log('param locations is ',eventObj);
+        console.log('param locations is ', eventObj);
         var locations2 = eventObj;
 
         // In the following example, markers appear when the user clicks on the map.
@@ -248,7 +267,7 @@
         }
 
         // Add a marker clusterer to manage the markers.
-        var markerCluster = new MarkerClusterer(map, markers,options);
+        var markerCluster = new MarkerClusterer(map, markers, options);
 
         var contentString = '<div id="content">' +
                 '<div id="siteNotice">' +
