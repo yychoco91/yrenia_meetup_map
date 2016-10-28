@@ -288,7 +288,7 @@ function youTubeApi(usersChoice) {
         url: "https://s-apis.learningfuze.com/hackathon/youtube/search.php",
         //BEGIN SUCCESS'S ANONYMOUS FUNCTION
         success: function (response) {
-            if (response) {
+            if (response.success == true) {
                 //CONSOLE LOGS FOR TESTING PURPOSES
                 console.log('successful connection to YouTube API');
 
@@ -305,13 +305,13 @@ function youTubeApi(usersChoice) {
                     });
                     iframe.appendTo(iframeDiv);
                     //ADDING VIDEO LINK TO THE DOM
-                    // $('div.video-list').append(titleText);
                     $('div.video-list').append(iframeDiv);
                     console.log('This is the new div and class ', iframeDiv);
                 }
             } else {
                 //CONSOLE LOG FOR TESTING PURPOSES
                 console.log('failure -- Unable to connect to YouTube api');
+                alert('Video server is down, please try later.');
             }
         }
     });
