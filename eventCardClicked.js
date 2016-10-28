@@ -14,20 +14,17 @@ $('#map_left').on('click','.card', function(){
     var $eventAddress= $('<h4>',{
         text:eventList[i].venue.address_1 +eventList[i].venue.city +eventList[i].venue.state
     });
-    var $eventDescription=('<p>',{
+    var $eventDescription=$('<p>',{
         text:eventList[i]['description']
     });
 
-    var $eventDetail=('<div>',{
-        class:'event-details'
+    var $eventDetail=$('<div>',{
+        class:"event-details"
     }).append($eventName,$groupName,$eventDate,$eventAddress,$eventDescription);
 
-    var $eventPage=('<div>',{
+    var $eventPage=$('<div>',{
         class:'details-wrapper white',
     }).append($eventDetail);
-
-
-    //var $groupPictures;
 
 });
 
