@@ -270,7 +270,7 @@ $('#map_left').on('click','.card', function(){
         text: new Date(event[i]['time'])
     });
     var $eventAddress= $('<h4>',{
-        text:event[i].venue.address_1 +event[i].venue.city +event[i].venue.state
+        text:event[i].venue.address_1 + ' ' + event[i].venue.city + ', ' + event[i].venue.state
     });
     var $eventDescription=$('<p>',{
         text:event[i]['description']
