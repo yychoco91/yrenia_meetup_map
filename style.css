@@ -132,10 +132,6 @@ INTRO PAGE
     text-align: center;
 }
 
-.mobile-input-container {
-    display: none;
-}
-
 /********************
 THE MAP
 ********************/
@@ -248,8 +244,16 @@ DETAILS PAGE
     height: auto;
 }
 
-.event-details {
-    padding: 3vh;
+.event-details p:last-child, .event-details img:last-child {
+    padding: 0 0 3vh;
+}
+
+.video-list .video-container:last-child {
+    padding: 0 0 3vh;
+}
+
+.row .col .video-list {
+    padding: 0 0 100px;
 }
 
 /*******************
@@ -296,20 +300,37 @@ SCROLL BAR
 
 @media only screen and (min-device-width : 320px) and (max-device-width : 667px) {
 
-    .input-container {
+    .input-container .input-field label {
+        font-size: .7rem;
+    }
+
+    .input-nav input::-webkit-input-placeholder {
+        font-size: .7rem;
+    }
+
+    .logo-nav {
         display: none;
     }
 
-    .mobile-input-container {
-        display: block;
+    .go-btn2 {
+        width: 100%;
     }
 
-/*    .map-left {
+    #map {
+        display: none;
+    }
+
+    .map-left {
         position: fixed;
         height: 88vh;
         z-index: 2;
         overflow-y: scroll;
         overflow-x: hidden;
-    }*/
+    }
+
+    .details-wrapper {
+        display: none;
+    }
 
 }
+

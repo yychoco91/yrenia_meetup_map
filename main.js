@@ -121,6 +121,9 @@ function click_handlers() {
     $("button#front-go").click(function () {
         var userSearch = $('#search').val();
         var userZip = $("#zip").val();
+        if (userSearch == '' || userZip == ''){
+            return;
+        }
         geoCoding(userSearch, userZip);
         $(".preloader-wrapper").show();
     });
@@ -130,6 +133,9 @@ function click_handlers() {
     $("button#nav-go").click(function () {
         var userSearch = $('#nav_search').val();
         var userZip = $("#nav_zip").val();
+        if (userSearch == '' || userZip == ''){
+            return;
+        }
         geoCoding(userSearch, userZip);
         //youTubeApi(userSearch);
         $(".preloader-wrapper").show();
@@ -176,6 +182,7 @@ function click_handlers() {
  * @param {number} zipcode - user-entered zipcode
  */
 function getTopics(apiKey, keyword, zipcode) {
+    console.log('in get topics ', keyword);
     var meetUpLink;
     var zip = zipcode;
     var userWord = keyword;
@@ -242,7 +249,8 @@ function getEvents(apiKey, keyword, zip) {
                 });
             }else{ //if event is 1 or less, generic topic search urlkey for generic open events
                 //getTopics(meetUpKey, undefined, zip);
-                Materialize.toast('No open events found in your area', 2000, 'white red-text')
+                $(".preloader-wrapper").hide();
+                Materialize.toast('No open events found in your area', 2000, 'white red-text');
             }
         }
     });
@@ -314,6 +322,41 @@ function parseTime(date){
     return newDate;
 }
 
+
+$('#map_left').on('click','.card', function(){
+    var $eventName=$('<h1>',{
+        text:event[i]['name']
+    });
+    var $groupName=$('<h5>',{
+        text:event[i].group.name
+    });
+    var $eventDate= $('<h4>',{
+        text: new Date(event[i]['time'])
+    });
+    var $eventAddress= $('<h4>',{
+        text:event[i].venue.address_1 + ' ' + event[i].venue.city + ', ' + event[i].venue.state
+    });
+    var $eventDescription=$('<p>',{
+        text:event[i]['description']
+    });
+    var $eventDetail=$('<div>',{
+        class:"event-details"
+    }).append($eventName,$groupName,$eventDate,$eventAddress,$eventDescription);
+
+    var $eventPage=$('<div>',{
+        class:'details-wrapper white',
+    }).append($eventDetail);
+
+});
+
+function missingPropertyValues(objName) {
+    for(var i=0 in event) {
+        console.log()
+        console.log(objName[i]);
+    }
+}
+
+
 //API IS BEING THROTTLED FUNCTION
 function apiThrottled(heading,message) {
     $('#error_modal .modal-content h4').text(heading);
@@ -324,6 +367,8 @@ function apiThrottled(heading,message) {
 
 //YOUTUBE SECTION -- DANs
 function youTubeApi(usersChoice) {
+    missingPropertyValues(event);
+    //usersChoice = usersChoice + ' Meetup';
     console.log('In the youTubeApi function');
     $('div.video-list').html('');
     //BEGINNING OF AJAX FUNCTION
@@ -372,17 +417,20 @@ function youTubeApi(usersChoice) {
         }
     });
 }
-
+/**
+ * createEventDescription - dynamically add event info to more event info page'
+ * @param {object} eventCard - contains event information
+ */
 function createEventDescription(eventCard) {
     $('.event-details').html('');
     var cardClicked = eventCard;
-    var cardId = $(cardClicked).attr('id');
+    var cardId = $(cardClicked).attr('id'); //finds card id to look for matching event
     console.log('Card Clicked', cardId);
     cardEvent = global_event[cardId];
     console.log('This Event ', cardEvent);
     var date = new Date(cardEvent['time']);
-    date = parseTime(date);
-
+    date = parseTime(date); //get readable date format
+    //create elements with event information and classes for styling
     var $eventName=$('<h3>',{
         class: 'red-text',
         text: cardEvent['name']
@@ -405,7 +453,6 @@ function createEventDescription(eventCard) {
     var $eventDescription=$('<p>',{
         html: cardEvent['description']
     });
-
+    //attach elements to dom
     $('.event-details').append($eventName,$groupName,$eventDate,$eventAddress, $eventURL,$eventDescription);
 }
-
