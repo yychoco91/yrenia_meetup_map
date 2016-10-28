@@ -23,6 +23,24 @@
     height: 100vh;
 }
 
+.pre-load {
+    position: fixed;
+    z-index: 999;
+    height: 4em;
+    width: 4em;
+    overflow: show;
+    margin: auto;
+    top: 30%;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    display: none;
+}
+
+.spinner-red-only {
+    border-color: white;
+}
+
 /********************
 INTRO PAGE
 ********************/
@@ -223,7 +241,7 @@ DETAILS PAGE
 }
 
 /*******************
-Map Marker Styling
+MAP MARKER
 *******************/
 
 .mylabel {
@@ -255,7 +273,6 @@ SCROLL BAR
     background-color: rgba(255,255,255,.2);
 }
 
-#map_left::-webkit-scrollbar-thumb
-{
+#map_left::-webkit-scrollbar-thumb {
     background-color: #e53935;
 }
