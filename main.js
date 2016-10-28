@@ -199,6 +199,7 @@ function getEvents(apiKey, keyword, zip) {
  */
 function createEventCard(event){
     console.log('Event card', event);
+    var eventId = global_event.length;
     global_event.push(event); //push events used for cards to array for use on event description page
     var eventName = event['name'];
     var date = new Date(event['time']);
@@ -222,7 +223,8 @@ function createEventCard(event){
     });
     //append elements to the dom
     var $cardContent = $('<div>', {
-        class: 'card-content white-text'
+        class: 'card-content white-text',
+        id: eventId
     }).append($title, $date, $venue, $address);
     var $card = $('<div>', {
         class: 'card red lighten-1'
@@ -323,4 +325,33 @@ function youTubeApi(usersChoice) {
             }
         }
     });
+}
+
+function createEventDescription(eventCard) {
+    $('.event-details').html('');
+    var cardClicked = eventCard;
+    var cardId = $(cardClicked).attr('id');
+    console.log('Card Clicked', cardId);
+    cardEvent = global_event[cardId];
+    console.log('This Event ', cardEvent);
+    var date = new Date(cardEvent['time']);
+    date = parseTime(date);
+
+    var $eventName=$('<h1>',{
+        text: cardEvent['name']
+    });
+    var $groupName=$('<h5>',{
+        text: cardEvent.group.name
+    });
+    var $eventDate= $('<h4>',{
+        text: date
+    });
+    var $eventAddress= $('<h4>',{
+        text: cardEvent.venue.address_1 + cardEvent.venue.city + cardEvent.venue.state
+    });
+    var $eventDescription=$('<p>',{
+        html: cardEvent['description']
+    });
+
+    $('.event-details').append($eventName,$groupName,$eventDate,$eventAddress,$eventDescription);
 }

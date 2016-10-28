@@ -7,7 +7,7 @@ $('#map_left').on('click','.card', function(){
         });
     var $groupName=$('<h5>',{
         text:eventList[i].group.name
-    })
+    });
     var $eventDate= $('<h4>',{
         text: new Date(eventList[i]['time'])
     });
