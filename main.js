@@ -42,7 +42,7 @@ function geoCoding(search,zip) {
  * @param {object} eventObj - event object passed from Meetup Open Events API
  */
 function parseEventsForMaps(eventObj) {
-    //console.log("Event Object is", eventObj);
+    console.log("Event Object is", eventObj);
     var geocodeArray = [];
     $("#map_left").html("");
     var j = 1;
@@ -59,10 +59,14 @@ function parseEventsForMaps(eventObj) {
                 createEventCard(eventObj[i]);
                 global_venue.push(j+") "+eventObj[i].venue.name);
 
+                var addressText = eventObj[i].venue.address_1 + " " + eventObj[i].venue.city + ", " + eventObj[i].venue.state;
+
                 geocodeArray.push({
                     lat: eventLat,
                     lng: eventLon,
-                    title: eventObj[i].venue.name
+                    title: eventObj[i].name,
+                    address: addressText,
+                    venue: eventObj[i].venue.name
                 });
                 j++;
             }
@@ -82,7 +86,6 @@ function click_handlers() {
             var userSearch = $('#search').val();
             var userZip = $("#zip").val();
             geoCoding(userSearch, userZip);
-            youTubeApi(userSearch);
             $(".preloader-wrapper").show();
         }
     });
@@ -94,7 +97,7 @@ function click_handlers() {
             var userSearch = $('#nav_search').val();
             var userZip = $("#nav_zip").val();
             geoCoding(userSearch, userZip);
-            youTubeApi(userSearch);
+            //youTubeApi(userSearch);
             $(".preloader-wrapper").show();
 
         }
@@ -104,14 +107,13 @@ function click_handlers() {
         var userSearch = $('#search').val();
         var userZip = $("#zip").val();
         geoCoding(userSearch, userZip);
-        youTubeApi(userSearch);
         $(".preloader-wrapper").show();
     });
     $("button#nav-go").click(function () {
         var userSearch = $('#nav_search').val();
         var userZip = $("#nav_zip").val();
         geoCoding(userSearch, userZip);
-        youTubeApi(userSearch);
+        //youTubeApi(userSearch);
         $(".preloader-wrapper").show();
     });
 
@@ -207,6 +209,7 @@ function getEvents(apiKey, keyword, zip) {
                 $(".intro-wrapper").animate({top: '-100vh'}, 750, function () {
                     $('#top_search').addClass('search-top');
                     $('#map_left').addClass('map-left'); // added this wed. night - taylor
+                    youTubeApi(keyword);
                     $(".preloader-wrapper").hide();
                 });
             }else{ //if event is 1 or less, generic topic search urlkey for generic open events
