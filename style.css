@@ -170,6 +170,14 @@ SIDEBAR
     margin-right: 2rem;
 }
 
+.active-card {
+    background-color: white;
+    color: red !important;
+    font-weight: bold;
+    border: 1px solid red;
+    box-sizing: border-box;
+}
+
 .back-to-map {
     left: 90%;
     transform: translateX(-10%);
@@ -202,6 +210,16 @@ DETAILS PAGE
 
 .event-details .row {
     margin: 2vh 0;
+}
+
+.details-inner {
+    overflow-y: scroll;
+    overflow-x: hidden;
+    height: 100vh;
+}
+
+.event-details h5:last-child {
+    border-bottom: 2px solid black;
 }
 
 /*******************
