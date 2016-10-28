@@ -295,12 +295,13 @@ function apiThrottled(heading,message) {
 //YOUTUBE SECTION -- DANs
 function youTubeApi(usersChoice) {
     console.log('In the youTubeApi function');
+    $('div.video-list').html('');
     //BEGINNING OF AJAX FUNCTION
     $.ajax({
         dataType: 'json',
         data: {
             q: usersChoice,  // this is used as the parameter for the function
-            maxResults: 3
+            maxResults: 5
         },
         method: 'POST',
         url: "https://s-apis.learningfuze.com/hackathon/youtube/search.php",
