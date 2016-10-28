@@ -49,7 +49,8 @@
         </div>
         <div class="row">
             <div class="col s12 valign-wrapper white intro-bottom z-depth-2">
-                <p class="col s12 valign intro-bottom-text"><em>Meetup Map is in no way affiliated with Meetup&trade;</em></p>
+                <p class="col s12 valign intro-bottom-text"><em>Meetup Map is in no way affiliated with
+                    Meetup&trade;</em></p>
             </div>
         </div>
         <video id="bgvid" autoplay muted loop>
@@ -104,6 +105,22 @@
     </div>
 </div>
 
+<!-------PRELOADER------->
+
+<div class="preloader-wrapper active pre-load">
+    <div class="spinner-layer spinner-red-only big">
+        <div class="circle-clipper left">
+            <div class="circle"></div>
+        </div>
+        <div class="gap-patch">
+            <div class="circle"></div>
+        </div>
+        <div class="circle-clipper right">
+            <div class="circle"></div>
+        </div>
+    </div>
+</div>
+
 <!-------MODAL FOR WHEN THE RESPECTIVE APIs ARE BEING THROTTLED--------->
 <div id="error_modal" class="modal">
     <div class="modal-content">
@@ -149,7 +166,6 @@
         //var locations2 = eventObj;
 
 
-
         // In the following example, markers appear when the user clicks on the map.
         // Each marker is labeled with a single alphabetical character.
         var labels = [];
@@ -157,7 +173,7 @@
         labels = global_venue;
         //console.log("global venue is ", global_venue);
         //labels.unshift("You are here");
-        console.log('global venue is ',labels);
+        console.log('global venue is ', labels);
         var labelIndex = 0;
 
         var map = new google.maps.Map(document.getElementById('map'), {
@@ -190,13 +206,14 @@
             }, {"featureType": "water", "elementType": "all", "stylers": [{"color": "#46bcec"}, {"visibility": "on"}]}]
         });
 
-        if(eventObj != undefined) {
-            var j =1;
-            for(var i =0;i<eventObj.length;i++) {
+        if (eventObj != undefined) {
+            var j = 1;
+            for (var i = 0; i < eventObj.length; i++) {
                 var marker = new google.maps.Marker({
                     position: {
                         lat: eventObj[i].lat,
-                        lng: eventObj[i].lng},
+                        lng: eventObj[i].lng
+                    },
                     map: map,
                     //label: ""+j,
                     icon: 'assets/images/meetup-logo-sm.png'
@@ -206,7 +223,7 @@
                 infoBubble2 = new InfoBubble({
                     map: map,
                     position: new google.maps.LatLng(eventObj[i].lat, eventObj[i].lng),
-                    content: '<div class="mylabel">'+eventObj[i].title+'</div>',
+                    content: '<div class="mylabel">' + eventObj[i].title + '</div>',
                     //position: new google.maps.LatLng(-32.0, 149.0),
                     shadowStyle: 1,
                     padding: 0,
@@ -223,12 +240,12 @@
                 });
 
                 marker.pos = new google.maps.LatLng(eventObj[i].lat, eventObj[i].lng);
-                marker.html = '<div class="mylabel"><span>'+
-                        eventObj[i].title+
-                                '</span><div class="div_links">More Info</div>'+
-                        '<div class="div_links">Youtube</div>'+
-                        '<div class="div_links">Directions</div>'+
-                        '<div class="div_links">Address</div>'+
+                marker.html = '<div class="mylabel"><span>' +
+                        eventObj[i].title +
+                        '</span><div class="div_links">More Info</div>' +
+                        '<div class="div_links">Youtube</div>' +
+                        '<div class="div_links">Directions</div>' +
+                        '<div class="div_links">Address</div>' +
                         '</div>';
 
                 marker.addListener('click', function () {
