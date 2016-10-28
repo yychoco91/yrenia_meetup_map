@@ -125,7 +125,8 @@ function getTopics(keyword, zipcode) {
     if(keyword === undefined){ //if no topic is passed, do generic search for topics at meetup
         meetUpLink = 'https://api.meetup.com/topics?&page=5&key=702403fb782d606165f7638a242a&sign=true';
     }else{ //other use user entered word to search for urlkeys of topics
-        meetUpLink = 'https://api.meetup.com/topics?search=' + keyword + '&page=5&key=702403fb782d606165f7638a242a&sign=true';
+        //meetUpLink = 'https://api.meetup.com/topics?search=' + keyword + '&page=5&key=702403fb782d606165f7638a242a&sign=true';
+        meetUpLink = 'https://api.meetup.com/topics?search=' + keyword + '&page=5&key=163736143b31146c5361736d41103459&sign=true';
     }
     $.ajax({
         dataType: 'jsonp',
@@ -160,7 +161,8 @@ function getEvents(keyword, zip) {
     var userZip = zip;
     $.ajax({
         dataType: 'jsonp',
-        url: 'https://api.meetup.com/2/open_events?key=702403fb782d606165f7638a242a&zip=' + userZip + '&topic=' + userKeyword + '&page=20',
+        //url: 'https://api.meetup.com/2/open_events?key=702403fb782d606165f7638a242a&zip=' + userZip + '&topic=' + userKeyword + '&page=20',
+        url: 'https://api.meetup.com/2/open_events?key=163736143b31146c5361736d41103459&zip=' + userZip + '&topic=' + userKeyword + '&page=20',
         method: 'get',
         success: function (response) {
             var eventList = response.results;

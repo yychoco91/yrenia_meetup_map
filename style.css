@@ -12,10 +12,6 @@
     height: 100vh;
 }
 
-.map-wrapper {
-    /*display: none;*/
-}
-
 .intro-wrapper {
     position:relative;
     left:0;
@@ -25,17 +21,17 @@
 
 .map-wrapper, .intro-wrapper, .details-wrapper {
     height: 100vh;
-    /*display: none;*/
 }
 
+/********************
+INTRO PAGE
+********************/
+
 #bgvid {
-    /* Make video to at least 100% wide and tall */
     min-width: 100%;
     min-height: 100%;
-    /* Setting width & height to auto prevents the browser from stretching or squishing the video */
     width: auto;
     height: auto;
-    /* Center the video */
     position: absolute;
     top: 50%;
     left: 50%;
@@ -43,41 +39,13 @@
     z-index: -1;
 }
 
-#bgvid video {
-
-}
-
 .intro-top {
     height: 88vh;
     background-color: rgba(0,0,0,.7);
 }
 
-.intro-bottom {
-    height: 12vh;
-}
-
-.intro-bottom-text {
-    text-align: center;
-}
-
-.search-top {
-    top: 0;
-    position: fixed;
-    height: 12vh;
-    z-index: 3;
-    background-color: white;
-}
-
 .intro-inner {
     height: 50vh;
-}
-
-.logo-nav {
-    background: url(assets/images/meetupmap-logo-new-white.png) no-repeat left center;
-    background-size: contain;
-    height: 8vh;
-    margin-left: 0 !important;
-    cursor: pointer;
 }
 
 .logo {
@@ -95,41 +63,19 @@
     margin: 0 0 2%;
 }
 
+.intro-icons {
+    top: 1vh;
+    left: 1vh;
+}
+
 .search-input {
-    background-color: lightyellow;
     height: 8vh;
     margin: 2% 1%;
 }
 
 .zip-input {
-    background-color: lightgoldenrodyellow;
     height: 8vh;
     margin: 2% 0 2% 1%;
-}
-
-.go-button {
-    width: 100%;
-    height: 8vh;
-    margin: 2% 0 4%;
-    padding: 0;
-}
-
-.map-left {
-    position: fixed;
-    height: 100vh;
-    z-index: 2;
-    top: 0vh;
-    left: 3vh !important;
-    overflow-y: scroll;
-    overflow-x: hidden;
-}
-
-.map-center {
-    height: 100vh;
-}
-
-#map {
-    height: 100%;
 }
 
 .input-field label, .input-field input, .input-field input[type=text]:focus + label {
@@ -154,8 +100,69 @@
     height: 100%;
 }
 
+.go-button {
+    width: 100%;
+    height: 8vh;
+    margin: 2% 0 4%;
+    padding: 0;
+}
+
+.intro-bottom {
+    height: 12vh;
+}
+
+.intro-bottom-text {
+    text-align: center;
+}
+
+/********************
+THE MAP
+********************/
+
+.map-center {
+    height: 100vh;
+}
+
+#map {
+    height: 100%;
+}
+
+/********************
+SEARCH NAV
+********************/
+
+.search-top {
+    top: 0;
+    position: fixed;
+    height: 12vh;
+    z-index: 3;
+    background-color: white;
+}
+
+.logo-nav {
+    background: url(assets/images/meetupmap-logo-new-white.png) no-repeat left center;
+    background-size: contain;
+    height: 8vh;
+    margin-left: 0 !important;
+    cursor: pointer;
+}
+
 .go-btn2 {
     width: 75%;
+}
+
+/********************
+SIDEBAR
+********************/
+
+.map-left {
+    position: fixed;
+    height: 88vh;
+    z-index: 2;
+    top: 12vh;
+    left: 3vh !important;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 .card {
@@ -174,13 +181,9 @@
 }
 
 .first-card {
-    height: 12vh;
+    height: 1px;
     box-shadow: 0 0;
     background-color: rgba(0,0,0,0);
-}
-
-.intro-icons {
-    top: 1vh;
 }
 
 /********************
