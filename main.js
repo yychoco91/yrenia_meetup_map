@@ -277,7 +277,7 @@ function parseTime(date){
     return newDate;
 }
 
-<<<<<<< HEAD
+
 $('#map_left').on('click','.card', function(){
     var $eventName=$('<h1>',{
         text:event[i]['name']
@@ -311,8 +311,7 @@ function missingPropertyValues(objName) {
     }
 }
 
-=======
->>>>>>> a7a6e7d07551899c80986df04bf025756c1eaf9a
+
 //API IS BEING THROTTLED FUNCTION
 function apiThrottled(heading,message) {
     $('#error_modal .modal-content h4').text(heading);
