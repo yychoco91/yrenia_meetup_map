@@ -11,7 +11,7 @@ var meetUpKey2 = '163736143b31146c5361736d41103459';
 /**
  * function geoCoding
  *      converts zip code to longitude and latitude
- *      also calls
+ *      also calls the getTopics function after success response, if not, it calls our apiThrottled function
  *
  * @param {string} query - user zip code
  */
@@ -28,7 +28,7 @@ function geoCoding(search,zip) {
                console.log("param search is "+ search);
                 getTopics(meetUpKey1, search, zip);
             } else {
-                var header = "Error";
+                var header = "API Error";
                 var paragraph = "We cannot process the geocoding API at the moment. Please try again later";
                 apiThrottled(header, paragraph);
             }
@@ -82,7 +82,7 @@ function click_handlers() {
             var userSearch = $('#search').val();
             var userZip = $("#zip").val();
             geoCoding(userSearch, userZip);
-
+            youTubeApi(userSearch);
         }
     });
 
@@ -102,6 +102,7 @@ function click_handlers() {
         var userSearch = $('#search').val();
         var userZip = $("#zip").val();
         geoCoding(userSearch, userZip);
+        youTubeApi(userSearch);
     });
     $("button#nav-go").click(function () {
         var userSearch = $('#nav_search').val();
