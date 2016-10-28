@@ -252,6 +252,10 @@ DETAILS PAGE
     padding: 3vh;
 }
 
+.row .col .video-list {
+    padding: 0 0 100px;
+}
+
 /*******************
 MAP MARKER
 *******************/
@@ -317,6 +321,3 @@ SCROLL BAR
 
 }
 
-.row .col .video-list {
-     padding: 0 0 100px;
- }
