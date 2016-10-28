@@ -172,6 +172,8 @@
 
 .first-card {
     height: 14vh;
+    box-shadow: 0 0;
+    background-color: rgba(0,0,0,0);
 }
 
 /********************
