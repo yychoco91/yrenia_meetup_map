@@ -123,6 +123,23 @@
         </div>
     </div>
 </div>
+
+<!--
+$('#modal1').openModal();
+$('.modal-content h4').text(message var here);
+$('.modal-content p').text(message var here);
+-->
+
+<div id="error_modal" class="modal">
+    <div class="modal-content">
+        <h4>Oops!</h4>
+        <p>Something went wrong.</p>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">OK</a>
+    </div>
+</div>
+
 <script>
 
     var locations = [];
@@ -207,7 +224,7 @@
                         lng: eventObj[i].lng},
                     map: map,
                     label: ""+j,
-                    icon: 'assets/images/people35.png'
+                    icon: 'assets/images/meetup-logo-sm.png'
                 });
                 j++;
 
@@ -271,8 +288,8 @@
             position: myLatLng,
             map: map,
             label: "You Are Here",
-            title: 'Meetmap!'
-            /*icon: 'assets/images/steak.png'*/
+            title: 'Meetmap!',
+            icon: 'assets/images/map-pin-sm.png'
         });
 
         marker.addListener('click', function () {
