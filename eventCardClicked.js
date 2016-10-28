@@ -3,19 +3,19 @@
  */
 $('#map_left').on('click','.card', function(){
     var $eventName=$('<h1>',{
-        text:eventList[i]['name']
+        text:event[i]['name']
         });
     var $groupName=$('<h5>',{
-        text:eventList[i].group.name
+        text:event[i].group.name
     })
     var $eventDate= $('<h4>',{
-        text: new Date(eventList[i]['time'])
+        text: new Date(event[i]['time'])
     });
     var $eventAddress= $('<h4>',{
-        text:eventList[i].venue.address_1 +eventList[i].venue.city +eventList[i].venue.state
+        text:event[i].venue.address_1 +event[i].venue.city +event[i].venue.state
     });
     var $eventDescription=$('<p>',{
-        text:eventList[i]['description']
+        text:event[i]['description']
     });
 
     var $eventDetail=$('<div>',{
@@ -25,7 +25,6 @@ $('#map_left').on('click','.card', function(){
     var $eventPage=$('<div>',{
         class:'details-wrapper white',
     }).append($eventDetail);
-
 });
 
 function createEventCard(eventList) {
