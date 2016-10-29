@@ -25,7 +25,7 @@ function geoCoding(search,zip) {
             {
                 var output = response.results[0].geometry.location;
                 global_zip = output;
-               console.log("param search is "+ search);
+               //console.log("param search is "+ search);
                 getTopics(meetUpKey1, search, zip);
             } else {
                 var header = "API Error";
@@ -94,6 +94,10 @@ function click_handlers() {
             console.log("Front Page Search");
             var userSearch = $('#search').val();
             var userZip = $("#zip").val();
+            if (userSearch == '' || userZip == ''){
+                Materialize.toast('Please fill in both', 2000, 'white red-text');
+                return;
+            }
             geoCoding(userSearch, userZip);
             $(".preloader-wrapper").show();
         }
@@ -109,6 +113,10 @@ function click_handlers() {
             console.log("Nav Bar Search");
             var userSearch = $('#nav_search').val();
             var userZip = $("#nav_zip").val();
+            if (userSearch == '' || userZip == ''){
+                Materialize.toast('Please fill in both', 2000, 'white red-text');
+                return;
+            }
             geoCoding(userSearch, userZip);
             //youTubeApi(userSearch);
             $(".preloader-wrapper").show();
@@ -122,6 +130,7 @@ function click_handlers() {
         var userSearch = $('#search').val();
         var userZip = $("#zip").val();
         if (userSearch == '' || userZip == ''){
+            Materialize.toast('Please fill in both', 2000, 'white red-text');
             return;
         }
         geoCoding(userSearch, userZip);
@@ -134,6 +143,7 @@ function click_handlers() {
         var userSearch = $('#nav_search').val();
         var userZip = $("#nav_zip").val();
         if (userSearch == '' || userZip == ''){
+            Materialize.toast('Please fill in both', 2000, 'white red-text');
             return;
         }
         geoCoding(userSearch, userZip);
