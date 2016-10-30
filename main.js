@@ -178,11 +178,11 @@ function click_handlers() {
 
     //Event delegation for card events. On click, dynamically adds specific event info to event description page
     $("#map_left").on("click",".card-content",function () {
-        console.log("HI");
+        //console.log("HI");
         $(".intro-wrapper").animate({top: '-200vh'}, 750);
         $('.active-card').removeClass('active-card');
         $(this).addClass('active-card');
-        console.log(this);
+        //console.log(this);
         createEventDescription(this);
     });
 }
@@ -359,12 +359,11 @@ $('#map_left').on('click','.card', function(){
 
 });
 
-function missingPropertyValues(objName) {
-    for(var i=0 in event) {
-        console.log()
-        console.log(objName[i]);
-    }
-}
+// function missingPropertyValues(objName) {
+//     for(var i=0 in event) {
+//         console.log(objName[i]);
+//     }
+// }
 
 
 //API IS BEING THROTTLED FUNCTION
@@ -435,9 +434,9 @@ function createEventDescription(eventCard) {
     $('.event-details').html('');
     var cardClicked = eventCard;
     var cardId = $(cardClicked).attr('id'); //finds card id to look for matching event
-    console.log('Card Clicked', cardId);
+    //console.log('Card Clicked', cardId);
     cardEvent = global_event[cardId];
-    console.log('This Event ', cardEvent);
+    //console.log('This Event ', cardEvent);
     var date = new Date(cardEvent['time']);
     date = parseTime(date); //get readable date format
     //create elements with event information and classes for styling
