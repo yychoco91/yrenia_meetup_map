@@ -44,7 +44,7 @@ function geoCoding(search,zip) {
  * @param {object} eventObj - event object passed from Meetup Open Events API
  */
 function parseEventsForMaps(eventObj) {
-    console.log("Event Object is", eventObj);
+    //console.log("Event Object is", eventObj);
     var geocodeArray = [];
     $("#map_left").html("");
     var j = 1;
@@ -192,7 +192,7 @@ function click_handlers() {
  * @param {number} zipcode - user-entered zipcode
  */
 function getTopics(apiKey, keyword, zipcode) {
-    console.log('in get topics ', keyword);
+    //console.log('in get topics ', keyword);
     var meetUpLink;
     var zip = zipcode;
     var userWord = keyword;
@@ -207,15 +207,16 @@ function getTopics(apiKey, keyword, zipcode) {
         url: meetUpLink,
         method: 'get',
         success: function (response) {
-            console.log('UrlKeys:', response.results);
+            //console.log('UrlKeys:', response.results);
             var topics = '';
             if (response['code'] === 'blocked') {
+                console.log('First API key is blocked');
                 getTopics(meetUpKey2, userWord, zip)
             } else {
                 if (response.results.length > 0) { //check the array > 0; is there related topics to user search
-                    console.log('Result is true');
+                    //console.log('Result is true');
                     for (var i = 0; i < response.results.length; i++) { //for the amount of results, add to string separted by commas
-                        console.log('in for loop');
+                        //console.log('in for loop');
                         if (i !== response.results.length - 1) { //current topic is not the last in the array of topic returned
                             topics += response.results[i]['urlkey'] + ',';
                         } else {

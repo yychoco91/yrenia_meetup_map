@@ -153,7 +153,7 @@
      * @param eventObj - this object was parsed from our parseEventsForMaps function
      */
     function initMap(myLatLng, eventObj) {
-        console.log("Zip ", myLatLng);
+        //console.log("Zip ", myLatLng);
         if (myLatLng === undefined) {
             //console.log("undefined");
             myLatLng = { // defaults to Orange, CA
@@ -172,13 +172,13 @@
         }
 
 
-        console.log('param locations is ', eventObj);
+        //console.log('param locations is ', eventObj);
 
 
         var labels = [];
         labels = global_venue;
 
-        console.log('global venue is ', labels);
+        //console.log('global venue is ', labels);
         var labelIndex = 0;
 
         var map = new google.maps.Map(document.getElementById('map'), {
