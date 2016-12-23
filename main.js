@@ -16,10 +16,12 @@ var meetUpKey2 = '163736143b31146c5361736d41103459';
  * @param {string} query - user zip code
  */
 function geoCoding(search,zip) {
+    var zipConcat = zip.split(' ').join('+');
     $.ajax({
         dataType: 'JSON',
         method: 'GET',
-        url: "https://maps.googleapis.com/maps/api/geocode/json?address=" + zip + "&key=AIzaSyDa6lkpC-bOxXWEbrWaPlw_FneCpQhlgNE",
+        url: "geoCoding.php",
+        data: {zip:zipConcat},
         success: function (response) {
             if(response.status === 'OK')
             {
