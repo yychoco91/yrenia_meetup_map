@@ -346,13 +346,13 @@ function youTubeApi(usersChoice) {
     var arrayConcatUsersChoice = [];
     var splitarrayConcatUsersChoiceToString;
     for(var i = 0; i < len; i++ ){
-        concatUsersChoice = 'How to ' + splitUsersChoice[i];
+        concatUsersChoice = splitUsersChoice[i] + ' tips';
         arrayConcatUsersChoice.push(concatUsersChoice);
     }
     console.log('Here is the arrayConcatUsersChoice : ',arrayConcatUsersChoice);
     splitarrayConcatUsersChoiceToString = arrayConcatUsersChoice.toString();
     console.log('Here is the splitarrayConcatUsersChoiceToString : ',splitarrayConcatUsersChoiceToString);
-    var search = splitarrayConcatUsersChoiceToString;
+    var videoSearch = splitarrayConcatUsersChoiceToString;
     missingPropertyValues(event);
     //usersChoice = usersChoice + ' Meetup';
     console.log('In the youTubeApi function');
@@ -361,7 +361,7 @@ function youTubeApi(usersChoice) {
     $.ajax({
         dataType: 'json',
         data: {
-            q: usersChoice,  // this is used as the parameter for the function
+            q: videoSearch,  // this is used as the parameter for the function
             maxResults: 5
         },
         method: 'POST',
@@ -373,7 +373,7 @@ function youTubeApi(usersChoice) {
             if (response.success === true) {
                 //CONSOLE LOGS FOR TESTING PURPOSES
                 console.log('successful connection to YouTube API');
-
+               if(response.video) {
                 //LOOP FOR VIDEO ID AND TITLE
                 for (var i = 0; i < response.video.length; i++) {
                     //THE BELOW CODE
@@ -391,6 +391,11 @@ function youTubeApi(usersChoice) {
                     videoList.append(iframe);
                     console.log('This is the new div and class ', iframeDiv);
                 }
+
+                } else {
+                    var noVideoMessage = $('<p>Currently, there are no videos in our search results.</p>');
+                    relatedVideos.append(noVideoMessage);
+               }
             } else {
                 //CONSOLE LOG FOR TESTING PURPOSES
                 console.log('failure -- Unable to connect to YouTube api');
