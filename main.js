@@ -28,7 +28,23 @@ function geoCoding(search,zip) {
                 var output = response.results[0].geometry.location;
                 global_zip = output;
                console.log("param search is "+ search);
-                getTopics(meetUpKey1, search, zip);
+                $.ajax({
+                    dataType: 'JSON',
+                    method: 'GET',
+                    url: "reverseGeoCoding.php",
+                    data: {lat: output.lat, lng: output.lng},
+                    success: function (response2) {
+                        if(response2.status === 'OK')
+                        {
+                            var lastAddressComponent = response2.results['0'].address_components.length -1;
+                            var reverseGeoZip = response2.results[0].address_components[lastAddressComponent].short_name;
+                            console.info('reverseGeoZip:', reverseGeoZip);
+                            getTopics(meetUpKey1, search, reverseGeoZip);
+                        } else {
+                            console.warn('houston we have a problem', response2);
+                        }
+                    }
+                });
             } else {
                 var header = "API Error";
                 var paragraph = "We cannot process the geocoding API at the moment. Please try again later";
