@@ -222,7 +222,7 @@ function getEvents(apiKey, keyword, zip) {
             }else{ //if event is 1 or less, generic topic search urlkey for generic open events
                 //getTopics(meetUpKey, undefined, zip);
                 $(".preloader-wrapper").hide();
-                Materialize.toast('No open events found in your area', 2000, 'white red-text');
+                Materialize.toast('No open events found in your area', 2000, 'red white-text');
             }
         }
     });
@@ -242,6 +242,7 @@ function createEventCard(event){
     var address = event.venue.address_1;
     var city = event.venue.city;
     //create html elements with classes
+
     var $title = $('<span>', {
         class: 'card-title',
         text: eventName
@@ -403,6 +404,7 @@ function createEventDescription(eventCard) {
     var date = new Date(cardEvent['time']);
     date = parseTime(date); //get readable date format
     //create elements with event information and classes for styling
+
     var $eventName=$('<h3>',{
         class: 'red-text',
         text: cardEvent['name']
