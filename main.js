@@ -339,6 +339,20 @@ function apiThrottled(heading,message) {
 
 //YOUTUBE SECTION -- DANs
 function youTubeApi(usersChoice) {
+    var splitUsersChoice = usersChoice.split(',');
+    console.log('Here is the splitUsersChoice : ', splitUsersChoice);
+    var len = splitUsersChoice.length;
+    var concatUsersChoice;
+    var arrayConcatUsersChoice = [];
+    var splitarrayConcatUsersChoiceToString;
+    for(var i = 0; i < len; i++ ){
+        concatUsersChoice = 'How to ' + splitUsersChoice[i];
+        arrayConcatUsersChoice.push(concatUsersChoice);
+    }
+    console.log('Here is the arrayConcatUsersChoice : ',arrayConcatUsersChoice);
+    splitarrayConcatUsersChoiceToString = arrayConcatUsersChoice.toString();
+    console.log('Here is the splitarrayConcatUsersChoiceToString : ',splitarrayConcatUsersChoiceToString);
+    var search = splitarrayConcatUsersChoiceToString;
     missingPropertyValues(event);
     //usersChoice = usersChoice + ' Meetup';
     console.log('In the youTubeApi function');
