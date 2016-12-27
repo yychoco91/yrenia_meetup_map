@@ -12,8 +12,6 @@ var global_event = [];
 // Danh's Section
 var global_zip = null;
 var global_venue = [];
-var meetUpKey1 = '702403fb782d606165f7638a242a';
-var meetUpKey2 = '163736143b31146c5361736d41103459';
 /**
  * function geoCoding
  *      converts zip code to longitude and latitude
@@ -47,11 +45,11 @@ function geoCoding(search,zip) {
                             if (response2.results[0].address_components[lastAddressComponent].types[0] === 'postal_code') {
                                 var reverseGeoZip = response2.results[0].address_components[lastAddressComponent].short_name;
                                 console.info('reverseGeoZip - postal code: ', reverseGeoZip);
-                                getTopics(meetUpKey1, search, reverseGeoZip);
+                                getTopics(search, reverseGeoZip);
                             } else {
                                 var reverseGeoZipNoSuffix = response2.results[0].address_components[lastAddressComponent-1].short_name;
                                 console.info('reverseGeoZip - avoided postal code suffix: ', reverseGeoZipNoSuffix);
-                                getTopics(meetUpKey1, search, reverseGeoZipNoSuffix);
+                                getTopics(search, reverseGeoZipNoSuffix);
                             }
                         } else {
                             console.warn('houston we have a problem', response2);
@@ -221,18 +219,19 @@ function click_handlers() {
  * @param {string} keyword - user-entered interest
  * @param {number} zipcode - user-entered zipcode
  */
-/*function getTopics(keyword, zipcode) {
+function getTopics(keyword, zipcode) {
     var keyConcat = keyword.split(' ').join('%');
     console.info('keyword: ', keyConcat);
     var zip = zipcode;
     console.info('zipcode: ', zip);
     $.ajax({
-        dataType: 'JSONP',
+        dataType: 'JSON',
         method: 'GET',
         url: 'meetupTopics.php',
         data: {keyword:keyConcat},
         success: function (response) {
             var topics = '';
+            console.log('getTopics response: ', response);
             if (response['code'] === 'blocked') {
                 getTopicsBackup(keyConcat, zip);
             } else {
@@ -248,15 +247,18 @@ function click_handlers() {
                 console.log('Topics', topics);
                 getEvents(topics, zip); //pass the topics and zipcode to look for open events
             }
+        },
+        error: function (err) {
+            console.log('houston we have a problem: ', err);
         }
     })
 }
 
-//Get topics backup if meetup API limits on first key are reached
+//Get topics backup if meetup API limits on first key are reached TODO: THIS DOES NOT USE BACKUP API KEY YET
 function getTopicsBackup(keyword, zipcode) {
     var zip = zipcode;
     $.ajax({
-        dataType: 'JSONP',
+        dataType: 'JSON',
         method: 'GET',
         url: 'meetupTopics.php',
         data: {keyword:keyword},
@@ -273,11 +275,16 @@ function getTopicsBackup(keyword, zipcode) {
             }
             console.log('Topics', topics);
             getEvents(topics, zip); //pass the topics and zipcode to look for open events
+        },
+        error: function (err) {
+            console.log('houston we have a problem: ', err);
         }
     })
-}*/
+}
 
-function getTopics(apiKey, keyword, zipcode) {
+// OLD GET TOPICS FUNCTION (DOESN'T HIDE API KEY)
+
+/*function getTopics(apiKey, keyword, zipcode) {
     //console.log('in get topics ', keyword);
     var keySplit = keyword.split(" ");
     keyword = keySplit.join('%');
@@ -317,14 +324,75 @@ function getTopics(apiKey, keyword, zipcode) {
             }
         }
     });
-}
+}*/
 
 /**
  * getEvents - ajax call to meetup api and using urlkey from getTopics gets open events
  * @param {string} keyword - urlkeys from meetup separated by commas
  * @param {string} zip - user-entered zipcode
  */
-function getEvents(apiKey, keyword, zip) {
+function getEvents(keyword, zip) {
+    $.ajax({
+        dataType: 'JSON',
+        method: 'GET',
+        url: 'meetupEvents.php',
+        data: {keyword:keyword, zip:zip},
+        success: function (response) {
+            var eventList = response.results;
+            if(response.results.length > 1) {
+                var newEventList = parseEventsForMaps(eventList); //gets latitude and longitude for map
+                initMap(global_zip, newEventList);
+                $(".intro-wrapper").slideDown(750);
+                $(".intro-wrapper").animate({top: '-100vh'}, 750, function () {
+                    $('#top_search').addClass('search-top');
+                    $('#map_left').addClass('map-left');
+                    youTubeApi(keyword);
+                    $(".preloader-wrapper").hide();
+                });
+            }else{
+                $(".preloader-wrapper").hide();
+                Materialize.toast('No open events found in your area', 2000, 'white red-text');
+            }
+        },
+        error: function (err) {
+            console.log('houston we have a problem: ', err);
+        }
+    })
+}
+
+//Get events backup if meetup API limits on first key are reached TODO: THIS DOES NOT USE BACKUP API KEY YET
+function getEventsBackup(keyword, zip) {
+    $.ajax({
+        dataType: 'JSON',
+        method: 'GET',
+        url: 'meetupEvents.php',
+        data: {keyword:keyword, zip:zip},
+        success: function (response) {
+            var eventList = response.results;
+            if(response.results.length > 1) {
+                var newEventList = parseEventsForMaps(eventList); //gets latitude and longitude for map
+                initMap(global_zip, newEventList);
+                $(".intro-wrapper").slideDown(750);
+                $(".intro-wrapper").animate({top: '-100vh'}, 750, function () {
+                    $('#top_search').addClass('search-top');
+                    $('#map_left').addClass('map-left');
+                    youTubeApi(keyword);
+                    $(".preloader-wrapper").hide();
+                });
+            }else{
+                $(".preloader-wrapper").hide();
+                Materialize.toast('No open events found in your area', 2000, 'white red-text');
+            }
+        },
+        error: function (err) {
+            console.log('houston we have a problem: ', err);
+        }
+    })
+}
+
+// OLD GET EVENTS FUNCTION (DOESN'T HIDE API KEY)
+
+/*function getEvents(apiKey, keyword, zip) {
     var userKeyword = keyword;
     var userZip = zip;
     var meetUpKey = apiKey;
@@ -354,7 +422,8 @@ function getEvents(apiKey, keyword, zip) {
             }
         }
     });
-}
+}*/
+
 /**
  * createEventCard - dynamically create and append event info cards
  * @param {object} event - event containing necessary info
