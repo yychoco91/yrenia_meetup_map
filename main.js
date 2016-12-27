@@ -37,9 +37,16 @@ function geoCoding(search,zip) {
                         if(response2.status === 'OK')
                         {
                             var lastAddressComponent = response2.results['0'].address_components.length -1;
-                            var reverseGeoZip = response2.results[0].address_components[lastAddressComponent].short_name;
-                            console.info('reverseGeoZip:', reverseGeoZip);
-                            getTopics(meetUpKey1, search, reverseGeoZip);
+                            // checks to make sure that last item in array is postal_code, not postal_code_suffix.
+                            if (response2.results[0].address_components[lastAddressComponent].types[0] === 'postal_code') {
+                                var reverseGeoZip = response2.results[0].address_components[lastAddressComponent].short_name;
+                                console.info('reverseGeoZip - postal code: ', reverseGeoZip);
+                                getTopics(meetUpKey1, search, reverseGeoZip);
+                            } else {
+                                var reverseGeoZipNoSuffix = response2.results[0].address_components[lastAddressComponent-1].short_name;
+                                console.info('reverseGeoZip - avoided postal code suffix: ', reverseGeoZipNoSuffix);
+                                getTopics(meetUpKey1, search, reverseGeoZipNoSuffix);
+                            }
                         } else {
                             console.warn('houston we have a problem', response2);
                         }

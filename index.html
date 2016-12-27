@@ -162,18 +162,16 @@
             }
         }
 
-        if (eventObj === undefined) { // set a default location so the initial map doesn't bugged out.
+        if (eventObj === undefined) { // set a default location so the initial map doesn't bug out.
             locations = [
                 {lat: 33.81, lng: -117.845692},
-                {lat: 33.92, lng: -117.853218},
+                {lat: 33.92, lng: -117.853218}
             ]
         } else {
             locations = eventObj;
         }
 
-
         console.log('param locations is ', eventObj);
-
 
         var labels = [];
         labels = global_venue;
