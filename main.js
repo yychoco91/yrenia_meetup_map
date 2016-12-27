@@ -1,6 +1,12 @@
 /**
- * Created by LFZ C11 Hackathon TEAM 2 - Yrenia, Danh, Kevin, Dan, and Taylor on 10/26/2016.
+ * Meetup Map
+ *
+ * Created by:
+ * Kevin Chau, Danh Le, Dan Riches, Yrenia Yang, and Taylor Sturtz
+ *
+ * 10/26/2016
  */
+
 $(document).ready(click_handlers);
 var global_event = [];
 // Danh's Section
@@ -97,7 +103,6 @@ function parseEventsForMaps(eventObj) {
                 });
                 j++;
             }
-
         }
     }
 
@@ -212,10 +217,66 @@ function click_handlers() {
     });
 }
 /**
- * getTopics - using user-entered interest, generate topics and use first 2 urlkeys
+ * getTopics - using user-entered interest, generate topics and use first 2 url keys
  * @param {string} keyword - user-entered interest
  * @param {number} zipcode - user-entered zipcode
  */
+/*function getTopics(keyword, zipcode) {
+    var keyConcat = keyword.split(' ').join('%');
+    console.info('keyword: ', keyConcat);
+    var zip = zipcode;
+    console.info('zipcode: ', zip);
+    $.ajax({
+        dataType: 'JSONP',
+        method: 'GET',
+        url: 'meetupTopics.php',
+        data: {keyword:keyConcat},
+        success: function (response) {
+            var topics = '';
+            if (response['code'] === 'blocked') {
+                getTopicsBackup(keyConcat, zip);
+            } else {
+                if (response.results.length > 0) { //if the array > 0, there are topics related to user's search term
+                    for (var i = 0; i < response.results.length; i++) { //for the amount of results, add to string separated by commas
+                        if (i !== response.results.length - 1) {
+                            topics += response.results[i]['urlkey'] + ',';
+                        } else {
+                            topics += response.results[i]['urlkey'];
+                        }
+                    }
+                }
+                console.log('Topics', topics);
+                getEvents(topics, zip); //pass the topics and zipcode to look for open events
+            }
+        }
+    })
+}
+
+//Get topics backup if meetup API limits on first key are reached
+function getTopicsBackup(keyword, zipcode) {
+    var zip = zipcode;
+    $.ajax({
+        dataType: 'JSONP',
+        method: 'GET',
+        url: 'meetupTopics.php',
+        data: {keyword:keyword},
+        success: function (response) {
+            var topics = '';
+            if (response.results.length > 0) { //if the array > 0, there are topics related to user's search term
+                for (var i = 0; i < response.results.length; i++) { //for the amount of results, add to string separated by commas
+                    if (i !== response.results.length - 1) {
+                        topics += response.results[i]['urlkey'] + ',';
+                    } else {
+                        topics += response.results[i]['urlkey'];
+                    }
+                }
+            }
+            console.log('Topics', topics);
+            getEvents(topics, zip); //pass the topics and zipcode to look for open events
+        }
+    })
+}*/
+
 function getTopics(apiKey, keyword, zipcode) {
     //console.log('in get topics ', keyword);
     var keySplit = keyword.split(" ");
@@ -257,6 +318,7 @@ function getTopics(apiKey, keyword, zipcode) {
         }
     });
 }
+
 /**
  * getEvents - ajax call to meetup api and using urlkey from getTopics gets open events
  * @param {string} keyword - urlkeys from meetup separated by commas
