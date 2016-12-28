@@ -25,7 +25,7 @@ function geoCoding(search,zip) {
             {
                 var output = response.results[0].geometry.location;
                 global_zip = output;
-               console.log("param search is "+ search);
+               //console.log("param search is "+ search);
                 getTopics(meetUpKey1, search, zip);
             } else {
                 var header = "API Error";
@@ -38,6 +38,8 @@ function geoCoding(search,zip) {
 }
 /**
  * function parseEventsForMaps
+ *
+ * This function loops through our events and parses out bad Open Events that have no venue property objects
  *
  * @param {object} eventObj - event object passed from Meetup Open Events API
  */
@@ -77,7 +79,14 @@ function parseEventsForMaps(eventObj) {
     return geocodeArray;
 }
 // Danh's Section End
+/**
+ * function click_handlers
+ */
 function click_handlers() {
+
+    /*
+    When the user presses ENTER, it will submit the inputs on the FRONT PAGE
+     */
 
     $(".input-container input").keypress(function(event) {
         if (event.which == 13) {
@@ -85,10 +94,18 @@ function click_handlers() {
             console.log("Front Page Search");
             var userSearch = $('#search').val();
             var userZip = $("#zip").val();
+            if (userSearch == '' || userZip == ''){
+                Materialize.toast('Please fill in both', 2000, 'white red-text');
+                return;
+            }
             geoCoding(userSearch, userZip);
             $(".preloader-wrapper").show();
         }
     });
+
+    /*
+     When the user presses ENTER, it will submit the inputs on the TOP NAV BAR
+     */
 
     $(".input-nav-container input").keypress(function(event) {
         if (event.which == 13) {
@@ -96,26 +113,37 @@ function click_handlers() {
             console.log("Nav Bar Search");
             var userSearch = $('#nav_search').val();
             var userZip = $("#nav_zip").val();
+            if (userSearch == '' || userZip == ''){
+                Materialize.toast('Please fill in both', 2000, 'white red-text');
+                return;
+            }
             geoCoding(userSearch, userZip);
             //youTubeApi(userSearch);
             $(".preloader-wrapper").show();
 
         }
     });
-
+    /*
+        When the user clicks GO , it will submit the inputs on the FRONT PAGE
+    */
     $("button#front-go").click(function () {
         var userSearch = $('#search').val();
         var userZip = $("#zip").val();
         if (userSearch == '' || userZip == ''){
+            Materialize.toast('Please fill in both', 2000, 'white red-text');
             return;
         }
         geoCoding(userSearch, userZip);
         $(".preloader-wrapper").show();
     });
+    /*
+     When the user clicks GO , it will submit the inputs on the TOP NAV BAR
+     */
     $("button#nav-go").click(function () {
         var userSearch = $('#nav_search').val();
         var userZip = $("#nav_zip").val();
         if (userSearch == '' || userZip == ''){
+            Materialize.toast('Please fill in both', 2000, 'white red-text');
             return;
         }
         geoCoding(userSearch, userZip);
@@ -123,8 +151,12 @@ function click_handlers() {
         $(".preloader-wrapper").show();
     });
 
+    /*
+     When the user clicks on the LOGO it will take it to the first page
+     */
+
     $("#top_search").on("click",".logo-nav",function () {
-        console.log("Logo Clicked!");
+        //console.log("Logo Clicked!");
         $('#top_search').removeClass('search-top');
         $('#map_left').removeClass('map-left');
         $(".intro-wrapper").animate({top: '0vh'}, 750, function(){
@@ -132,12 +164,18 @@ function click_handlers() {
         });
     });
 
+    /*
+     When the user clicks on the ROUND CIRCLE BUTTON on the top right off the
+     Details Wrapper page, it will move up to the map (using event delegation)
+     */
+
     $(".details-wrapper").on("click",".btn-floating",function () {
-        console.log("Button Up Clicked!");
+        //console.log("Button Up Clicked!");
         $(".intro-wrapper").animate({top: '-100vh'}, 750, function(){
 
         });
     });
+
     //Event delegation for card events. On click, dynamically adds specific event info to event description page
     $("#map_left").on("click",".card-content",function () {
         console.log("HI");
@@ -154,7 +192,10 @@ function click_handlers() {
  * @param {number} zipcode - user-entered zipcode
  */
 function getTopics(apiKey, keyword, zipcode) {
-    console.log('in get topics ', keyword);
+    //console.log('in get topics ', keyword);
+    var keySplit = keyword.split(" ");
+    keyword = keySplit.join('%');
+    console.log("keyword:", keyword);
     var meetUpLink;
     var zip = zipcode;
     var userWord = keyword;
@@ -169,15 +210,15 @@ function getTopics(apiKey, keyword, zipcode) {
         url: meetUpLink,
         method: 'get',
         success: function (response) {
-            console.log('UrlKeys:', response.results);
+            //console.log('UrlKeys:', response.results);
             var topics = '';
             if (response['code'] === 'blocked') {
                 getTopics(meetUpKey2, userWord, zip)
             } else {
                 if (response.results.length > 0) { //check the array > 0; is there related topics to user search
-                    console.log('Result is true');
+                    //console.log('Result is true');
                     for (var i = 0; i < response.results.length; i++) { //for the amount of results, add to string separted by commas
-                        console.log('in for loop');
+                        //console.log('in for loop');
                         if (i !== response.results.length - 1) { //current topic is not the last in the array of topic returned
                             topics += response.results[i]['urlkey'] + ',';
                         } else {
@@ -185,7 +226,7 @@ function getTopics(apiKey, keyword, zipcode) {
                         }
                     }
                 }
-                //console.log('Topics', topics);
+                console.log('Topics', topics);
                 getEvents(meetUpKey, topics, zip); //pass the urlkey and zipcode to look for open events
             }
         }
@@ -222,7 +263,7 @@ function getEvents(apiKey, keyword, zip) {
             }else{ //if event is 1 or less, generic topic search urlkey for generic open events
                 //getTopics(meetUpKey, undefined, zip);
                 $(".preloader-wrapper").hide();
-                Materialize.toast('No open events found in your area', 2000, 'white red-text');
+                Materialize.toast('No open events found in your area', 2000, 'red white-text');
             }
         }
     });
@@ -239,9 +280,11 @@ function createEventCard(event){
     var date = new Date(event['time']);
     date = parseTime(date);
     var venueName = event.venue.name;
+    /*Comment to see if git contribution will show up */
     var address = event.venue.address_1;
     var city = event.venue.city;
     //create html elements with classes
+
     var $title = $('<span>', {
         class: 'card-title',
         text: eventName
@@ -422,6 +465,7 @@ function createEventDescription(eventCard) {
     var date = new Date(cardEvent['time']);
     date = parseTime(date); //get readable date format
     //create elements with event information and classes for styling
+
     var $eventName=$('<h3>',{
         class: 'red-text',
         text: cardEvent['name']
