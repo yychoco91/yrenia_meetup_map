@@ -280,6 +280,7 @@ function createEventCard(event){
     var date = new Date(event['time']);
     date = parseTime(date);
     var venueName = event.venue.name;
+    /*Comment to see if git contribution will show up */
     var address = event.venue.address_1;
     var city = event.venue.city;
     //create html elements with classes
