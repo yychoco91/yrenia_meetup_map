@@ -83,6 +83,7 @@ INTRO PAGE
 .intro-icons {
     top: 1vh;
     left: 1vh;
+    cursor: default;
 }
 
 .search-input {

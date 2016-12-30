@@ -10,8 +10,8 @@
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
     <script src="infobubble-compiled.js"></script>
+    <script type="text/javascript" src="https://rawgithub.com/nwcell/ics.js/master/ics.deps.min.js"></script>
     <script src="main.js"></script>
-    <script src="meetupkey.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
 <body>
@@ -306,5 +306,11 @@
 <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDa6lkpC-bOxXWEbrWaPlw_FneCpQhlgNE&callback=initMap">
 </script>
+<button id="test">Test</button>
+<div class="wrap">
+    <a href="javascript:cal_single.download('Meetup')">Single Event</a>
+    <br>
+    <a href="javascript:cal.download('Meetup')">Multiple Events</a>
+</div>
 </body>
 </html>

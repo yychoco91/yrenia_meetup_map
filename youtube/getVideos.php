@@ -5,7 +5,9 @@
  * Date: 12/29/16
  * Time: 5:53 PM
  */
-require_once('../meetupkeys.php');
+
+//Need key file
+require_once('');
 
 $output = [
     'success'=>false
