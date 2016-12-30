@@ -571,6 +571,10 @@ function createEventDescription(eventCard) {
     cardEvent = global_event[cardId];
     console.log('This Event ', cardEvent);
     var date = new Date(cardEvent['time']);
+    var eventMonth = date.getMonth() + 1;
+    var eventDay = date.getDate();
+    var eventYear = date.getFullYear();
+
     date = parseTime(date); //get readable date format
     //create elements with event information and classes for styling
 
@@ -588,7 +592,7 @@ function createEventDescription(eventCard) {
     });
     var $eventAddress= $('<h6>',{
         class: 'red-text',
-        text: cardEvent.venue.address_1 + " "+ cardEvent.venue.city + " "+ state
+        text: cardEvent.venue.address_1 + " " + cardEvent.venue.city + " " + state
     });
     var $lineBreak=$('<br>',{});
     var $lineBreak2=$('<br>',{});
@@ -608,18 +612,9 @@ function createEventDescription(eventCard) {
         class: 'details-link',
         html: "<i class='tiny material-icons light-blue-text darken-1'>file_download</i> Download ICS (Calendar) File",
         click: function() {
-            // Demo
-            // Multiple
             var cal = ics();
-            cal.addEvent('Christmas', 'Christian holiday celebrating the birth of Jesus Christ', 'Bethlehem', '12/25/2016', '12/25/2016');
-            cal.addEvent('New Years', 'Watch the ball drop!', 'New York', '01/01/2017', '01/01/2017');
-
-            // Single
-            var cal_single = ics();
-            cal_single.addEvent('Meetup Event', 'This is the best day to demonstrate a single event.', 'New York', '12/30/2016', '12/30/2016');
-
-            cal_single.download('Meetup'); // single
-            //cal.download('Meetup');  // multiple
+            cal.addEvent('Meetup: ' + cardEvent['name'], 'Hosted by: ' + cardEvent.group.name + '<br><br>' + 'Description: ' + cardEvent['description'] + '<br>' + 'How to find us: ' + cardEvent['how_to_find_us'] + '<br><br><br>' + 'Brought to you by MeetupMap.', cardEvent.venue.address_1 + " " + cardEvent.venue.city + " " + state, eventMonth + '/' + eventDay + '/' + eventYear, eventMonth + '/' + eventDay + '/' + eventYear);
+            cal.download('MeetupMap: ' + cardEvent['name']);
         }
     });
     var $eventDescription=$('<p>',{
