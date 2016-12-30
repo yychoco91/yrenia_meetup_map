@@ -1,13 +1,17 @@
 /**
- * Created by LFZ C11 Hackathon TEAM 2 - Yrenia, Danh, Kevin, Dan, and Taylor on 10/26/2016.
+ * Meetup Map
+ *
+ * Created by:
+ * Kevin Chau, Danh Le, Dan Riches, Yrenia Yang, and Taylor Sturtz
+ *
+ * 10/26/2016
  */
+
 $(document).ready(click_handlers);
 var global_event = [];
 // Danh's Section
 var global_zip = null;
 var global_venue = [];
-var meetUpKey1 = '702403fb782d606165f7638a242a';
-var meetUpKey2 = '163736143b31146c5361736d41103459';
 /**
  * function geoCoding
  *      converts zip code to longitude and latitude
@@ -16,17 +20,42 @@ var meetUpKey2 = '163736143b31146c5361736d41103459';
  * @param {string} query - user zip code
  */
 function geoCoding(search,zip) {
+    var zipConcat = zip.split(' ').join('+');
     $.ajax({
         dataType: 'JSON',
         method: 'GET',
-        url: "https://maps.googleapis.com/maps/api/geocode/json?address=" + zip + "&key=AIzaSyDa6lkpC-bOxXWEbrWaPlw_FneCpQhlgNE",
+        url: "geoCoding.php",
+        data: {zip:zipConcat},
         success: function (response) {
             if(response.status === 'OK')
             {
                 var output = response.results[0].geometry.location;
                 global_zip = output;
-               //console.log("param search is "+ search);
-                getTopics(meetUpKey1, search, zip);
+                console.log("param search is "+ search);
+                $.ajax({
+                    dataType: 'JSON',
+                    method: 'GET',
+                    url: "reverseGeoCoding.php",
+                    data: {lat: output.lat, lng: output.lng},
+                    success: function (response2) {
+                        if(response2.status === 'OK')
+                        {
+                            var lastAddressComponent = response2.results['0'].address_components.length -1;
+                            // checks to make sure that last item in array is postal_code, not postal_code_suffix.
+                            if (response2.results[0].address_components[lastAddressComponent].types[0] === 'postal_code') {
+                                var reverseGeoZip = response2.results[0].address_components[lastAddressComponent].short_name;
+                                console.info('reverseGeoZip - postal code: ', reverseGeoZip);
+                                getTopics(search, reverseGeoZip);
+                            } else {
+                                var reverseGeoZipNoSuffix = response2.results[0].address_components[lastAddressComponent-1].short_name;
+                                console.info('reverseGeoZip - avoided postal code suffix: ', reverseGeoZipNoSuffix);
+                                getTopics(search, reverseGeoZipNoSuffix);
+                            }
+                        } else {
+                            console.warn('houston we have a problem', response2);
+                        }
+                    }
+                });
             } else {
                 var header = "API Error";
                 var paragraph = "We cannot process the geocoding API at the moment. Please try again later";
@@ -72,7 +101,6 @@ function parseEventsForMaps(eventObj) {
                 });
                 j++;
             }
-
         }
     }
 
@@ -88,18 +116,18 @@ function click_handlers() {
     When the user presses ENTER, it will submit the inputs on the FRONT PAGE
      */
 
-    $(".input-container input").keypress(function(event) {
+    $('.input-container input').keypress(function(event) {
         if (event.which == 13) {
             event.preventDefault();
-            console.log("Front Page Search");
+            console.log('Front Page Search');
             var userSearch = $('#search').val();
-            var userZip = $("#zip").val();
+            var userZip = $('#zip').val();
             if (userSearch == '' || userZip == ''){
                 Materialize.toast('Please fill in both', 2000, 'white red-text');
                 return;
             }
             geoCoding(userSearch, userZip);
-            $(".preloader-wrapper").show();
+            $('.preloader-wrapper').show();
         }
     });
 
@@ -107,59 +135,63 @@ function click_handlers() {
      When the user presses ENTER, it will submit the inputs on the TOP NAV BAR
      */
 
-    $(".input-nav-container input").keypress(function(event) {
+    $('.input-nav-container input').keypress(function(event) {
         if (event.which == 13) {
             event.preventDefault();
-            console.log("Nav Bar Search");
+            console.log('Nav Bar Search');
             var userSearch = $('#nav_search').val();
-            var userZip = $("#nav_zip").val();
+            var userZip = $('#nav_zip').val();
             if (userSearch == '' || userZip == ''){
-                Materialize.toast('Please fill in both', 2000, 'white red-text');
+                Materialize.toast('Please fill in both', 2000, 'red white-text');
                 return;
             }
             geoCoding(userSearch, userZip);
             //youTubeApi(userSearch);
-            $(".preloader-wrapper").show();
+            $('.preloader-wrapper').show();
 
         }
     });
     /*
         When the user clicks GO , it will submit the inputs on the FRONT PAGE
     */
-    $("button#front-go").click(function () {
+    $('button#front-go').click(function () {
         var userSearch = $('#search').val();
-        var userZip = $("#zip").val();
+        var userZip = $('#zip').val();
         if (userSearch == '' || userZip == ''){
             Materialize.toast('Please fill in both', 2000, 'white red-text');
             return;
         }
         geoCoding(userSearch, userZip);
-        $(".preloader-wrapper").show();
+        $('.preloader-wrapper').show();
     });
     /*
      When the user clicks GO , it will submit the inputs on the TOP NAV BAR
      */
-    $("button#nav-go").click(function () {
+    $('button#nav-go').click(function () {
         var userSearch = $('#nav_search').val();
-        var userZip = $("#nav_zip").val();
+        var userZip = $('#nav_zip').val();
         if (userSearch == '' || userZip == ''){
-            Materialize.toast('Please fill in both', 2000, 'white red-text');
+            Materialize.toast('Please fill in both', 2000, 'red white-text');
             return;
         }
         geoCoding(userSearch, userZip);
         //youTubeApi(userSearch);
-        $(".preloader-wrapper").show();
+        $('.preloader-wrapper').show();
     });
 
     /*
      When the user clicks on the LOGO it will take it to the first page
      */
 
-    $("#top_search").on("click",".logo-nav",function () {
-        //console.log("Logo Clicked!");
+    $('#top_search').on('click','.logo-nav',function () {
+        //Clear inputs and lose focus so labels
+        $('#search').val('').blur();
+        $('#nav_search').val('').blur();
+        $('#zip').val('').blur();
+        $('#nav_zip').val('').blur();
         $('#top_search').removeClass('search-top');
         $('#map_left').removeClass('map-left');
-        $(".intro-wrapper").animate({top: '0vh'}, 750, function(){
+        $('.intro-wrapper').animate({top: '0vh'}, 750, function(){
 
         });
     });
@@ -187,11 +219,76 @@ function click_handlers() {
     });
 }
 /**
- * getTopics - using user-entered interest, generate topics and use first 2 urlkeys
+ * getTopics - using user-entered interest, generate topics and use first 2 url keys
  * @param {string} keyword - user-entered interest
  * @param {number} zipcode - user-entered zipcode
  */
-function getTopics(apiKey, keyword, zipcode) {
+function getTopics(keyword, zipcode) {
+    var keyConcat = keyword.split(' ').join('%');
+    console.info('keyword: ', keyConcat);
+    var zip = zipcode;
+    console.info('zipcode: ', zip);
+    $.ajax({
+        dataType: 'JSON',
+        method: 'GET',
+        url: 'meetupTopics.php',
+        data: {keyword:keyConcat},
+        success: function (response) {
+            var topics = '';
+            console.log('getTopics response: ', response);
+            if (response['code'] === 'blocked') {
+                getTopicsBackup(keyConcat, zip);
+            } else {
+                if (response.results.length > 0) { //if the array > 0, there are topics related to user's search term
+                    for (var i = 0; i < response.results.length; i++) { //for the amount of results, add to string separated by commas
+                        if (i !== response.results.length - 1) {
+                            topics += response.results[i]['urlkey'] + ',';
+                        } else {
+                            topics += response.results[i]['urlkey'];
+                        }
+                    }
+                }
+                console.log('Topics', topics);
+                getEvents(topics, zip); //pass the topics and zipcode to look for open events
+            }
+        },
+        error: function (err) {
+            console.log('houston we have a problem: ', err);
+        }
+    })
+}
+
+//Get topics backup if meetup API limits on first key are reached TODO: THIS DOES NOT USE BACKUP API KEY YET
+function getTopicsBackup(keyword, zipcode) {
+    var zip = zipcode;
+    $.ajax({
+        dataType: 'JSON',
+        method: 'GET',
+        url: 'meetupTopics.php',
+        data: {keyword:keyword},
+        success: function (response) {
+            var topics = '';
+            if (response.results.length > 0) { //if the array > 0, there are topics related to user's search term
+                for (var i = 0; i < response.results.length; i++) { //for the amount of results, add to string separated by commas
+                    if (i !== response.results.length - 1) {
+                        topics += response.results[i]['urlkey'] + ',';
+                    } else {
+                        topics += response.results[i]['urlkey'];
+                    }
+                }
+            }
+            console.log('Topics', topics);
+            getEvents(topics, zip); //pass the topics and zipcode to look for open events
+        },
+        error: function (err) {
+            console.log('houston we have a problem: ', err);
+        }
+    })
+}
+
+// OLD GET TOPICS FUNCTION (DOESN'T HIDE API KEY)
+
+/*function getTopics(apiKey, keyword, zipcode) {
     //console.log('in get topics ', keyword);
     var keySplit = keyword.split(" ");
     keyword = keySplit.join('%');
@@ -231,13 +328,75 @@ function getTopics(apiKey, keyword, zipcode) {
             }
         }
     });
-}
+}*/
+
 /**
  * getEvents - ajax call to meetup api and using urlkey from getTopics gets open events
  * @param {string} keyword - urlkeys from meetup separated by commas
  * @param {string} zip - user-entered zipcode
  */
-function getEvents(apiKey, keyword, zip) {
+function getEvents(keyword, zip) {
+    $.ajax({
+        dataType: 'JSON',
+        method: 'GET',
+        url: 'meetupEvents.php',
+        data: {keyword:keyword, zip:zip},
+        success: function (response) {
+            var eventList = response.results;
+            if(response.results.length > 1) {
+                var newEventList = parseEventsForMaps(eventList); //gets latitude and longitude for map
+                initMap(global_zip, newEventList);
+                $(".intro-wrapper").slideDown(750);
+                $(".intro-wrapper").animate({top: '-100vh'}, 750, function () {
+                    $('#top_search').addClass('search-top');
+                    $('#map_left').addClass('map-left');
+                    youTubeApi(keyword);
+                    $(".preloader-wrapper").hide();
+                });
+            }else{
+                $(".preloader-wrapper").hide();
+                Materialize.toast('No open events found in your area', 2000, 'red white-text');
+            }
+        },
+        error: function (err) {
+            console.log('houston we have a problem: ', err);
+        }
+    })
+}
+
+//Get events backup if meetup API limits on first key are reached TODO: THIS DOES NOT USE BACKUP API KEY YET
+function getEventsBackup(keyword, zip) {
+    $.ajax({
+        dataType: 'JSON',
+        method: 'GET',
+        url: 'meetupEvents.php',
+        data: {keyword:keyword, zip:zip},
+        success: function (response) {
+            var eventList = response.results;
+            if(response.results.length > 1) {
+                var newEventList = parseEventsForMaps(eventList); //gets latitude and longitude for map
+                initMap(global_zip, newEventList);
+                $(".intro-wrapper").slideDown(750);
+                $(".intro-wrapper").animate({top: '-100vh'}, 750, function () {
+                    $('#top_search').addClass('search-top');
+                    $('#map_left').addClass('map-left');
+                    youTubeApi(keyword);
+                    $(".preloader-wrapper").hide();
+                });
+            }else{
+                $(".preloader-wrapper").hide();
+                Materialize.toast('No open events found in your area', 2000, 'red white-text');
+            }
+        },
+        error: function (err) {
+            console.log('houston we have a problem: ', err);
+        }
+    })
+}
+
+// OLD GET EVENTS FUNCTION (DOESN'T HIDE API KEY)
+
+/*function getEvents(apiKey, keyword, zip) {
     var userKeyword = keyword;
     var userZip = zip;
     var meetUpKey = apiKey;
@@ -267,7 +426,8 @@ function getEvents(apiKey, keyword, zip) {
             }
         }
     });
-}
+}*/
+
 /**
  * createEventCard - dynamically create and append event info cards
  * @param {object} event - event containing necessary info
@@ -377,7 +537,7 @@ function apiThrottled(heading,message) {
     $('#error_modal .modal-content h4').text(heading);
     $('#error_modal .modal-content p').text(message);
     $('#error_modal').openModal();
-};
+}
 
 
 //YOUTUBE SECTION -- DANs
