@@ -644,6 +644,8 @@ function createEventDescription(eventCard) {
     var date = new Date(cardEvent['time']);
     date = parseTime(date); //get readable date format
     //create elements with event information and classes for styling
+
+    var state = cardEvent.venue.state || '';
     var $eventName=$('<h3>',{
         class: 'red-text',
         text: cardEvent['name']
@@ -657,7 +659,7 @@ function createEventDescription(eventCard) {
     });
     var $eventAddress= $('<h5>',{
         class: 'red-text',
-        text: cardEvent.venue.address_1 + " "+ cardEvent.venue.city + " "+ cardEvent.venue.state
+        text: cardEvent.venue.address_1 + " "+ cardEvent.venue.city + " "+ state
     });
     var $eventURL=$('<a/>',{
         href:cardEvent['event_url'],
