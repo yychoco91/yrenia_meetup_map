@@ -625,7 +625,6 @@ function createEventDescription(eventCard) {
     var date = new Date(cardEvent['time']);
     date = parseTime(date); //get readable date format
     //create elements with event information and classes for styling
-
     var $eventName=$('<h3>',{
         class: 'red-text',
         text: cardEvent['name']
