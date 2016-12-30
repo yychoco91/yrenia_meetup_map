@@ -13,6 +13,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
 <body>
+<script>
+    var cal = ics();
+    cal.addEvent('Demo Event', 'This is an all day event', 'Nome, AK', '8/7/2013', '8/7/2013');
+    cal.addEvent('Demo Event', 'This is thirty minut event', 'Nome, AK', '8/7/2013 5:30 pm', '8/9/2013 6:00 pm');
+</script>
+<a href="javascript:cal.download()">Demo</a>
 <div class="entire-wrapper">
     <div class="intro-wrapper">
         <div class="row">
