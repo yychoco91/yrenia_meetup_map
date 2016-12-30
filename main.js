@@ -1,13 +1,17 @@
 /**
- * Created by LFZ C11 Hackathon TEAM 2 - Yrenia, Danh, Kevin, Dan, and Taylor on 10/26/2016.
+ * Meetup Map
+ *
+ * Created by:
+ * Kevin Chau, Danh Le, Dan Riches, Yrenia Yang, and Taylor Sturtz
+ *
+ * 10/26/2016
  */
+
 $(document).ready(click_handlers);
 var global_event = [];
 // Danh's Section
 var global_zip = null;
 var global_venue = [];
-var meetUpKey1 = '702403fb782d606165f7638a242a';
-var meetUpKey2 = '163736143b31146c5361736d41103459';
 /**
  * function geoCoding
  *      converts zip code to longitude and latitude
@@ -16,17 +20,42 @@ var meetUpKey2 = '163736143b31146c5361736d41103459';
  * @param {string} query - user zip code
  */
 function geoCoding(search,zip) {
+    var zipConcat = zip.split(' ').join('+');
     $.ajax({
         dataType: 'JSON',
         method: 'GET',
-        url: "https://maps.googleapis.com/maps/api/geocode/json?address=" + zip + "&key=AIzaSyDa6lkpC-bOxXWEbrWaPlw_FneCpQhlgNE",
+        url: "geoCoding.php",
+        data: {zip:zipConcat},
         success: function (response) {
             if(response.status === 'OK')
             {
                 var output = response.results[0].geometry.location;
                 global_zip = output;
-               //console.log("param search is "+ search);
-                getTopics(meetUpKey1, search, zip);
+                console.log("param search is "+ search);
+                $.ajax({
+                    dataType: 'JSON',
+                    method: 'GET',
+                    url: "reverseGeoCoding.php",
+                    data: {lat: output.lat, lng: output.lng},
+                    success: function (response2) {
+                        if(response2.status === 'OK')
+                        {
+                            var lastAddressComponent = response2.results['0'].address_components.length -1;
+                            // checks to make sure that last item in array is postal_code, not postal_code_suffix.
+                            if (response2.results[0].address_components[lastAddressComponent].types[0] === 'postal_code') {
+                                var reverseGeoZip = response2.results[0].address_components[lastAddressComponent].short_name;
+                                console.info('reverseGeoZip - postal code: ', reverseGeoZip);
+                                getTopics(search, reverseGeoZip);
+                            } else {
+                                var reverseGeoZipNoSuffix = response2.results[0].address_components[lastAddressComponent-1].short_name;
+                                console.info('reverseGeoZip - avoided postal code suffix: ', reverseGeoZipNoSuffix);
+                                getTopics(search, reverseGeoZipNoSuffix);
+                            }
+                        } else {
+                            console.warn('houston we have a problem', response2);
+                        }
+                    }
+                });
             } else {
                 var header = "API Error";
                 var paragraph = "We cannot process the geocoding API at the moment. Please try again later";
@@ -44,7 +73,7 @@ function geoCoding(search,zip) {
  * @param {object} eventObj - event object passed from Meetup Open Events API
  */
 function parseEventsForMaps(eventObj) {
-    //console.log("Event Object is", eventObj);
+    console.log("Event Object is", eventObj);
     var geocodeArray = [];
     $("#map_left").html("");
     var j = 1;
@@ -72,7 +101,6 @@ function parseEventsForMaps(eventObj) {
                 });
                 j++;
             }
-
         }
     }
 
@@ -88,18 +116,18 @@ function click_handlers() {
     When the user presses ENTER, it will submit the inputs on the FRONT PAGE
      */
 
-    $(".input-container input").keypress(function(event) {
+    $('.input-container input').keypress(function(event) {
         if (event.which == 13) {
             event.preventDefault();
-            console.log("Front Page Search");
+            console.log('Front Page Search');
             var userSearch = $('#search').val();
-            var userZip = $("#zip").val();
+            var userZip = $('#zip').val();
             if (userSearch == '' || userZip == ''){
                 Materialize.toast('Please fill in both', 2000, 'white red-text');
                 return;
             }
             geoCoding(userSearch, userZip);
-            $(".preloader-wrapper").show();
+            $('.preloader-wrapper').show();
         }
     });
 
@@ -107,59 +135,63 @@ function click_handlers() {
      When the user presses ENTER, it will submit the inputs on the TOP NAV BAR
      */
 
-    $(".input-nav-container input").keypress(function(event) {
+    $('.input-nav-container input').keypress(function(event) {
         if (event.which == 13) {
             event.preventDefault();
-            console.log("Nav Bar Search");
+            console.log('Nav Bar Search');
             var userSearch = $('#nav_search').val();
-            var userZip = $("#nav_zip").val();
+            var userZip = $('#nav_zip').val();
             if (userSearch == '' || userZip == ''){
-                Materialize.toast('Please fill in both', 2000, 'white red-text');
+                Materialize.toast('Please fill in both', 2000, 'red white-text');
                 return;
             }
             geoCoding(userSearch, userZip);
             //youTubeApi(userSearch);
-            $(".preloader-wrapper").show();
+            $('.preloader-wrapper').show();
 
         }
     });
     /*
         When the user clicks GO , it will submit the inputs on the FRONT PAGE
     */
-    $("button#front-go").click(function () {
+    $('button#front-go').click(function () {
         var userSearch = $('#search').val();
-        var userZip = $("#zip").val();
+        var userZip = $('#zip').val();
         if (userSearch == '' || userZip == ''){
             Materialize.toast('Please fill in both', 2000, 'white red-text');
             return;
         }
         geoCoding(userSearch, userZip);
-        $(".preloader-wrapper").show();
+        $('.preloader-wrapper').show();
     });
     /*
      When the user clicks GO , it will submit the inputs on the TOP NAV BAR
      */
-    $("button#nav-go").click(function () {
+    $('button#nav-go').click(function () {
         var userSearch = $('#nav_search').val();
-        var userZip = $("#nav_zip").val();
+        var userZip = $('#nav_zip').val();
         if (userSearch == '' || userZip == ''){
-            Materialize.toast('Please fill in both', 2000, 'white red-text');
+            Materialize.toast('Please fill in both', 2000, 'red white-text');
             return;
         }
         geoCoding(userSearch, userZip);
         //youTubeApi(userSearch);
-        $(".preloader-wrapper").show();
+        $('.preloader-wrapper').show();
     });
 
     /*
      When the user clicks on the LOGO it will take it to the first page
      */
 
-    $("#top_search").on("click",".logo-nav",function () {
-        //console.log("Logo Clicked!");
+    $('#top_search').on('click','.logo-nav',function () {
+        //Clear inputs and lose focus so labels
+        $('#search').val('').blur();
+        $('#nav_search').val('').blur();
+        $('#zip').val('').blur();
+        $('#nav_zip').val('').blur();
         $('#top_search').removeClass('search-top');
         $('#map_left').removeClass('map-left');
-        $(".intro-wrapper").animate({top: '0vh'}, 750, function(){
+        $('.intro-wrapper').animate({top: '0vh'}, 750, function(){
 
         });
     });
@@ -178,21 +210,89 @@ function click_handlers() {
 
     //Event delegation for card events. On click, dynamically adds specific event info to event description page
     $("#map_left").on("click",".card-content",function () {
-        //console.log("HI");
+        console.log("HI");
         $(".intro-wrapper").animate({top: '-200vh'}, 750);
         $('.active-card').removeClass('active-card');
         $(this).addClass('active-card');
-        //console.log(this);
+        console.log(this);
         createEventDescription(this);
     });
 }
 /**
- * getTopics - using user-entered interest, generate topics and use first 2 urlkeys
+ * getTopics - using user-entered interest, generate topics and use first 2 url keys
  * @param {string} keyword - user-entered interest
  * @param {number} zipcode - user-entered zipcode
  */
-function getTopics(apiKey, keyword, zipcode) {
+function getTopics(keyword, zipcode) {
+    var keyConcat = keyword.split(' ').join('%');
+    console.info('keyword: ', keyConcat);
+    var zip = zipcode;
+    console.info('zipcode: ', zip);
+    $.ajax({
+        dataType: 'JSON',
+        method: 'GET',
+        url: 'meetupTopics.php',
+        data: {keyword:keyConcat},
+        success: function (response) {
+            var topics = '';
+            console.log('getTopics response: ', response);
+            if (response['code'] === 'blocked') {
+                getTopicsBackup(keyConcat, zip);
+            } else {
+                if (response.results.length > 0) { //if the array > 0, there are topics related to user's search term
+                    for (var i = 0; i < response.results.length; i++) { //for the amount of results, add to string separated by commas
+                        if (i !== response.results.length - 1) {
+                            topics += response.results[i]['urlkey'] + ',';
+                        } else {
+                            topics += response.results[i]['urlkey'];
+                        }
+                    }
+                }
+                console.log('Topics', topics);
+                getEvents(topics, zip); //pass the topics and zipcode to look for open events
+            }
+        },
+        error: function (err) {
+            console.log('houston we have a problem: ', err);
+        }
+    })
+}
+
+//Get topics backup if meetup API limits on first key are reached TODO: THIS DOES NOT USE BACKUP API KEY YET
+function getTopicsBackup(keyword, zipcode) {
+    var zip = zipcode;
+    $.ajax({
+        dataType: 'JSON',
+        method: 'GET',
+        url: 'meetupTopics.php',
+        data: {keyword:keyword},
+        success: function (response) {
+            var topics = '';
+            if (response.results.length > 0) { //if the array > 0, there are topics related to user's search term
+                for (var i = 0; i < response.results.length; i++) { //for the amount of results, add to string separated by commas
+                    if (i !== response.results.length - 1) {
+                        topics += response.results[i]['urlkey'] + ',';
+                    } else {
+                        topics += response.results[i]['urlkey'];
+                    }
+                }
+            }
+            console.log('Topics', topics);
+            getEvents(topics, zip); //pass the topics and zipcode to look for open events
+        },
+        error: function (err) {
+            console.log('houston we have a problem: ', err);
+        }
+    })
+}
+
+// OLD GET TOPICS FUNCTION (DOESN'T HIDE API KEY)
+
+/*function getTopics(apiKey, keyword, zipcode) {
     //console.log('in get topics ', keyword);
+    var keySplit = keyword.split(" ");
+    keyword = keySplit.join('%');
+    console.log("keyword:", keyword);
     var meetUpLink;
     var zip = zipcode;
     var userWord = keyword;
@@ -210,7 +310,6 @@ function getTopics(apiKey, keyword, zipcode) {
             //console.log('UrlKeys:', response.results);
             var topics = '';
             if (response['code'] === 'blocked') {
-                console.log('First API key is blocked');
                 getTopics(meetUpKey2, userWord, zip)
             } else {
                 if (response.results.length > 0) { //check the array > 0; is there related topics to user search
@@ -224,18 +323,80 @@ function getTopics(apiKey, keyword, zipcode) {
                         }
                     }
                 }
-                //console.log('Topics', topics);
+                console.log('Topics', topics);
                 getEvents(meetUpKey, topics, zip); //pass the urlkey and zipcode to look for open events
             }
         }
     });
-}
+}*/
+
 /**
  * getEvents - ajax call to meetup api and using urlkey from getTopics gets open events
  * @param {string} keyword - urlkeys from meetup separated by commas
  * @param {string} zip - user-entered zipcode
  */
-function getEvents(apiKey, keyword, zip) {
+function getEvents(keyword, zip) {
+    $.ajax({
+        dataType: 'JSON',
+        method: 'GET',
+        url: 'meetupEvents.php',
+        data: {keyword:keyword, zip:zip},
+        success: function (response) {
+            var eventList = response.results;
+            if(response.results.length > 1) {
+                var newEventList = parseEventsForMaps(eventList); //gets latitude and longitude for map
+                initMap(global_zip, newEventList);
+                $(".intro-wrapper").slideDown(750);
+                $(".intro-wrapper").animate({top: '-100vh'}, 750, function () {
+                    $('#top_search').addClass('search-top');
+                    $('#map_left').addClass('map-left');
+                    youTubeApi(keyword);
+                    $(".preloader-wrapper").hide();
+                });
+            }else{
+                $(".preloader-wrapper").hide();
+                Materialize.toast('No open events found in your area', 2000, 'red white-text');
+            }
+        },
+        error: function (err) {
+            console.log('houston we have a problem: ', err);
+        }
+    })
+}
+
+//Get events backup if meetup API limits on first key are reached TODO: THIS DOES NOT USE BACKUP API KEY YET
+function getEventsBackup(keyword, zip) {
+    $.ajax({
+        dataType: 'JSON',
+        method: 'GET',
+        url: 'meetupEvents.php',
+        data: {keyword:keyword, zip:zip},
+        success: function (response) {
+            var eventList = response.results;
+            if(response.results.length > 1) {
+                var newEventList = parseEventsForMaps(eventList); //gets latitude and longitude for map
+                initMap(global_zip, newEventList);
+                $(".intro-wrapper").slideDown(750);
+                $(".intro-wrapper").animate({top: '-100vh'}, 750, function () {
+                    $('#top_search').addClass('search-top');
+                    $('#map_left').addClass('map-left');
+                    youTubeApi(keyword);
+                    $(".preloader-wrapper").hide();
+                });
+            }else{
+                $(".preloader-wrapper").hide();
+                Materialize.toast('No open events found in your area', 2000, 'red white-text');
+            }
+        },
+        error: function (err) {
+            console.log('houston we have a problem: ', err);
+        }
+    })
+}
+
+// OLD GET EVENTS FUNCTION (DOESN'T HIDE API KEY)
+
+/*function getEvents(apiKey, keyword, zip) {
     var userKeyword = keyword;
     var userZip = zip;
     var meetUpKey = apiKey;
@@ -261,11 +422,12 @@ function getEvents(apiKey, keyword, zip) {
             }else{ //if event is 1 or less, generic topic search urlkey for generic open events
                 //getTopics(meetUpKey, undefined, zip);
                 $(".preloader-wrapper").hide();
-                Materialize.toast('No open events found in your area', 2000, 'white red-text');
+                Materialize.toast('No open events found in your area', 2000, 'red white-text');
             }
         }
     });
-}
+}*/
+
 /**
  * createEventCard - dynamically create and append event info cards
  * @param {object} event - event containing necessary info
@@ -278,9 +440,11 @@ function createEventCard(event){
     var date = new Date(event['time']);
     date = parseTime(date);
     var venueName = event.venue.name;
+    /*Comment to see if git contribution will show up */
     var address = event.venue.address_1;
     var city = event.venue.city;
     //create html elements with classes
+
     var $title = $('<span>', {
         class: 'card-title',
         text: eventName
@@ -360,11 +524,12 @@ $('#map_left').on('click','.card', function(){
 
 });
 
-// function missingPropertyValues(objName) {
-//     for(var i=0 in event) {
-//         console.log(objName[i]);
-//     }
-// }
+function missingPropertyValues(objName) {
+    for(var i=0 in event) {
+        console.log()
+        console.log(objName[i]);
+    }
+}
 
 
 //API IS BEING THROTTLED FUNCTION
@@ -372,11 +537,25 @@ function apiThrottled(heading,message) {
     $('#error_modal .modal-content h4').text(heading);
     $('#error_modal .modal-content p').text(message);
     $('#error_modal').openModal();
-};
+}
 
 
 //YOUTUBE SECTION -- DANs
 function youTubeApi(usersChoice) {
+    var splitUsersChoice = usersChoice.split(',');
+    console.log('Here is the splitUsersChoice : ', splitUsersChoice);
+    var len = splitUsersChoice.length;
+    var concatUsersChoice;
+    var arrayConcatUsersChoice = [];
+    var splitarrayConcatUsersChoiceToString;
+    for(var i = 0; i < len; i++ ){
+        concatUsersChoice = splitUsersChoice[i] + ' tips';
+        arrayConcatUsersChoice.push(concatUsersChoice);
+    }
+    console.log('Here is the arrayConcatUsersChoice : ',arrayConcatUsersChoice);
+    splitarrayConcatUsersChoiceToString = arrayConcatUsersChoice.toString();
+    console.log('Here is the splitarrayConcatUsersChoiceToString : ',splitarrayConcatUsersChoiceToString);
+    var videoSearch = splitarrayConcatUsersChoiceToString;
     missingPropertyValues(event);
     //usersChoice = usersChoice + ' Meetup';
     console.log('In the youTubeApi function');
@@ -385,7 +564,7 @@ function youTubeApi(usersChoice) {
     $.ajax({
         dataType: 'json',
         data: {
-            q: usersChoice,  // this is used as the parameter for the function
+            q: videoSearch,  // this is used as the parameter for the function
             maxResults: 5
         },
         method: 'POST',
@@ -397,7 +576,7 @@ function youTubeApi(usersChoice) {
             if (response.success === true) {
                 //CONSOLE LOGS FOR TESTING PURPOSES
                 console.log('successful connection to YouTube API');
-
+               if(response.video) {
                 //LOOP FOR VIDEO ID AND TITLE
                 for (var i = 0; i < response.video.length; i++) {
                     //THE BELOW CODE
@@ -415,6 +594,11 @@ function youTubeApi(usersChoice) {
                     videoList.append(iframe);
                     console.log('This is the new div and class ', iframeDiv);
                 }
+
+                } else {
+                    var noVideoMessage = $('<p>Currently, there are no videos in our search results.</p>');
+                    relatedVideos.append(noVideoMessage);
+               }
             } else {
                 //CONSOLE LOG FOR TESTING PURPOSES
                 console.log('failure -- Unable to connect to YouTube api');
@@ -435,12 +619,13 @@ function createEventDescription(eventCard) {
     $('.event-details').html('');
     var cardClicked = eventCard;
     var cardId = $(cardClicked).attr('id'); //finds card id to look for matching event
-    //console.log('Card Clicked', cardId);
+    console.log('Card Clicked', cardId);
     cardEvent = global_event[cardId];
-    //console.log('This Event ', cardEvent);
+    console.log('This Event ', cardEvent);
     var date = new Date(cardEvent['time']);
     date = parseTime(date); //get readable date format
     //create elements with event information and classes for styling
+
     var $eventName=$('<h3>',{
         class: 'red-text',
         text: cardEvent['name']
