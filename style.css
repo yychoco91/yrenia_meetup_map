@@ -233,6 +233,10 @@ DETAILS PAGE
     position: relative;
 }
 
+.event-title {
+    margin: 0;
+}
+
 .event-photos {
     height: 12vh;
 }
@@ -270,7 +274,7 @@ DETAILS PAGE
 
 .details-inner {
     position: relative;
-    top: -7vh;
+    top: -3vh;
 }
 
 .details-link {

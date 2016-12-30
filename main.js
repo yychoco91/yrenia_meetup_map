@@ -424,12 +424,20 @@ function createEventCard(event){
  * @returns {string|*} - contains event's date and time
  */
 function parseTime(date){
-    var day = date.toDateString();
+    var day = date.getDay();
+    day = day === 0 ? 'Monday'
+        : day === 1 ? 'Tuesday'
+        : day === 2 ? 'Wednesday'
+        : day === 3 ? 'Thursday'
+        : day === 4 ? 'Friday'
+        : day === 5 ? 'Saturday'
+        : 'Sunday';
+    var dateDay = date.getDate();
+    var month = date.getMonth() + 1;
+    var year = date.getFullYear();
     var hour = date.getHours();
     var minutes = date.getMinutes();
-    var newDate;
-    var amOrPm;
-    //console.log('day ', day);
+    var amOrPm = null;
     //24hr format to 12hr format
     if(hour > 12){
         hour -= 12;
@@ -440,10 +448,7 @@ function parseTime(date){
     if(minutes === 0){
         minutes = '00';
     }
-    //creates date string
-    newDate = hour + ':' + minutes + amOrPm + ' ' + day;
-    //console.log(newDate);
-    return newDate;
+    return hour + ':' + minutes + amOrPm + ', ' + day + ' - ' + month + '/' + dateDay + '/' + year;
 }
 
 
@@ -570,32 +575,25 @@ function createEventDescription(eventCard) {
     console.log('Card Clicked', cardId);
     cardEvent = global_event[cardId];
     console.log('This Event ', cardEvent);
+    var address = cardEvent.venue.address_1 + " " + cardEvent.venue.city + " " + state;
     var date = new Date(cardEvent['time']);
-    var eventMonth = date.getMonth() + 1;
-    var eventDay = date.getDate();
-    var eventYear = date.getFullYear();
-
     date = parseTime(date); //get readable date format
-    //create elements with event information and classes for styling
 
     var state = cardEvent.venue.state || '';
     var $eventName=$('<h3>',{
-        class: 'red-text',
+        class: 'red-text event-title',
         text: cardEvent['name']
     });
     var $groupName=$('<h6>',{
-        text: cardEvent.group.name
+        html: '<em>' + cardEvent.group.name + '</em>'
     });
     var $eventDate= $('<h5>',{
         class: 'red-text',
         text: date
     });
     var $eventAddress= $('<h6>',{
-        class: 'red-text',
         text: cardEvent.venue.address_1 + " " + cardEvent.venue.city + " " + state
     });
-    var $lineBreak=$('<br>',{});
-    var $lineBreak2=$('<br>',{});
     var $eventURL=$('<a/>',{
         href: cardEvent['event_url'],
         html: "<i class='tiny material-icons light-blue-text darken-1'>open_in_new</i> View Event on Meetup.com"
@@ -613,7 +611,7 @@ function createEventDescription(eventCard) {
         html: "<i class='tiny material-icons light-blue-text darken-1'>file_download</i> Download ICS (Calendar) File",
         click: function() {
             var cal = ics();
-            cal.addEvent('Meetup: ' + cardEvent['name'], 'Hosted by: ' + cardEvent.group.name + '<br><br>' + 'Description: ' + cardEvent['description'] + '<br>' + 'How to find us: ' + cardEvent['how_to_find_us'] + '<br><br><br>' + 'Brought to you by MeetupMap.', cardEvent.venue.address_1 + " " + cardEvent.venue.city + " " + state, eventMonth + '/' + eventDay + '/' + eventYear, eventMonth + '/' + eventDay + '/' + eventYear);
+            cal.addEvent('Meetup: ' + cardEvent['name'], 'Hosted by: ' + cardEvent.group.name + '<br><br>' + 'Description: ' + cardEvent['description'] + '<br>' + 'How to find us: ' + cardEvent['how_to_find_us'] + '<br><br><br>' + 'Brought to you by MeetupMap.', cardEvent.venue.address_1 + " " + cardEvent.venue.city + " " + state, date, date);
             cal.download('MeetupMap: ' + cardEvent['name']);
         }
     });
@@ -621,5 +619,5 @@ function createEventDescription(eventCard) {
         html: cardEvent['description']
     });
     //attach elements to dom
-    $('.event-details').append($eventName,$groupName,$eventURL,$eventDate,$eventAddress,$lineBreak,$eventGoogleCal,$lineBreak2,$eventCalendarICS,$eventDescription);
+    $('.event-details').append($groupName,$eventName,$eventAddress,$eventDate,$('<hr>'),$eventURL,$('<br>'),$eventGoogleCal,$('<br>'),$eventCalendarICS,$('<hr>'),$eventDescription);
 }
