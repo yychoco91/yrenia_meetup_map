@@ -116,18 +116,18 @@ function click_handlers() {
     When the user presses ENTER, it will submit the inputs on the FRONT PAGE
      */
 
-    $(".input-container input").keypress(function(event) {
+    $('.input-container input').keypress(function(event) {
         if (event.which == 13) {
             event.preventDefault();
-            console.log("Front Page Search");
+            console.log('Front Page Search');
             var userSearch = $('#search').val();
-            var userZip = $("#zip").val();
+            var userZip = $('#zip').val();
             if (userSearch == '' || userZip == ''){
                 Materialize.toast('Please fill in both', 2000, 'white red-text');
                 return;
             }
             geoCoding(userSearch, userZip);
-            $(".preloader-wrapper").show();
+            $('.preloader-wrapper').show();
         }
     });
 
@@ -135,59 +135,63 @@ function click_handlers() {
      When the user presses ENTER, it will submit the inputs on the TOP NAV BAR
      */
 
-    $(".input-nav-container input").keypress(function(event) {
+    $('.input-nav-container input').keypress(function(event) {
         if (event.which == 13) {
             event.preventDefault();
-            console.log("Nav Bar Search");
+            console.log('Nav Bar Search');
             var userSearch = $('#nav_search').val();
-            var userZip = $("#nav_zip").val();
+            var userZip = $('#nav_zip').val();
             if (userSearch == '' || userZip == ''){
-                Materialize.toast('Please fill in both', 2000, 'white red-text');
+                Materialize.toast('Please fill in both', 2000, 'red white-text');
                 return;
             }
             geoCoding(userSearch, userZip);
             //youTubeApi(userSearch);
-            $(".preloader-wrapper").show();
+            $('.preloader-wrapper').show();
 
         }
     });
     /*
         When the user clicks GO , it will submit the inputs on the FRONT PAGE
     */
-    $("button#front-go").click(function () {
+    $('button#front-go').click(function () {
         var userSearch = $('#search').val();
-        var userZip = $("#zip").val();
+        var userZip = $('#zip').val();
         if (userSearch == '' || userZip == ''){
             Materialize.toast('Please fill in both', 2000, 'white red-text');
             return;
         }
         geoCoding(userSearch, userZip);
-        $(".preloader-wrapper").show();
+        $('.preloader-wrapper').show();
     });
     /*
      When the user clicks GO , it will submit the inputs on the TOP NAV BAR
      */
-    $("button#nav-go").click(function () {
+    $('button#nav-go').click(function () {
         var userSearch = $('#nav_search').val();
-        var userZip = $("#nav_zip").val();
+        var userZip = $('#nav_zip').val();
         if (userSearch == '' || userZip == ''){
-            Materialize.toast('Please fill in both', 2000, 'white red-text');
+            Materialize.toast('Please fill in both', 2000, 'red white-text');
             return;
         }
         geoCoding(userSearch, userZip);
         //youTubeApi(userSearch);
-        $(".preloader-wrapper").show();
+        $('.preloader-wrapper').show();
     });
 
     /*
      When the user clicks on the LOGO it will take it to the first page
      */
 
-    $("#top_search").on("click",".logo-nav",function () {
-        //console.log("Logo Clicked!");
+    $('#top_search').on('click','.logo-nav',function () {
+        //Clear inputs and lose focus so labels
+        $('#search').val('').blur();
+        $('#nav_search').val('').blur();
+        $('#zip').val('').blur();
+        $('#nav_zip').val('').blur();
         $('#top_search').removeClass('search-top');
         $('#map_left').removeClass('map-left');
-        $(".intro-wrapper").animate({top: '0vh'}, 750, function(){
+        $('.intro-wrapper').animate({top: '0vh'}, 750, function(){
 
         });
     });
@@ -351,7 +355,7 @@ function getEvents(keyword, zip) {
                 });
             }else{
                 $(".preloader-wrapper").hide();
-                Materialize.toast('No open events found in your area', 2000, 'white red-text');
+                Materialize.toast('No open events found in your area', 2000, 'red white-text');
             }
         },
         error: function (err) {
@@ -381,7 +385,7 @@ function getEventsBackup(keyword, zip) {
                 });
             }else{
                 $(".preloader-wrapper").hide();
-                Materialize.toast('No open events found in your area', 2000, 'white red-text');
+                Materialize.toast('No open events found in your area', 2000, 'red white-text');
             }
         },
         error: function (err) {
