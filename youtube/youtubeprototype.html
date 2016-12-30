@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../meetupkey.js"></script>
+    <script src="https://apis.google.com/js/api.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+</head>
+<body>
+<input type="text" name="youtubeKeyword" placeholder="Search YouTube for videos"><br>
+<button type="button">Go!</button>
+</body>
+<script>
+
+    function searchVideo() {
+        const searchQuery = $("input[name=youtubeKeyword]").val();
+        //const theUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&key=AIzaSyBvpxdfij0AHndbeKuWQSGhcgJoJ6B-xNo&q=${searchQuery}&maxResults=5&type=video&videoDefinition=high`;
+        //console.log(theUrl);
+        $.ajax({
+            url: "getVideos.php",
+            type: "json",
+            method: "get",
+            data:{userQuery: searchQuery},
+            success: function (resp) {
+                console.log(resp);
+            }
+        });
+    }
+    function applyClick(){
+        $("button").click(searchVideo);
+    }
+
+    $(document).ready(applyClick);
+</script>
+</html>
