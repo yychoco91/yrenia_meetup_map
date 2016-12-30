@@ -23,16 +23,27 @@
     height: 100vh;
 }
 
-.pre-load {
+.preloader-wrapper {
     position: fixed;
-    z-index: 999;
+    z-index: 201;
     height: 4em;
     width: 4em;
     margin: auto;
-    top: 30%;
+    top: 0;
     left: 0;
     bottom: 0;
     right: 0;
+    display: none;
+}
+
+.greyBG {
+    position: absolute;
+    top:0;
+    right:0;
+    bottom:0;
+    left:0;
+    background-color: rgba(0,0,0,.5);
+    z-index: 200;
     display: none;
 }
 
@@ -255,6 +266,15 @@ DETAILS PAGE
 
 .row .col .video-list {
     padding: 0 0 100px;
+}
+
+.details-inner {
+    position: relative;
+    top: -7vh;
+}
+
+.details-link {
+    cursor: pointer;
 }
 
 /*******************

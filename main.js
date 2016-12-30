@@ -146,6 +146,7 @@ function click_handlers() {
                 return;
             }
             geoCoding(userSearch, userZip);
+            $('.greyBG').show();
             $('.preloader-wrapper').show();
         }
     });
@@ -166,6 +167,7 @@ function click_handlers() {
             }
             geoCoding(userSearch, userZip);
             //youTubeApi(userSearch);
+            $('.greyBG').show();
             $('.preloader-wrapper').show();
 
         }
@@ -181,6 +183,7 @@ function click_handlers() {
             return;
         }
         geoCoding(userSearch, userZip);
+        $('.greyBG').show();
         $('.preloader-wrapper').show();
     });
     /*
@@ -195,6 +198,7 @@ function click_handlers() {
         }
         geoCoding(userSearch, userZip);
         //youTubeApi(userSearch);
+        $('.greyBG').show();
         $('.preloader-wrapper').show();
     });
 
@@ -305,50 +309,6 @@ function getTopicsBackup(keyword, zipcode) {
     })
 }
 
-// OLD GET TOPICS FUNCTION (DOESN'T HIDE API KEY)
-
-/*function getTopics(apiKey, keyword, zipcode) {
-    //console.log('in get topics ', keyword);
-    var keySplit = keyword.split(" ");
-    keyword = keySplit.join('%');
-    console.log("keyword:", keyword);
-    var meetUpLink;
-    var zip = zipcode;
-    var userWord = keyword;
-    var meetUpKey = apiKey;
-    if(keyword === undefined){ //if no topic is passed, do generic search for topics at meetup
-        meetUpLink = 'https://api.meetup.com/topics?&page=5&key=' + meetUpKey + '&sign=true';
-    }else{ //other use user entered word to search for urlkeys of topics
-        meetUpLink = 'https://api.meetup.com/topics?search=' + userWord + '&page=5&key=' + meetUpKey + '&sign=true';
-    }
-    $.ajax({
-        dataType: 'jsonp',
-        url: meetUpLink,
-        method: 'get',
-        success: function (response) {
-            //console.log('UrlKeys:', response.results);
-            var topics = '';
-            if (response['code'] === 'blocked') {
-                getTopics(meetUpKey2, userWord, zip)
-            } else {
-                if (response.results.length > 0) { //check the array > 0; is there related topics to user search
-                    //console.log('Result is true');
-                    for (var i = 0; i < response.results.length; i++) { //for the amount of results, add to string separted by commas
-                        //console.log('in for loop');
-                        if (i !== response.results.length - 1) { //current topic is not the last in the array of topic returned
-                            topics += response.results[i]['urlkey'] + ',';
-                        } else {
-                            topics += response.results[i]['urlkey']; //last topic, do not add comma
-                        }
-                    }
-                }
-                console.log('Topics', topics);
-                getEvents(meetUpKey, topics, zip); //pass the urlkey and zipcode to look for open events
-            }
-        }
-    });
-}*/
-
 /**
  * getEvents - ajax call to meetup api and using urlkey from getTopics gets open events
  * @param {string} keyword - urlkeys from meetup separated by commas
@@ -370,10 +330,12 @@ function getEvents(keyword, zip) {
                     $('#top_search').addClass('search-top');
                     $('#map_left').addClass('map-left');
                     youTubeApi(keyword);
-                    $(".preloader-wrapper").hide();
+                    $(".greyBG").hide();
+                    $('.preloader-wrapper').hide();
                 });
             }else{
-                $(".preloader-wrapper").hide();
+                $(".greyBG").hide();
+                $('.preloader-wrapper').hide();
                 Materialize.toast('No open events found in your area', 2000, 'red white-text');
             }
         },
@@ -400,10 +362,12 @@ function getEventsBackup(keyword, zip) {
                     $('#top_search').addClass('search-top');
                     $('#map_left').addClass('map-left');
                     youTubeApi(keyword);
-                    $(".preloader-wrapper").hide();
+                    $(".greyBG").hide();
+                    $('.preloader-wrapper').hide();
                 });
             }else{
-                $(".preloader-wrapper").hide();
+                $(".greyBG").hide();
+                $('.preloader-wrapper').hide();
                 Materialize.toast('No open events found in your area', 2000, 'red white-text');
             }
         },
@@ -412,40 +376,6 @@ function getEventsBackup(keyword, zip) {
         }
     })
 }
-
-// OLD GET EVENTS FUNCTION (DOESN'T HIDE API KEY)
-
-/*function getEvents(apiKey, keyword, zip) {
-    var userKeyword = keyword;
-    var userZip = zip;
-    var meetUpKey = apiKey;
-    $.ajax({
-        dataType: 'jsonp',
-        url: 'https://api.meetup.com/2/open_events?key=' + meetUpKey + '&zip=' + userZip + '&topic=' + userKeyword + '&page=20',
-        method: 'get',
-        success: function (response) {
-            var eventList = response.results;
-            if(response.results.length > 1) { //check that array containing open events is greater than 1
-                //console.log('Event list', eventList);
-                //console.log('global zip', global_zip);
-                var newEventList = parseEventsForMaps(eventList); //gets latitude and longitude for map
-                //console.log("new event list ", newEventList);
-                initMap(global_zip, newEventList);
-                $(".intro-wrapper").slideDown(750);
-                $(".intro-wrapper").animate({top: '-100vh'}, 750, function () {
-                    $('#top_search').addClass('search-top');
-                    $('#map_left').addClass('map-left'); // added this wed. night - taylor
-                    youTubeApi(keyword);
-                    $(".preloader-wrapper").hide();
-                });
-            }else{ //if event is 1 or less, generic topic search urlkey for generic open events
-                //getTopics(meetUpKey, undefined, zip);
-                $(".preloader-wrapper").hide();
-                Materialize.toast('No open events found in your area', 2000, 'red white-text');
-            }
-        }
-    });
-}*/
 
 /**
  * createEventCard - dynamically create and append event info cards
@@ -511,7 +441,7 @@ function parseTime(date){
         minutes = '00';
     }
     //creates date string
-    newDate = day + ' ' + hour + ':' + minutes + ' ' + amOrPm;
+    newDate = hour + ':' + minutes + amOrPm + ' ' + day;
     //console.log(newDate);
     return newDate;
 }
@@ -538,14 +468,13 @@ $('#map_left').on('click','.card', function(){
     }).append($eventName,$groupName,$eventDate,$eventAddress,$eventDescription);
 
     var $eventPage=$('<div>',{
-        class:'details-wrapper white',
+        class:'details-wrapper white'
     }).append($eventDetail);
 
 });
 
 function missingPropertyValues(objName) {
     for(var i=0 in event) {
-        console.log()
         console.log(objName[i]);
     }
 }
@@ -657,17 +586,45 @@ function createEventDescription(eventCard) {
         class: 'red-text',
         text: date
     });
-    var $eventAddress= $('<h5>',{
+    var $eventAddress= $('<h6>',{
         class: 'red-text',
         text: cardEvent.venue.address_1 + " "+ cardEvent.venue.city + " "+ state
     });
+    var $lineBreak=$('<br>',{});
+    var $lineBreak2=$('<br>',{});
     var $eventURL=$('<a/>',{
-        href:cardEvent['event_url'],
-        text: 'Event Link',
+        href: cardEvent['event_url'],
+        html: "<i class='tiny material-icons light-blue-text darken-1'>open_in_new</i> View Event on Meetup.com"
+    });
+    var $eventGoogleCal=$('<a/>',{
+        //title format: text=TEST%20TITLE
+        //date format: dates=YYYYMMDDToHHMMSSZ/YYYYMMDDToHHMMSSZ
+        //details format: details=(url encoded event description/details)
+        //location format: location=(url encoded location of the event - make sure it's an address google maps can read easily)
+        href: 'http://www.google.com/calendar/event?action=TEMPLATE&text=' + 'TEST%20TITLE' + '&dates=' + '20161230T063000Z/20161231T080000Z' + '&location=' + 'Irvine' + '&details=' + 'TEST%20DETAILS',
+        html: "<i class='tiny material-icons light-blue-text darken-1'>open_in_new</i> Add to Google Calendar"
+    });
+    var $eventCalendarICS=$('<a/>',{
+        class: 'details-link',
+        html: "<i class='tiny material-icons light-blue-text darken-1'>file_download</i> Download ICS (Calendar) File",
+        click: function() {
+            // Demo
+            // Multiple
+            var cal = ics();
+            cal.addEvent('Christmas', 'Christian holiday celebrating the birth of Jesus Christ', 'Bethlehem', '12/25/2016', '12/25/2016');
+            cal.addEvent('New Years', 'Watch the ball drop!', 'New York', '01/01/2017', '01/01/2017');
+
+            // Single
+            var cal_single = ics();
+            cal_single.addEvent('Meetup Event', 'This is the best day to demonstrate a single event.', 'New York', '12/30/2016', '12/30/2016');
+
+            cal_single.download('Meetup'); // single
+            //cal.download('Meetup');  // multiple
+        }
     });
     var $eventDescription=$('<p>',{
         html: cardEvent['description']
     });
     //attach elements to dom
-    $('.event-details').append($eventName,$groupName,$eventDate,$eventAddress, $eventURL,$eventDescription);
+    $('.event-details').append($eventName,$groupName,$eventURL,$eventDate,$eventAddress,$lineBreak,$eventGoogleCal,$lineBreak2,$eventCalendarICS,$eventDescription);
 }
