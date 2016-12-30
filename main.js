@@ -112,6 +112,25 @@ function parseEventsForMaps(eventObj) {
  */
 function click_handlers() {
 
+
+    $('#test').click(function(){
+
+        // Demo
+        // Multiple
+        var cal = ics();
+        cal.addEvent('Christmas', 'Christian holiday celebrating the birth of Jesus Christ', 'Bethlehem', '12/25/2016', '12/25/2016');
+        cal.addEvent('New Years', 'Watch the ball drop!', 'New York', '01/01/2017', '01/01/2017');
+
+        // Single
+        var cal_single = ics();
+        cal_single.addEvent('Meetup Event', 'This is the best day to demonstrate a single event.', 'New York', '12/30/2016', '12/30/2016');
+
+
+        cal_single.download('Meetup'); // single
+        //cal.download('Meetup');  // multiple
+    });
+
+
     /*
     When the user presses ENTER, it will submit the inputs on the FRONT PAGE
      */
