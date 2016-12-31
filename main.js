@@ -241,7 +241,6 @@ function click_handlers() {
 
     //Event delegation for card events. On click, dynamically adds specific event info to event description page
     $("#map_left").on("click",".card-content",function () {
-        console.log("HI");
         $(".intro-wrapper").animate({top: '-200vh'}, 750);
         $('.active-card').removeClass('active-card');
         $(this).addClass('active-card');
@@ -483,6 +482,18 @@ function parseTime(date){
     return hour + ':' + minutes + amOrPm + ', ' + day + ' - ' + month + '/' + dateDay + '/' + year;
 }
 
+/**
+ * parseDate - format date for ICS file
+ * @param {object} date - event's date object
+ * @returns {string} - contains event's formatted date
+ */
+function parseDate(date) {
+    var dateDay = date.getDate();
+    var month = date.getMonth() + 1;
+    var year = date.getFullYear();
+    return month + '/' + dateDay + '/' + year;
+}
+
 $('#map_left').on('click','.card', function(){
     var $eventName=$('<h1>',{
         text:event[i]['name']
@@ -613,6 +624,7 @@ function createEventDescription(eventCard) {
     cardEvent = global_event[cardId];
     console.log('This Event ', cardEvent);
     var address = cardEvent.venue.address_1 + " " + cardEvent.venue.city + " " + state;
+    var dateForICS = parseDate(new Date(cardEvent['time']));
     var date = new Date(cardEvent['time']);
     date = parseTime(date); //get readable date format
     var state = cardEvent.venue.state || '';
@@ -647,7 +659,8 @@ function createEventDescription(eventCard) {
         html: "<i class='tiny material-icons light-blue-text darken-1'>file_download</i> Download ICS (Calendar) File",
         click: function() {
             var cal = ics();
-            cal.addEvent('Meetup: ' + cardEvent['name'], 'Hosted by: ' + cardEvent.group.name + '<br><br>' + 'Description: ' + cardEvent['description'] + '<br>' + 'How to find us: ' + cardEvent['how_to_find_us'] + '<br><br><br>' + 'Brought to you by MeetupMap.', cardEvent.venue.address_1 + " " + cardEvent.venue.city + " " + state, date, date);
+            cal.addEvent('Meetup: ' + cardEvent['name'], 'Hosted by: ' + cardEvent.group.name + '<br><br>' + 'Description: ' + cardEvent['description'] + '<br>' + 'How to find us: ' + cardEvent['how_to_find_us'] + '<br><br><br>' + 'Brought to you by MeetupMap.', cardEvent.venue.address_1 + " " + cardEvent.venue.city + " " + state, dateForICS, dateForICS);
+            console.log('Meetup: ' + cardEvent['name'], 'Hosted by: ' + cardEvent.group.name + '<br><br>' + 'Description: ' + cardEvent['description'] + '<br>' + 'How to find us: ' + cardEvent['how_to_find_us'] + '<br><br><br>' + 'Brought to you by MeetupMap.', cardEvent.venue.address_1 + " " + cardEvent.venue.city + " " + state, dateForICS, dateForICS);
             cal.download('MeetupMap: ' + cardEvent['name']);
         }
     });
