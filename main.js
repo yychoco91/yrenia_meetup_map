@@ -483,15 +483,41 @@ function parseTime(date){
 }
 
 /**
- * parseDate - format date for ICS file
+ * parseICSDate - format date for ICS file
  * @param {object} date - event's date object
  * @returns {string} - contains event's formatted date
  */
-function parseDate(date) {
+function parseICSDate(date) {
     var dateDay = date.getDate();
     var month = date.getMonth() + 1;
     var year = date.getFullYear();
     return month + '/' + dateDay + '/' + year;
+}
+
+/**
+ * parseGoogleDate - format date for Google calendar query
+ * @param {object} date - event's date object
+ * @returns {string} - contains event's formatted date
+ */
+function parseGoogleDate(date) {
+    var dateDay = date.getDate();
+    if (dateDay < 10) {
+        dateDay = '0' + dateDay;
+    }
+    var month = date.getMonth() + 1;
+    if (month < 10) {
+        month = '0' + month;
+    }
+    var year = date.getFullYear();
+    var hour = date.getHours();
+    if (hour < 10) {
+        hour = '0' + hour;
+    }
+    var minutes = date.getMinutes();
+    if (minutes < 10) {
+        minutes += '0';
+    }
+    return year + '' + month + '' + dateDay + 'T' + hour + '' + minutes + '' + '00';
 }
 
 $('#map_left').on('click','.card', function(){
@@ -623,11 +649,15 @@ function createEventDescription(eventCard) {
     console.log('Card Clicked', cardId);
     cardEvent = global_event[cardId];
     console.log('This Event ', cardEvent);
-    var address = cardEvent.venue.address_1 + " " + cardEvent.venue.city + " " + state;
-    var dateForICS = parseDate(new Date(cardEvent['time']));
+    var dateForICS = parseICSDate(new Date(cardEvent['time']));
+    var dateForGoogleCal = parseGoogleDate(new Date(cardEvent['time']));
     var date = new Date(cardEvent['time']);
     date = parseTime(date); //get readable date format
     var state = cardEvent.venue.state || '';
+    var eventName = cardEvent['name'];
+    var eventLocation = (cardEvent.venue.address_1 + " " + cardEvent.venue.city + " " + state);
+    var eventHowToFindUs = cardEvent['how_to_find_us'];
+    eventHowToFindUs = eventHowToFindUs === undefined ? '' : 'How to find us: ' + eventHowToFindUs;
     var $eventName=$('<h3>',{
         class: 'red-text event-title',
         text: cardEvent['name']
@@ -647,11 +677,7 @@ function createEventDescription(eventCard) {
         html: "<i class='tiny material-icons light-blue-text darken-1'>open_in_new</i> View Event on Meetup.com"
     });
     var $eventGoogleCal=$('<a/>',{
-        //title format: text=TEST%20TITLE
-        //date format: dates=YYYYMMDDToHHMMSSZ/YYYYMMDDToHHMMSSZ
-        //details format: details=(url encoded event description/details)
-        //location format: location=(url encoded location of the event - make sure it's an address google maps can read easily)
-        href: 'http://www.google.com/calendar/event?action=TEMPLATE&text=' + 'TEST%20TITLE' + '&dates=' + '20161230T063000Z/20161231T080000Z' + '&location=' + 'Irvine' + '&details=' + 'TEST%20DETAILS',
+        href: 'http://www.google.com/calendar/event?action=TEMPLATE&text=' + 'Meetup:%20' + encodeURIComponent(eventName) + '&dates=' + dateForGoogleCal + '/' + dateForGoogleCal + '&details=' + encodeURIComponent(eventHowToFindUs) + '&location=' + encodeURIComponent(eventLocation),
         html: "<i class='tiny material-icons light-blue-text darken-1'>open_in_new</i> Add to Google Calendar"
     });
     var $eventCalendarICS=$('<a/>',{
@@ -660,8 +686,6 @@ function createEventDescription(eventCard) {
         click: function() {
             var cal = ics();
             cal.addEvent('Meetup: ' + cardEvent['name'], 'Hosted by: ' + cardEvent.group.name + '<br><br>' + 'Description: ' + cardEvent['description'] + '<br>' + 'How to find us: ' + cardEvent['how_to_find_us'] + '<br><br><br>' + 'Brought to you by MeetupMap.', cardEvent.venue.address_1 + " " + cardEvent.venue.city + " " + state, dateForICS, dateForICS);
-            console.log('Meetup: ' + cardEvent['name'], 'Hosted by: ' + cardEvent.group.name + '<br><br>' + 'Description: ' + cardEvent['description'] + '<br>' + 'How to find us: ' + cardEvent['how_to_find_us'] + '<br><br><br>' + 'Brought to you by MeetupMap.', cardEvent.venue.address_1 + " " + cardEvent.venue.city + " " + state, dateForICS, dateForICS);
-            cal.download('MeetupMap: ' + cardEvent['name']);
         }
     });
     var $eventDescription=$('<p>',{
