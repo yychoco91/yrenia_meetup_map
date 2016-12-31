@@ -6,9 +6,11 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
     <link rel="stylesheet" href="style.css">
+    <script src="https://apis.google.com/js/api.js"></script>
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
     <script src="infobubble-compiled.js"></script>
+    <script type="text/javascript" src="https://rawgithub.com/nwcell/ics.js/master/ics.deps.min.js"></script>
     <script src="main.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
@@ -105,18 +107,19 @@
     </div>
 </div>
 
-<!-------PRELOADER------->
-
-<div class="preloader-wrapper active pre-load">
-    <div class="spinner-layer spinner-yellow-only big">
-        <div class="circle-clipper left">
-            <div class="circle"></div>
-        </div>
-        <div class="gap-patch">
-            <div class="circle"></div>
-        </div>
-        <div class="circle-clipper right">
-            <div class="circle"></div>
+<!-------PRELOAD------->
+<div class="greyBG">
+    <div class="preloader-wrapper active">
+        <div class="spinner-layer spinner-red-only">
+            <div class="circle-clipper left">
+                <div class="circle"></div>
+            </div>
+            <div class="gap-patch">
+                <div class="circle"></div>
+            </div>
+            <div class="circle-clipper right">
+                <div class="circle"></div>
+            </div>
         </div>
     </div>
 </div>
@@ -162,18 +165,16 @@
             }
         }
 
-        if (eventObj === undefined) { // set a default location so the initial map doesn't bugged out.
+        if (eventObj === undefined) { // set a default location so the initial map doesn't bug out.
             locations = [
                 {lat: 33.81, lng: -117.845692},
-                {lat: 33.92, lng: -117.853218},
+                {lat: 33.92, lng: -117.853218}
             ]
         } else {
             locations = eventObj;
         }
 
-
         console.log('param locations is ', eventObj);
-
 
         var labels = [];
         labels = global_venue;
@@ -306,5 +307,11 @@
 <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDa6lkpC-bOxXWEbrWaPlw_FneCpQhlgNE&callback=initMap">
 </script>
+<!--<button id="test">Test</button>
+<div class="wrap">
+    <a href="javascript:cal_single.download('Meetup')">Single Event</a>
+    <br>
+    <a href="javascript:cal.download('Meetup')">Multiple Events</a>
+</div>-->
 </body>
 </html>
