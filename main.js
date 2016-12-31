@@ -54,6 +54,15 @@ function geoCoding(search,zip) {
                         } else {
                             console.warn('houston we have a problem', response2);
                         }
+                    },
+                    error: function (err) {
+                        var $statusCode = $('<div>',{
+                            class: 'error-status',
+                            html: 'Oops! Something went wrong!' + '<br>' + err.status + ' ' + err.statusText
+                        });
+                        $('.preloader-wrapper').hide();
+                        $('.greyBG').append($statusCode);
+                        console.log('houston we have a problem: ', err);
                     }
                 });
             } else {
@@ -62,6 +71,15 @@ function geoCoding(search,zip) {
                 apiThrottled(header, paragraph);
             }
 
+        },
+        error: function (err) {
+            var $statusCode = $('<div>',{
+                class: 'error-status',
+                html: 'Oops! Something went wrong!' + '<br>' + err.status + ' ' + err.statusText
+            });
+            $('.preloader-wrapper').hide();
+            $('.greyBG').append($statusCode);
+            console.log('houston we have a problem: ', err);
         }
     })
 }
@@ -276,6 +294,12 @@ function getTopics(keyword, zipcode) {
             }
         },
         error: function (err) {
+            var $statusCode = $('<div>',{
+                class: 'error-status',
+                html: 'Oops! Something went wrong!' + '<br>' + err.status + ' ' + err.statusText
+            });
+            $('.preloader-wrapper').hide();
+            $('.greyBG').append($statusCode);
             console.log('houston we have a problem: ', err);
         }
     })
@@ -304,6 +328,12 @@ function getTopicsBackup(keyword, zipcode) {
             getEvents(topics, zip); //pass the topics and zipcode to look for open events
         },
         error: function (err) {
+            var $statusCode = $('<div>',{
+                class: 'error-status',
+                html: 'Oops! Something went wrong!' + '<br>' + err.status + ' ' + err.statusText
+            });
+            $('.preloader-wrapper').hide();
+            $('.greyBG').append($statusCode);
             console.log('houston we have a problem: ', err);
         }
     })
@@ -340,6 +370,12 @@ function getEvents(keyword, zip) {
             }
         },
         error: function (err) {
+            var $statusCode = $('<div>',{
+                class: 'error-status',
+                html: 'Oops! Something went wrong!' + '<br>' + err.status + ' ' + err.statusText
+            });
+            $('.preloader-wrapper').hide();
+            $('.greyBG').append($statusCode);
             console.log('houston we have a problem: ', err);
         }
     })
@@ -372,6 +408,12 @@ function getEventsBackup(keyword, zip) {
             }
         },
         error: function (err) {
+            var $statusCode = $('<div>',{
+                class: 'error-status',
+                html: 'Oops! Something went wrong!' + '<br>' + err.status + ' ' + err.statusText
+            });
+            $('.preloader-wrapper').hide();
+            $('.greyBG').append($statusCode);
             console.log('houston we have a problem: ', err);
         }
     })
@@ -484,7 +526,6 @@ function missingPropertyValues(objName) {
     }
 }
 
-
 //API IS BEING THROTTLED FUNCTION
 function apiThrottled(heading,message) {
     $('#error_modal .modal-content h4').text(heading);
@@ -561,6 +602,15 @@ function youTubeApi(usersChoice) {
                     'Please, try again later.';
                 apiThrottled(youTubeFailHeading,youTubeFailMessage);
             }
+        },
+        error: function (err) {
+            var $statusCode = $('<div>',{
+                class: 'error-status',
+                html: 'Oops! Something went wrong!' + '<br>' + err.status + ' ' + err.statusText
+            });
+            $('.preloader-wrapper').hide();
+            $('.greyBG').append($statusCode);
+            console.log('houston we have a problem: ', err);
         }
     });
 }

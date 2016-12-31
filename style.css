@@ -30,21 +30,30 @@
     width: 4em;
     margin: auto;
     top: 0;
-    left: 0;
     bottom: 0;
+    left: 0;
     right: 0;
     display: none;
 }
 
 .greyBG {
     position: absolute;
-    top:0;
-    right:0;
-    bottom:0;
-    left:0;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
     background-color: rgba(0,0,0,.5);
     z-index: 200;
     display: none;
+}
+
+.error-status {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 202;
 }
 
 .spinner-red-only {
