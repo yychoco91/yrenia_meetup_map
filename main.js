@@ -9,7 +9,6 @@
 
 $(document).ready(click_handlers);
 var global_event = [];
-// Danh's Section
 var global_zip = null;
 var global_venue = [];
 /**
@@ -83,6 +82,7 @@ function geoCoding(search,zip) {
         }
     })
 }
+
 /**
  * function parseEventsForMaps
  *
@@ -121,33 +121,13 @@ function parseEventsForMaps(eventObj) {
             }
         }
     }
-
     return geocodeArray;
 }
-// Danh's Section End
+
 /**
  * function click_handlers
  */
 function click_handlers() {
-
-
-    $('#test').click(function(){
-
-        // Demo
-        // Multiple
-        var cal = ics();
-        cal.addEvent('Christmas', 'Christian holiday celebrating the birth of Jesus Christ', 'Bethlehem', '12/25/2016', '12/25/2016');
-        cal.addEvent('New Years', 'Watch the ball drop!', 'New York', '01/01/2017', '01/01/2017');
-
-        // Single
-        var cal_single = ics();
-        cal_single.addEvent('Meetup Event', 'This is the best day to demonstrate a single event.', 'New York', '12/30/2016', '12/30/2016');
-
-
-        cal_single.download('Meetup'); // single
-        //cal.download('Meetup');  // multiple
-    });
-
 
     /*
     When the user presses ENTER, it will submit the inputs on the FRONT PAGE
@@ -164,6 +144,10 @@ function click_handlers() {
                 return;
             }
             geoCoding(userSearch, userZip);
+            $('#search').val('').blur();
+            $('#nav_search').val('').blur();
+            $('#zip').val('').blur();
+            $('#nav_zip').val('').blur();
             $('.greyBG').show();
             $('.preloader-wrapper').show();
         }
@@ -185,11 +169,16 @@ function click_handlers() {
             }
             geoCoding(userSearch, userZip);
             //youTubeApi(userSearch);
+            $('#search').val('').blur();
+            $('#nav_search').val('').blur();
+            $('#zip').val('').blur();
+            $('#nav_zip').val('').blur();
             $('.greyBG').show();
             $('.preloader-wrapper').show();
 
         }
     });
+
     /*
         When the user clicks GO , it will submit the inputs on the FRONT PAGE
     */
@@ -201,9 +190,14 @@ function click_handlers() {
             return;
         }
         geoCoding(userSearch, userZip);
+        $('#search').val('').blur();
+        $('#nav_search').val('').blur();
+        $('#zip').val('').blur();
+        $('#nav_zip').val('').blur();
         $('.greyBG').show();
         $('.preloader-wrapper').show();
     });
+
     /*
      When the user clicks GO , it will submit the inputs on the TOP NAV BAR
      */
@@ -216,6 +210,10 @@ function click_handlers() {
         }
         geoCoding(userSearch, userZip);
         //youTubeApi(userSearch);
+        $('#search').val('').blur();
+        $('#nav_search').val('').blur();
+        $('#zip').val('').blur();
+        $('#nav_zip').val('').blur();
         $('.greyBG').show();
         $('.preloader-wrapper').show();
     });
@@ -223,13 +221,8 @@ function click_handlers() {
     /*
      When the user clicks on the LOGO it will take it to the first page
      */
-
     $('#top_search').on('click','.logo-nav',function () {
         //Clear inputs and lose focus so labels
-        $('#search').val('').blur();
-        $('#nav_search').val('').blur();
-        $('#zip').val('').blur();
-        $('#nav_zip').val('').blur();
         $('#top_search').removeClass('search-top');
         $('#map_left').removeClass('map-left');
         $('.intro-wrapper').animate({top: '0vh'}, 750, function(){
@@ -241,12 +234,9 @@ function click_handlers() {
      When the user clicks on the ROUND CIRCLE BUTTON on the top right off the
      Details Wrapper page, it will move up to the map (using event delegation)
      */
-
     $(".details-wrapper").on("click",".btn-floating",function () {
         //console.log("Button Up Clicked!");
-        $(".intro-wrapper").animate({top: '-100vh'}, 750, function(){
-
-        });
+        $(".intro-wrapper").animate({top: '-100vh'}, 750, function(){});
     });
 
     //Event delegation for card events. On click, dynamically adds specific event info to event description page
@@ -259,6 +249,7 @@ function click_handlers() {
         createEventDescription(this);
     });
 }
+
 /**
  * getTopics - using user-entered interest, generate topics and use first 2 url keys
  * @param {string} keyword - user-entered interest
@@ -435,12 +426,10 @@ function createEventCard(event){
     var address = event.venue.address_1;
     var city = event.venue.city;
     //create html elements with classes
-
     var $title = $('<span>', {
         class: 'card-title',
         text: eventName
     });
-
     var $date = $('<p>', {
         text: date
     });
@@ -460,6 +449,7 @@ function createEventCard(event){
     }).append($cardContent);
     $('#map_left').append($card);
 }
+
 /**
  * parseTime - change date into more readable format
  * @param {object} date - event's date object
@@ -493,7 +483,6 @@ function parseTime(date){
     return hour + ':' + minutes + amOrPm + ', ' + day + ' - ' + month + '/' + dateDay + '/' + year;
 }
 
-
 $('#map_left').on('click','.card', function(){
     var $eventName=$('<h1>',{
         text:event[i]['name']
@@ -513,7 +502,6 @@ $('#map_left').on('click','.card', function(){
     var $eventDetail=$('<div>',{
         class:"event-details"
     }).append($eventName,$groupName,$eventDate,$eventAddress,$eventDescription);
-
     var $eventPage=$('<div>',{
         class:'details-wrapper white'
     }).append($eventDetail);
@@ -532,7 +520,6 @@ function apiThrottled(heading,message) {
     $('#error_modal .modal-content p').text(message);
     $('#error_modal').openModal();
 }
-
 
 //YOUTUBE SECTION -- DANs
 function youTubeApi(usersChoice) {
@@ -570,25 +557,24 @@ function youTubeApi(usersChoice) {
             if (response.success === true) {
                 //CONSOLE LOGS FOR TESTING PURPOSES
                 console.log('successful connection to YouTube API');
-               if(response.video) {
-                //LOOP FOR VIDEO ID AND TITLE
-                for (var i = 0; i < response.video.length; i++) {
-                    //THE BELOW CODE
-                    var iframeDiv = $('<div>').addClass('video-container card');
+                if(response.video) {
+                    //LOOP FOR VIDEO ID AND TITLE
+                    for (var i = 0; i < response.video.length; i++) {
+                        //THE BELOW CODE
+                        var iframeDiv = $('<div>').addClass('video-container card');
 
-                    //CREATION OF YOUTUBE VIDEO LINK
-                    var iframe = $("<iframe>", {
-                        src: "https://www.youtube.com/embed/" + response.video[i].id,
-                        frameborder: 0,
-                        allowfullscreen: true
-                    });
-                    iframe.appendTo(iframeDiv);
-                    //ADDING VIDEO LINK TO THE DOM
-                    //var videoList = $('div.video-list').append(relatedVideos);
-                    videoList.append(iframe);
-                    console.log('This is the new div and class ', iframeDiv);
-                }
-
+                        //CREATION OF YOUTUBE VIDEO LINK
+                        var iframe = $("<iframe>", {
+                            src: "https://www.youtube.com/embed/" + response.video[i].id,
+                            frameborder: 0,
+                            allowfullscreen: true
+                        });
+                        iframe.appendTo(iframeDiv);
+                        //ADDING VIDEO LINK TO THE DOM
+                        //var videoList = $('div.video-list').append(relatedVideos);
+                        videoList.append(iframe);
+                        console.log('This is the new div and class ', iframeDiv);
+                        }
                 } else {
                     var noVideoMessage = $('<p>Currently, there are no videos in our search results.</p>');
                     relatedVideos.append(noVideoMessage);
@@ -614,6 +600,7 @@ function youTubeApi(usersChoice) {
         }
     });
 }
+
 /**
  * createEventDescription - dynamically add event info to more event info page'
  * @param {object} eventCard - contains event information
@@ -628,7 +615,6 @@ function createEventDescription(eventCard) {
     var address = cardEvent.venue.address_1 + " " + cardEvent.venue.city + " " + state;
     var date = new Date(cardEvent['time']);
     date = parseTime(date); //get readable date format
-
     var state = cardEvent.venue.state || '';
     var $eventName=$('<h3>',{
         class: 'red-text event-title',
