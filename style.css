@@ -216,10 +216,15 @@ SIDEBAR
     box-sizing: border-box;
 }
 
+.details-wrapper-row {
+    position: relative;
+}
+
 .back-to-map {
+    position: absolute;
     left: 90%;
     transform: translateX(-10%);
-    top: 9vh;
+    top: 8vh;
     z-index: 100;
 }
 
@@ -236,6 +241,11 @@ SIDEBAR
 /********************
 DETAILS PAGE
 ********************/
+
+.details-wrapper {
+    overflow: auto;
+    overflow-x: hidden;
+}
 
 .video-list, .event-details {
     top: 14vh;
@@ -255,8 +265,8 @@ DETAILS PAGE
 }
 
 .details-inner {
-    overflow-y: scroll;
-    overflow-x: hidden;
+    position: relative;
+    top: 2vh;
     height: 100vh;
 }
 
@@ -281,11 +291,6 @@ DETAILS PAGE
     padding: 0 0 100px;
 }
 
-.details-inner {
-    position: relative;
-    top: -3vh;
-}
-
 .details-link {
     cursor: pointer;
 }
@@ -306,23 +311,28 @@ MAP MARKER
 .div_links {
     color: grey;
 }
+
 /********************
 SCROLL BAR
 ********************/
 
-#map_left::-webkit-scrollbar-track {
+#map_left::-webkit-scrollbar-track, .details-wrapper::-webkit-scrollbar-track {
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
     background-color: #F5F5F5;
 }
 
-#map_left::-webkit-scrollbar {
+#map_left::-webkit-scrollbar, .details-wrapper::-webkit-scrollbar {
     width: 6px;
     background-color: rgba(255,255,255,.2);
 }
 
-#map_left::-webkit-scrollbar-thumb {
+#map_left::-webkit-scrollbar-thumb, .details-wrapper::-webkit-scrollbar-thumb {
     background-color: #e53935;
 }
+
+/********************
+TOAST
+********************/
 
 #toast-container{
     top: auto !important;
@@ -330,6 +340,25 @@ SCROLL BAR
     bottom: 50%;
     left: 50%;
     transform: translate(-50%,-50%);
+}
+div.mylabel div.div_links .event-time {
+    display: none;
+}
+
+@media only screen and (min-device-width : 969px) and (max-device-width : 1024px) {
+    .card-content span.card-title {
+        font-size: 20px;
+    }
+}
+
+@media only screen and (min-device-width : 661px) and (max-device-width : 968px) {
+    .card-content span.card-title {
+        font-size: 16px;
+    }
+    div.card.red.lighten-1 {
+        margin-right: 5px;
+        width: 95%;
+    }
 }
 
 @media only screen and (min-device-width : 320px) and (max-device-width : 660px) {
@@ -350,21 +379,31 @@ SCROLL BAR
         width: 100%;
     }
 
-    #map {
+    .map_left {
+        position: static;
+        height: 88vh;
+        z-index: 0;
+        overflow-y: scroll;
+        overflow-x: hidden;
         display: none;
     }
 
-    .map-left {
-        position: fixed;
-        height: 88vh;
-        z-index: 2;
-        overflow-y: scroll;
-        overflow-x: hidden;
+    #map_left {
+        display: none;
+    }
+
+    #map {
+        display: block;
+        z-index: 100;
     }
 
     .details-wrapper {
         display: none;
     }
-
+    .event-time {
+        display: block;
+    }
 }
+
+
 

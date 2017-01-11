@@ -18,8 +18,11 @@
         $.ajax({
             url: "getVideos.php",
             type: "json",
-            method: "get",
-            data:{userQuery: searchQuery},
+            method: "post",
+            data:{
+                q: searchQuery,
+                maxResults: 5
+            },
             success: function (resp) {
                 console.log(resp);
             }

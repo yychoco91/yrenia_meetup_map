@@ -7,7 +7,7 @@
  */
 
 //Need key file
-require_once('');
+require_once('../apikeys.php');
 
 $output = [
     'success'=>false
@@ -24,9 +24,10 @@ header("Access-Control-Allow-Origin: *");
 
 
 //print_r($_GET["userQuery"]);
-$searchQuery = $_GET["userQuery"];
+$searchQuery = $_POST["q"];
+$searchAmount =$_POST["maxResults"];
 
-if($youtubeData = file_get_contents("https://www.googleapis.com/youtube/v3/search?part=snippet&key=$youtubeKey&q=$searchQuery&maxResults=10&type=video&videoDefinition=high", false, stream_context_create($arrContextOptions))){
+if($youtubeData = file_get_contents("https://www.googleapis.com/youtube/v3/search?part=snippet&key=$youtubeKey&q=$searchQuery&maxResults=$searchAmount&type=video&videoDefinition=high", false, stream_context_create($arrContextOptions))){
     $decoded = json_decode($youtubeData);
     //print_r($decoded->items[0]->snippet);
 
