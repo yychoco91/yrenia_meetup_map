@@ -25,7 +25,7 @@ header("Access-Control-Allow-Origin: *");
 
 //print_r($_GET["userQuery"]);
 $searchQuery = $_POST["q"];
-$searchAmount =$_POST["maxResults"];
+$searchAmount = $_POST["maxResults"];
 
 if($youtubeData = file_get_contents("https://www.googleapis.com/youtube/v3/search?part=snippet&key=$youtubeKey&q=$searchQuery&maxResults=$searchAmount&type=video&videoDefinition=high", false, stream_context_create($arrContextOptions))){
     $decoded = json_decode($youtubeData);

@@ -8,9 +8,11 @@
  */
 
 $(document).ready(click_handlers);
+
 var global_event = [];
 var global_zip = null;
 var global_venue = [];
+
 /**
  * function geoCoding
  *      converts zip code to longitude and latitude
@@ -23,18 +25,17 @@ function geoCoding(search,zip) {
     $.ajax({
         dataType: 'JSON',
         method: 'GET',
-        url: "geoCoding.php",
+        url: "./services/geoCoding.php",
         data: {zip:zipConcat},
         success: function (response) {
             if(response.status === 'OK')
             {
                 var output = response.results[0].geometry.location;
                 global_zip = output;
-                console.log("param search is "+ search);
                 $.ajax({
                     dataType: 'JSON',
                     method: 'GET',
-                    url: "reverseGeoCoding.php",
+                    url: "./services/reverseGeoCoding.php",
                     data: {lat: output.lat, lng: output.lng},
                     success: function (response2) {
                         if(response2.status === 'OK')
@@ -43,44 +44,45 @@ function geoCoding(search,zip) {
                             // checks to make sure that last item in array is postal_code, not postal_code_suffix.
                             if (response2.results[0].address_components[lastAddressComponent].types[0] === 'postal_code') {
                                 var reverseGeoZip = response2.results[0].address_components[lastAddressComponent].short_name;
-                                console.info('reverseGeoZip - postal code: ', reverseGeoZip);
                                 getTopics(search, reverseGeoZip);
                             } else {
                                 var reverseGeoZipNoSuffix = response2.results[0].address_components[lastAddressComponent-1].short_name;
-                                console.info('reverseGeoZip - avoided postal code suffix: ', reverseGeoZipNoSuffix);
                                 getTopics(search, reverseGeoZipNoSuffix);
                             }
                         } else {
-                            console.warn('houston we have a problem', response2);
+                            //console.warn('houston we have a problem', response2);
                         }
                     },
                     error: function (err) {
                         var $statusCode = $('<div>',{
-                            class: 'error-status',
-                            html: 'Oops! Something went wrong!' + '<br>' + err.status + ' ' + err.statusText
+                            html: 'Oops! Something went wrong!' + '<br>' + '(' + err.status + ' ' + err.statusText + ')'
                         });
                         $('.preloader-wrapper').hide();
                         $('.greyBG').append($statusCode);
-                        console.log('houston we have a problem: ', err);
+                        //console.log('houston we have a problem: ', err);
                     }
                 });
             } else {
-                var header = "API Error";
-                var paragraph = "We cannot process the geocoding API at the moment. Please try again later";
+                var header = "Oops!";
+                var paragraph = "Either the city or zip code that you entered was not valid or we're having an issue. Try again later!";
                 apiThrottled(header, paragraph);
+                $('.preloader-wrapper').hide();
+                $('.greyBG').hide();
             }
 
         },
         error: function (err) {
             var $statusCode = $('<div>',{
-                class: 'error-status',
-                html: 'Oops! Something went wrong!' + '<br>' + err.status + ' ' + err.statusText
+                html: 'Oops! Something went wrong!' + '<br>' + '(' + err.status + ' ' + err.statusText + ')'
             });
+            var header = "Oops!";
+            var paragraph = $statusCode;
+            apiThrottled(header, paragraph);
             $('.preloader-wrapper').hide();
-            $('.greyBG').append($statusCode);
-            console.log('houston we have a problem: ', err);
+            $('.greyBG').hide();
+            //console.log('houston we have a problem: ', err);
         }
-    })
+    });
 }
 
 /**
@@ -91,7 +93,6 @@ function geoCoding(search,zip) {
  * @param {object} eventObj - event object passed from Meetup Open Events API
  */
 function parseEventsForMaps(eventObj) {
-    console.log("Event Object is", eventObj);
 
     var geocodeArray = [];
     $("#map_left").html("");
@@ -101,11 +102,10 @@ function parseEventsForMaps(eventObj) {
     for (var i = 0; i < eventObj.length; i++) {
 
         if (eventObj[i].hasOwnProperty("venue")) {
-            //console.log("YES");
             var eventLat = eventObj[i].venue.lat;
             var eventLon = eventObj[i].venue.lon;
 
-            if (eventLat != 0 || eventLon != 0) {
+            if (eventLat !== 0 || eventLon !== 0) {
                 createEventCard(eventObj[i]);
                 global_venue.push(j+") "+eventObj[i].venue.name);
 
@@ -127,98 +127,74 @@ function parseEventsForMaps(eventObj) {
     return geocodeArray;
 }
 
+
+/**
+ * Function inputConfirmed
+ * ran when user press 'enter'/click go to search
+ * calls geocode and clears input on front screen populates nav search
+ */
+function inputConfirmed(){
+    var userSearch = $('#search').val() || $('#nav_search').val();
+    var userZip = $('#zip').val() || $('#nav_zip').val();
+    if (userSearch === '' || userZip === ''){
+        Materialize.toast('Please fill in both', 2000, 'white red-text');
+        return;
+    }
+    geoCoding(userSearch, userZip);
+    $('#nav_search').val(userSearch);
+    $('#nav_zip').val(userZip);
+    $('#search').val('').blur();
+    $('#zip').val('').blur();
+    $('.greyBG').show();
+    $('.preloader-wrapper').show();
+}
+
 /**
  * function click_handlers
  */
 function click_handlers() {
 
     /*
-    When the user presses ENTER, it will submit the inputs on the FRONT PAGE
+     When the user presses ENTER, it will submit the inputs on the FRONT PAGE
      */
-
     $('.input-container input').keypress(function(event) {
         if (event.which == 13) {
             event.preventDefault();
-            console.log('Front Page Search');
-            var userSearch = $('#search').val();
-            var userZip = $('#zip').val();
-            if (userSearch == '' || userZip == ''){
-                Materialize.toast('Please fill in both', 2000, 'white red-text');
-                return;
-            }
-            geoCoding(userSearch, userZip);
-            $('#search').val('').blur();
-            $('#nav_search').val('').blur();
-            $('#zip').val('').blur();
-            $('#nav_zip').val('').blur();
-            $('.greyBG').show();
-            $('.preloader-wrapper').show();
+            inputConfirmed();
         }
     });
+
+    /*
+     When the user clicks GO , it will submit the inputs on the FRONT PAGE
+     */
+    $('button#front-go').click(function () {
+        inputConfirmed();
+    });
+
 
     /*
      When the user presses ENTER, it will submit the inputs on the TOP NAV BAR
      */
-
     $('.input-nav-container input').keypress(function(event) {
         if (event.which == 13) {
             event.preventDefault();
-            console.log('Nav Bar Search');
-            var userSearch = $('#nav_search').val();
-            var userZip = $('#nav_zip').val();
-            if (userSearch == '' || userZip == ''){
-                Materialize.toast('Please fill in both', 2000, 'red white-text');
-                return;
+            inputConfirmed();
+            var windowWidth = $(window).width();
+            if (windowWidth <= 600) {
+                $('.back-one').trigger('click');
             }
-            geoCoding(userSearch, userZip);
-            //youTubeApi(userSearch);
-            $('#search').val('').blur();
-            $('#nav_search').val('').blur();
-            $('#zip').val('').blur();
-            $('#nav_zip').val('').blur();
-            $('.greyBG').show();
-            $('.preloader-wrapper').show();
-
         }
-    });
-
-    /*
-        When the user clicks GO , it will submit the inputs on the FRONT PAGE
-    */
-    $('button#front-go').click(function () {
-        var userSearch = $('#search').val();
-        var userZip = $('#zip').val();
-        if (userSearch == '' || userZip == ''){
-            Materialize.toast('Please fill in both', 2000, 'white red-text');
-            return;
-        }
-        geoCoding(userSearch, userZip);
-        $('#search').val('').blur();
-        $('#nav_search').val('').blur();
-        $('#zip').val('').blur();
-        $('#nav_zip').val('').blur();
-        $('.greyBG').show();
-        $('.preloader-wrapper').show();
     });
 
     /*
      When the user clicks GO , it will submit the inputs on the TOP NAV BAR
      */
-    $('button#nav-go').click(function () {
-        var userSearch = $('#nav_search').val();
-        var userZip = $('#nav_zip').val();
-        if (userSearch == '' || userZip == ''){
-            Materialize.toast('Please fill in both', 2000, 'red white-text');
-            return;
+    $('button.nav-go').click(function () {
+        inputConfirmed();
+        var windowWidth = $(window).width();
+        if (windowWidth <= 600) {
+            $('.back-one').trigger('click');
         }
-        geoCoding(userSearch, userZip);
-        //youTubeApi(userSearch);
-        $('#search').val('').blur();
-        $('#nav_search').val('').blur();
-        $('#zip').val('').blur();
-        $('#nav_zip').val('').blur();
-        $('.greyBG').show();
-        $('.preloader-wrapper').show();
     });
 
     /*
@@ -228,32 +204,85 @@ function click_handlers() {
         //Clear inputs and lose focus so labels
         $('#top_search').removeClass('search-top');
         $('#map_left').removeClass('map-left');
-        $('.intro-wrapper').animate({top: '0vh'}, 750, function(){
-
-        });
+        $('.intro-wrapper').animate({top: '0vh'}, 750, function(){});
+        $('.back-one').fadeOut('slow','linear');
     });
 
     /*
      When the user clicks on the ROUND CIRCLE BUTTON on the top right off the
      Details Wrapper page, it will move up to the map (using event delegation)
      */
-    $(".details-wrapper").on("click",".btn-floating",function () {
-        $(".intro-wrapper").animate({top: '-100vh'}, 750, function(){});
+    $(".back-one").click(function () {
+        $(".intro-wrapper").animate({top: '-100vh'}, 750);
+        $('.back-one').fadeOut('slow','linear');
+        var windowWidth = $(window).width();
+        if (windowWidth <= 600) {
+            $('#map_left').animate({top: '12vh'}, 750);
+        }
     });
 
     //Event delegation for card events. On click, dynamically adds specific event info to event description page
     $("#map_left").on("click",".card-content",function () {
-        $(".intro-wrapper").animate({top: '-200vh'}, 750);
+        var title = $(this).find(".card-title").text();
+        //Close all open info bubbles
+        mapAndInfoBubbles.infoBubbles.forEach(function(bubble){
+            bubble[0].close();
+        });
+        //Find info bubble matching card clicked
+        var bubbleArr = mapAndInfoBubbles.infoBubbles.filter(function(bubble) {
+            return bubble[0].bubbleTitle === title;
+        });
+        //Open the matching info bubble
+        bubbleArr[0][0].setContent(bubbleArr[0][1].html);
+        bubbleArr[0][0].open(mapAndInfoBubbles.map, bubbleArr[0][1]);
         $('.active-card').removeClass('active-card');
         $(this).addClass('active-card');
-        console.log(this);
         createEventDescription(this);
+        var windowWidth = $(window).width();
+        if (windowWidth <= 600) {
+            $(".intro-wrapper").animate({top: '-200vh'}, 750);
+            $('#map_left').animate({top: '-200vh'}, 750);
+            $('.back-one').css('display','block');
+        }
     });
 
-    //Initialize tooltip delay
-    $('.tooltipped').tooltip({delay: 50});
+    // Remove tooltips for mobile else initialize them
+    (function() {
+        var windowWidth = $(window).width();
+        if (windowWidth <= 600) {
+            $('.tooltipped').tooltip('remove');
+        } else {
+            $('.tooltipped').tooltip({delay: 50});
+        }
+    }());
+
 }
 
+/**
+ * Function Highlight - make matching event card active when its map marker is clicked
+ * @param marker - the marker clicked (see script in index)
+ */
+function highlight(marker){
+    var title = marker.title;
+    var card = $('.card-title:contains("'+ title +'")').parent();
+    $(".card-content").removeClass("active-card");
+    $(card).addClass("active-card");
+    //$("#map_left").scrollTo(card);
+    var container = $('#map_left');
+    container.animate({scrollTop: $(card).offset().top - container.offset().top + container.scrollTop() - (container.offset().top / 2)}, 800, "easeInOutQuart");
+}
+
+/**
+ * seeDetailsFromBubble - shows more event detail when more detail requested from info bubble
+ * @param button - the more details link on the info bubble
+ */
+function seeDetailsFromBubble(button){
+    var title = $(button).parent()["0"].childNodes["0"].innerText;
+    var card = $('.card-title:contains("'+ title +'")').parent();
+    createEventDescription(card);
+    $(".intro-wrapper").animate({top: '-200vh'}, 750);
+    $('.back-one').css('display','block');
+}
 /**
  * getTopics - using user-entered interest, generate topics and use first 2 url keys
  * @param {string} keyword - user-entered interest
@@ -261,43 +290,41 @@ function click_handlers() {
  */
 function getTopics(keyword, zipcode) {
     var keyConcat = keyword.split(' ').join('%');
-    console.info('keyword: ', keyConcat);
     var zip = zipcode;
-    console.info('zipcode: ', zip);
     $.ajax({
         dataType: 'JSON',
         method: 'GET',
-        url: 'meetupTopics.php',
+        url: './services/meetupTopics.php',
         data: {keyword:keyConcat},
         success: function (response) {
             var topics = '';
-            console.log('getTopics response: ', response);
-            if (response['code'] === 'blocked') {
+            if (response.code === 'blocked') {
                 getTopicsBackup(keyConcat, zip);
             } else {
                 if (response.results.length > 0) { //if the array > 0, there are topics related to user's search term
                     for (var i = 0; i < response.results.length; i++) { //for the amount of results, add to string separated by commas
                         if (i !== response.results.length - 1) {
-                            topics += response.results[i]['urlkey'] + ',';
+                            topics += response.results[i].urlkey + ',';
                         } else {
-                            topics += response.results[i]['urlkey'];
+                            topics += response.results[i].urlkey;
                         }
                     }
                 }
-                console.log('Topics', topics);
                 getEvents(topics, zip); //pass the topics and zipcode to look for open events
             }
         },
         error: function (err) {
             var $statusCode = $('<div>',{
-                class: 'error-status',
-                html: 'Oops! Something went wrong!' + '<br>' + err.status + ' ' + err.statusText
+                html: 'Oops! Something went wrong!' + '<br>' + '(' + err.status + ' ' + err.statusText + ')'
             });
+            var header = "Oops!";
+            var paragraph = $statusCode;
+            apiThrottled(header, paragraph);
             $('.preloader-wrapper').hide();
-            $('.greyBG').append($statusCode);
-            console.log('houston we have a problem: ', err);
+            $('.greyBG').hide();
+            //console.log('houston we have a problem: ', err);
         }
-    })
+    });
 }
 
 //Get topics backup if meetup API limits on first key are reached TODO: THIS DOES NOT USE BACKUP API KEY YET
@@ -306,32 +333,33 @@ function getTopicsBackup(keyword, zipcode) {
     $.ajax({
         dataType: 'JSON',
         method: 'GET',
-        url: 'meetupTopics.php',
+        url: './services/meetupTopics.php',
         data: {keyword:keyword},
         success: function (response) {
             var topics = '';
             if (response.results.length > 0) { //if the array > 0, there are topics related to user's search term
                 for (var i = 0; i < response.results.length; i++) { //for the amount of results, add to string separated by commas
                     if (i !== response.results.length - 1) {
-                        topics += response.results[i]['urlkey'] + ',';
+                        topics += response.results[i].urlkey + ',';
                     } else {
-                        topics += response.results[i]['urlkey'];
+                        topics += response.results[i].urlkey;
                     }
                 }
             }
-            console.log('Topics', topics);
             getEvents(topics, zip); //pass the topics and zipcode to look for open events
         },
         error: function (err) {
             var $statusCode = $('<div>',{
-                class: 'error-status',
-                html: 'Oops! Something went wrong!' + '<br>' + err.status + ' ' + err.statusText
+                html: 'Oops! Something went wrong!' + '<br>' + '(' + err.status + ' ' + err.statusText + ')'
             });
+            var header = "Oops!";
+            var paragraph = $statusCode;
+            apiThrottled(header, paragraph);
             $('.preloader-wrapper').hide();
-            $('.greyBG').append($statusCode);
-            console.log('houston we have a problem: ', err);
+            $('.greyBG').hide();
+            //console.log('houston we have a problem: ', err);
         }
-    })
+    });
 }
 
 /**
@@ -343,7 +371,7 @@ function getEvents(keyword, zip) {
     $.ajax({
         dataType: 'JSON',
         method: 'GET',
-        url: 'meetupEvents.php',
+        url: './services/meetupEvents.php',
         data: {keyword:keyword, zip:zip},
         success: function (response) {
             var eventList = response.results;
@@ -366,14 +394,16 @@ function getEvents(keyword, zip) {
         },
         error: function (err) {
             var $statusCode = $('<div>',{
-                class: 'error-status',
-                html: 'Oops! Something went wrong!' + '<br>' + err.status + ' ' + err.statusText
+                html: 'Oops! Something went wrong!' + '<br>' + '(' + err.status + ' ' + err.statusText + ')'
             });
+            var header = "Oops!";
+            var paragraph = $statusCode;
+            apiThrottled(header, paragraph);
             $('.preloader-wrapper').hide();
-            $('.greyBG').append($statusCode);
-            console.log('houston we have a problem: ', err);
+            $('.greyBG').hide();
+            //console.log('houston we have a problem: ', err);
         }
-    })
+    });
 }
 
 //Get events backup if meetup API limits on first key are reached TODO: THIS DOES NOT USE BACKUP API KEY YET
@@ -381,7 +411,7 @@ function getEventsBackup(keyword, zip) {
     $.ajax({
         dataType: 'JSON',
         method: 'GET',
-        url: 'meetupEvents.php',
+        url: './services/meetupEvents.php',
         data: {keyword:keyword, zip:zip},
         success: function (response) {
             var eventList = response.results;
@@ -404,14 +434,16 @@ function getEventsBackup(keyword, zip) {
         },
         error: function (err) {
             var $statusCode = $('<div>',{
-                class: 'error-status',
-                html: 'Oops! Something went wrong!' + '<br>' + err.status + ' ' + err.statusText
+                html: 'Oops! Something went wrong!' + '<br>' + '(' + err.status + ' ' + err.statusText + ')'
             });
+            var header = "Oops!";
+            var paragraph = $statusCode;
+            apiThrottled(header, paragraph);
             $('.preloader-wrapper').hide();
-            $('.greyBG').append($statusCode);
-            console.log('houston we have a problem: ', err);
+            $('.greyBG').hide();
+            //console.log('houston we have a problem: ', err);
         }
-    })
+    });
 }
 
 /**
@@ -419,14 +451,12 @@ function getEventsBackup(keyword, zip) {
  * @param {object} event - event containing necessary info
  */
 function createEventCard(event){
-    //console.log('Event card', event);
     var eventId = global_event.length;
     global_event.push(event); //push events used for cards to array for use on event description page
-    var eventName = event['name'];
-    var date = new Date(event['time']);
+    var eventName = event.name;
+    var date = new Date(event.time);
     date = parseTime(date);
     var venueName = event.venue.name;
-    /*Comment to see if git contribution will show up */
     var address = event.venue.address_1;
     var city = event.venue.city;
     //create html elements with classes
@@ -479,7 +509,7 @@ function parseTime(date){
         hour -= 12;
         amOrPm = 'pm';
     }else{
-        amOrPm = 'am'
+        amOrPm = 'am';
     }
     if(minutes === 0){
         minutes = '00';
@@ -527,19 +557,19 @@ function parseGoogleDate(date) {
 
 $('#map_left').on('click','.card', function(){
     var $eventName=$('<h1>',{
-        text:event[i]['name']
+        text:event[i].name
     });
     var $groupName=$('<h5>',{
         text:event[i].group.name
     });
     var $eventDate= $('<h4>',{
-        text: new Date(event[i]['time'])
+        text: new Date(event[i].time)
     });
     var $eventAddress= $('<h4>',{
         text:event[i].venue.address_1 + ' ' + event[i].venue.city + ', ' + event[i].venue.state
     });
     var $eventDescription=$('<p>',{
-        text:event[i]['description']
+        text:event[i].description
     });
     var $eventDetail=$('<div>',{
         class:"event-details"
@@ -550,11 +580,6 @@ $('#map_left').on('click','.card', function(){
 
 });
 
-function missingPropertyValues(objName) {
-    for(var i=0 in event) {
-        console.log(objName[i]);
-    }
-}
 
 //API IS BEING THROTTLED FUNCTION
 function apiThrottled(heading,message) {
@@ -565,8 +590,8 @@ function apiThrottled(heading,message) {
 
 //YOUTUBE SECTION -- DANs
 function youTubeApi(usersChoice) {
+    //this first part is to add the word "tips" to the search term to get better results
     var splitUsersChoice = usersChoice.split(',');
-    console.log('Here is the splitUsersChoice : ', splitUsersChoice);
     var len = splitUsersChoice.length;
     var concatUsersChoice;
     var arrayConcatUsersChoice = [];
@@ -575,13 +600,9 @@ function youTubeApi(usersChoice) {
         concatUsersChoice = splitUsersChoice[i] + "+tips";
         arrayConcatUsersChoice.push(concatUsersChoice);
     }
-    console.log('Here is the arrayConcatUsersChoice : ',arrayConcatUsersChoice);
     splitarrayConcatUsersChoiceToString = arrayConcatUsersChoice.toString();
-    console.log('Here is the splitarrayConcatUsersChoiceToString : ',splitarrayConcatUsersChoiceToString);
     var videoSearch = splitarrayConcatUsersChoiceToString;
-    missingPropertyValues(event);
     //usersChoice = usersChoice + ' Meetup';
-    console.log('In the youTubeApi function');
     $('div.video-list').html('');
     //BEGINNING OF AJAX FUNCTION
     $.ajax({
@@ -592,14 +613,12 @@ function youTubeApi(usersChoice) {
         },
         method: 'POST',
         //url: "https://s-apis.learningfuze.com/hackathon/youtube/search.php",
-        url: "./youtube/getVideos.php",
+        url: "./services/getVideos.php",
         //BEGIN SUCCESS'S ANONYMOUS FUNCTION
         success: function (response) {
             var relatedVideos = $('<h4>Related Videos</h4>');
             var videoList = $('div.video-list').append(relatedVideos);
             if (response.success === true) {
-                //CONSOLE LOGS FOR TESTING PURPOSES
-                console.log('successful connection to YouTube API');
                 if(response.video) {
                     //LOOP FOR VIDEO ID AND TITLE
                     for (var i = 0; i < response.video.length; i++) {
@@ -616,15 +635,12 @@ function youTubeApi(usersChoice) {
                         //ADDING VIDEO LINK TO THE DOM
                         //var videoList = $('div.video-list').append(relatedVideos);
                         videoList.append(iframe);
-                        console.log('This is the new div and class ', iframeDiv);
                         }
                 } else {
                     var noVideoMessage = $('<p>Currently, there are no videos in our search results.</p>');
                     relatedVideos.append(noVideoMessage);
                }
             } else {
-                //CONSOLE LOG FOR TESTING PURPOSES
-                console.log('failure -- Unable to connect to YouTube api');
                 //CALLING A FUNCTION FOR IF THE API IS DOWN
                 var youTubeFailHeading = 'Oh no!';
                 var youTubeFailMessage = 'This is rare, but we are unable to pull any videos at this time.' +
@@ -634,12 +650,14 @@ function youTubeApi(usersChoice) {
         },
         error: function (err) {
             var $statusCode = $('<div>',{
-                class: 'error-status',
-                html: 'Oops! Something went wrong!' + '<br>' + err.status + ' ' + err.statusText
+                html: 'Oops! Something went wrong!' + '<br>' + '(' + err.status + ' ' + err.statusText + ')'
             });
+            var header = "Oops!";
+            var paragraph = $statusCode;
+            apiThrottled(header, paragraph);
             $('.preloader-wrapper').hide();
-            $('.greyBG').append($statusCode);
-            console.log('houston we have a problem: ', err);
+            $('.greyBG').hide();
+            //console.log('houston we have a problem: ', err);
         }
     });
 }
@@ -652,21 +670,19 @@ function createEventDescription(eventCard) {
     $('.event-details').html('');
     var cardClicked = eventCard;
     var cardId = $(cardClicked).attr('id'); //finds card id to look for matching event
-    console.log('Card Clicked', cardId);
     cardEvent = global_event[cardId];
-    console.log('This Event ', cardEvent);
-    var dateForICS = parseICSDate(new Date(cardEvent['time']));
-    var dateForGoogleCal = parseGoogleDate(new Date(cardEvent['time']));
-    var date = new Date(cardEvent['time']);
+    var dateForICS = parseICSDate(new Date(cardEvent.time));
+    var dateForGoogleCal = parseGoogleDate(new Date(cardEvent.time));
+    var date = new Date(cardEvent.time);
     date = parseTime(date); //get readable date format
     var state = cardEvent.venue.state || '';
-    var eventName = cardEvent['name'];
+    var eventName = cardEvent.name;
     var eventLocation = (cardEvent.venue.address_1 + " " + cardEvent.venue.city + " " + state);
-    var eventHowToFindUs = cardEvent['how_to_find_us'];
+    var eventHowToFindUs = cardEvent.how_to_find_us;
     eventHowToFindUs = eventHowToFindUs === undefined ? '' : 'How to find us: ' + eventHowToFindUs;
     var $eventName=$('<h3>',{
         class: 'red-text event-title',
-        text: cardEvent['name']
+        text: cardEvent.name
     });
     var $groupName=$('<h6>',{
         html: '<em>' + cardEvent.group.name + '</em>'
@@ -679,7 +695,8 @@ function createEventDescription(eventCard) {
         text: cardEvent.venue.address_1 + " " + cardEvent.venue.city + " " + state
     });
     var $eventURL=$('<a/>',{
-        href: cardEvent['event_url'],
+        target: "_blank",
+        href: cardEvent.event_url,
         html: "<i class='tiny material-icons light-blue-text darken-1'>open_in_new</i> View Event on Meetup.com"
     });
     var $eventGoogleCal=$('<a/>',{
@@ -692,11 +709,12 @@ function createEventDescription(eventCard) {
         html: "<i class='tiny material-icons light-blue-text darken-1'>file_download</i> Download ICS (Calendar) File",
         click: function() {
             var cal = ics();
-            cal.addEvent('Meetup: ' + cardEvent['name'], 'Hosted by: ' + cardEvent.group.name + '<br><br>' + 'Description: ' + cardEvent['description'] + '<br>' + 'How to find us: ' + cardEvent['how_to_find_us'] + '<br><br><br>' + 'Brought to you by MeetupMap.', cardEvent.venue.address_1 + " " + cardEvent.venue.city + " " + state, dateForICS, dateForICS);
+            cal.addEvent('Meetup: ' + cardEvent.name, 'Hosted by: ' + cardEvent.group.name + '<br><br>' + 'Description: ' + cardEvent.description + '<br>' + 'How to find us: ' + cardEvent.how_to_find_us + '<br><br><br>' + 'Brought to you by MeetupMap.', cardEvent.venue.address_1 + " " + cardEvent.venue.city + " " + state, dateForICS, dateForICS);
+            cal.download();
         }
     });
     var $eventDescription=$('<p>',{
-        html: cardEvent['description']
+        html: cardEvent.description
     });
     //attach elements to dom
     $('.event-details').append($groupName,$eventName,$eventAddress,$eventDate,$('<hr>'),$eventURL,$('<br>'),$eventGoogleCal,$('<br>'),$eventCalendarICS,$('<hr>'),$eventDescription);

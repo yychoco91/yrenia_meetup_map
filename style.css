@@ -1,3 +1,6 @@
+html {
+    background-color: white;
+}
 
 .row {
     margin: 0;
@@ -49,11 +52,12 @@
 
 .error-status {
     position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    top: 70%;
+    left: 50%;
+    transform: translateX(-50%);
     z-index: 202;
+    color: white;
+    text-align: center;
 }
 
 .spinner-red-only {
@@ -129,7 +133,7 @@ INTRO PAGE
 }
 
 .row .input-field input:focus, input[type=text].valid {
-    box-shadow: 0 1px 0 0 white !important;
+    box-shadow: 0 0 0 0 !important;
     border-bottom: 1px solid white !important;
 }
 
@@ -220,12 +224,12 @@ SIDEBAR
     position: relative;
 }
 
-.back-to-map {
-    position: absolute;
-    left: 90%;
-    transform: translateX(-10%);
-    top: 8vh;
+.back-one {
+    position: fixed;
+    right: 5%;
+    top: 7vh;
     z-index: 100;
+    display: none;
 }
 
 .card .card-content .card-title {
@@ -243,6 +247,9 @@ DETAILS PAGE
 ********************/
 
 .details-wrapper {
+    position: relative;
+    top: 12vh;
+    height: 88vh;
     overflow: auto;
     overflow-x: hidden;
 }
@@ -266,7 +273,7 @@ DETAILS PAGE
 
 .details-inner {
     position: relative;
-    top: 2vh;
+    top: -11vh;
     height: 100vh;
 }
 
@@ -300,16 +307,21 @@ MAP MARKER
 *******************/
 
 .mylabel {
+    margin: auto;
     padding: 5px;
+    text-align: center;
 }
 
-.mylabel span {
+.mylabel p {
     width:100%;
-    font-size: 16px;
+    font-size: 12px;
     font-weight: bold;
-}
-.div_links {
     color: grey;
+    margin: 5px 0;
+}
+
+.details-container {
+    height: 100%;
 }
 
 /********************
@@ -345,23 +357,67 @@ div.mylabel div.div_links .event-time {
     display: none;
 }
 
+/********************
+RESPONSIVE
+********************/
+
 @media only screen and (min-device-width : 969px) and (max-device-width : 1024px) {
     .card-content span.card-title {
         font-size: 20px;
     }
 }
 
-@media only screen and (min-device-width : 661px) and (max-device-width : 968px) {
-    .card-content span.card-title {
-        font-size: 16px;
+@media only screen and (min-device-width : 600px) and (max-device-width : 968px) {
+
+    .back-one {
+        position: fixed;
+        right: 5%;
+        top: auto;
+        bottom: 20px;
+        z-index: 100;
+        display: none;
     }
+
+    .card-content span.card-title {
+        font-size: 18px;
+        line-height: 24px;
+    }
+
     div.card.red.lighten-1 {
         margin-right: 5px;
         width: 95%;
     }
+
 }
 
-@media only screen and (min-device-width : 320px) and (max-device-width : 660px) {
+@media only screen and (min-device-width : 320px) and (max-device-width : 700px) {
+
+    .staticBG {
+        background: url(assets/images/staticBG-bw.jpg) no-repeat center;
+        background-size: cover;
+        min-width: 100%;
+        min-height: 100%;
+        width: auto;
+        height: auto;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        z-index: -1;
+    }
+
+}
+
+@media only screen and (min-device-width : 320px) and (max-device-width : 600px) {
+
+    .back-one {
+        position: fixed;
+        right: 5%;
+        top: auto;
+        bottom: 20px;
+        z-index: 100;
+        display: none;
+    }
 
     .input-container .input-field label {
         font-size: .7rem;
@@ -369,10 +425,6 @@ div.mylabel div.div_links .event-time {
 
     .input-nav input::-webkit-input-placeholder {
         font-size: .7rem;
-    }
-
-    .logo-nav {
-        display: none;
     }
 
     .go-btn2 {
@@ -385,25 +437,30 @@ div.mylabel div.div_links .event-time {
         z-index: 0;
         overflow-y: scroll;
         overflow-x: hidden;
-        display: none;
-    }
-
-    #map_left {
-        display: none;
     }
 
     #map {
-        display: block;
+        display: none;
         z-index: 100;
     }
 
-    .details-wrapper {
-        display: none;
-    }
     .event-time {
         display: block;
     }
 }
 
+@media only screen and (max-device-width : 600px) and (max-height : 400px) {
 
+    #front-go {
+        height: 150%;
+    }
 
+    #top_search {
+        height: 24vh;
+    }
+
+    .map-left {
+        top: 24vh;
+    }
+
+}
